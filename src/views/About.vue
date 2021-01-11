@@ -8,6 +8,11 @@
 var echarts = require('echarts');
 
 export default {
+  created() {
+    this.$http('/getdemo').then(data=>{
+      console.log(data);
+    })
+  },
   mounted() {
 
     var myChart = echarts.init(document.getElementById('main'));
