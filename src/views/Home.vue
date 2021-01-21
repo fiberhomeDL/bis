@@ -1,18 +1,30 @@
 <template>
   <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <common-header @change-component="changeComponent"></common-header>
+    <keep-alive>
+      <component :is="activeComponent"></component>
+    </keep-alive>
   </div>
 </template>
 
 <script>
-// @ is an alias to /src
-import HelloWorld from '@c/HelloWorld.vue'
-
+import CommonHeader from "@/components/common/CommonHeader";
 export default {
   name: 'Home',
+  data(){
+    return {
+      activeComponent: 'HomePage',
+    }
+  },
   components: {
-    HelloWorld
+    CommonHeader,
+    HomePage: ()=> import('@c/home/HomePage.vue'),
+    Probe: ()=> import('@c/home/Probe.vue'),
+  },
+  methods:{
+    changeComponent(componentName){
+      this.activeComponent = componentName;
+    }
   },
   created() {
   }
@@ -20,4 +32,7 @@ export default {
 </script>
 <style lang="scss" scoped>
 @import '@css/style.scss';
+.home{
+  font-size: 14px;
+}
 </style>
