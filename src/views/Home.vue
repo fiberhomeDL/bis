@@ -36,6 +36,7 @@ export default {
 @import '@css/style.scss';
 .home{
   font-size: 14px;
+  background: #e9e9f3;
 
   &-component{
     height: 100%;
