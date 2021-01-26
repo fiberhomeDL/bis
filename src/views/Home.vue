@@ -1,9 +1,11 @@
 <template>
-  <div class="home">
+  <div class="home flex-column hw100-oh">
     <common-header @change-component="changeComponent"></common-header>
-    <keep-alive>
-      <component :is="activeComponent"></component>
-    </keep-alive>
+    <div class="home-component">
+      <keep-alive>
+        <component :is="activeComponent"></component>
+      </keep-alive>
+    </div>
   </div>
 </template>
 
@@ -34,5 +36,10 @@ export default {
 @import '@css/style.scss';
 .home{
   font-size: 14px;
+
+  &-component{
+    height: 100%;
+  }
+
 }
 </style>
