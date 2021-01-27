@@ -1,8 +1,8 @@
 <template>
     <div class="probe">
         <div class="content">
-            <div class="content-code">
-                <div class="content-code-main">
+            <div class="content-inner">
+            <div class="content-inner_code">
                     <div class="select-item_1">
                         <div class="select-input">
                             <span>应用名称：</span>
@@ -40,11 +40,8 @@
                         <i class="el-icon-warning"></i>
                         <span>注意：pagePath为页面名称，可自定义设置，类型为字符串</span>
                     </div>
-                </div>
-
             </div>
-            <div class="content-example">
-                <div class="content-example-main">
+            <div class="content-example_code">
                     <h1>探针部署示例展示：</h1>
                     <el-tabs v-model="activeType" type="card">
                         <el-tab-pane label="多页面应用" name="mpa">
@@ -68,9 +65,8 @@
                             </div>
                         </el-tab-pane>
                     </el-tabs>
-                </div>
             </div>
-
+            </div>
         </div>
     </div>
 </template>
@@ -210,25 +206,43 @@
 <style lang="scss" scoped>
     @import '@css/style.scss';
 
+    ::-webkit-scrollbar {
+        width: 8px;
+        height: 1px;
+    }
+    ::-webkit-scrollbar-thumb {
+        border-radius: 10px;
+        background-color: #d9dcea;
+    }
+    ::-webkit-scrollbar-track {
+        border-radius: 10px;
+        background-color: #f3f6f8;
+    }
+
     .probe {
         height: 100%;
         width: 100%;
+        overflow: hidden;
 
         .content {
-            height: calc(100% - 76px);
-            overflow: auto;
+            height: calc(100% - 108px);
             margin: 22px;
+            padding:32px;
             background-color: #fff;
             box-shadow: 0 4px 8px 0 #b7c4e0;
             border-radius: 5px;
+            .content-inner{
+                height: 100%;
+                overflow: auto;
+            }
 
-            .content-code {
-                /*height: 60%;*/
+            .content-inner_code {
+                padding-bottom: 22px;
                 border-bottom: dashed 1px #d0d0dd;
             }
 
-            .content-example {
-                /*height: 40%;*/
+            .content-example_code {
+                padding-top: 22px;
             }
         }
 
@@ -246,11 +260,6 @@
         i {
             margin-right: 8px;
         }
-    }
-
-    .content-code-main, .content-example-main {
-        height: 100%;
-        padding: 32px;
     }
 
     .select-item_1 {
@@ -334,8 +343,8 @@
         }
     }
 
-    .content-example-main .el-tabs {
-        margin-top: 12px;
+    .el-tabs {
+        margin-top: 22px;
 
     }
 
