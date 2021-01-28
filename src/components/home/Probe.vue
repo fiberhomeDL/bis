@@ -204,18 +204,7 @@
 <style lang="scss" scoped>
     @import '@css/style.scss';
 
-    ::-webkit-scrollbar {
-        width: 8px;
-        height: 1px;
-    }
-    ::-webkit-scrollbar-thumb {
-        border-radius: 10px;
-        background-color: #d9dcea;
-    }
-    ::-webkit-scrollbar-track {
-        border-radius: 10px;
-        background-color: #f3f6f8;
-    }
+
 
     .probe {
         height: 100%;
