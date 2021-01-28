@@ -40,6 +40,7 @@ export default {
 
   &-component{
     height: 100%;
+    overflow: hidden;
   }
 
 }
