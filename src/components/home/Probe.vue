@@ -318,7 +318,6 @@
 
     .dynamic-code {
         width: 100%;
-        /*height: 150px;*/
         margin: 20px 0;
         background-color: #f3f9ff;
         pre{
