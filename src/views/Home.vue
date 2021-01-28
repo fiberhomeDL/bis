@@ -1,5 +1,5 @@
 <template>
-  <div class="home">
+  <div class="home flex-column hw100-oh">
     <common-header @change-component="changeComponent"></common-header>
     <div class="home-component">
       <keep-alive>
@@ -37,16 +37,9 @@ export default {
 .home{
   font-size: 14px;
   background: #e9e9f3;
-  height: 100%;
-  width: 100%;
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-
 
   &-component{
     height: 100%;
-    overflow: hidden;
   }
 
 }
