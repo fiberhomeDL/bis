@@ -2,7 +2,7 @@
     <div class="probe">
         <div class="content">
             <div class="content-inner">
-            <div class="content-inner_code">
+                <div class="content-inner_code">
                     <div class="select-item_1">
                         <div class="select-input">
                             <span>应用名称：</span>
@@ -12,7 +12,8 @@
                     </div>
                     <div class="select-item_2">
                         <div class="select-radio">
-                            <el-tooltip effect="light" :visible-arrow=false content="单页面应用:刷新" placement="top">
+                            <el-tooltip effect="light" :visible-arrow=false
+                                        content="单页面应用:加载单个页面并在用户与应用程序交互时动态更新该页面的Web应用程序" placement="top">
                                 <i class="el-icon-question"></i>
                             </el-tooltip>
                             <span class="select-radio-span_first">单页面应用：</span>
@@ -20,7 +21,7 @@
                             <el-radio v-model="isSPA" label="false">否</el-radio>
                         </div>
                         <div class="select-radio">
-                            <span>vue项目：</span>
+                            <span>Vue项目：</span>
                             <el-radio v-model="isVue" label="true">是</el-radio>
                             <el-radio v-model="isVue" label="false">否</el-radio>
                         </div>
@@ -40,13 +41,13 @@
                         <i class="el-icon-warning"></i>
                         <span>注意：pagePath为页面名称，可自定义设置，类型为字符串</span>
                     </div>
-            </div>
-            <div class="content-example_code">
+                </div>
+                <div class="content-example_code">
                     <h1>探针部署示例展示：</h1>
                     <el-tabs v-model="activeType" type="card">
                         <el-tab-pane label="多页面应用" name="mpa">
                             <div class="example-type-content">
-                                <p>复制下方的代码，将其粘贴在监控页面的第一行</p>
+                                <p v-text="mpaExplain"></p>
                                 <div class="mpa-code">
                                     <pre><code v-text="mpaProbeCode"></code></pre>
                                 </div>
@@ -54,18 +55,18 @@
                         </el-tab-pane>
                         <el-tab-pane label="单页面应用" name="spa">
                             <div class="example-type-content">
-                                <p>在编译后index.html 文件的第一行加入以下代码：</p>
+                                <p v-text="spaExplain"></p>
                                 <div class="spa-code_1">
                                     <pre><code v-text="codeFrag1"></code></pre>
                                 </div>
-                                <p>在编译后项目入口js文件中的vue对象，添加如下代码：</p>
+                                <p>在编译后项目入口js文件中的vue对象，添加以下代码：</p>
                                 <div class="spa-code_2">
-                                    <pre><code v-text="spaProbeCodeSecond"></code></pre>
+                                    <pre><code v-text="spaProbeCodeFrag"></code></pre>
                                 </div>
                             </div>
                         </el-tab-pane>
                     </el-tabs>
-            </div>
+                </div>
             </div>
         </div>
     </div>
@@ -76,30 +77,16 @@
     const codeFrag1 = '<script type="text/javascript" src="http://localhost:13800/index.js"></' + 'script>\n';
     // 探针部署代码片段2
     const codeFrag2 = '<script>\n' +
-        'ClientMonitor.register({\n' +
+        '    ClientMonitor.register({\n' +
         '        collector: \'http://localhost:13800\',\n' +
         '        useFmp: true,\n' +
         '        serviceVersion: \'default\',\n' +
         '        service: ';
     // 探针部署代码片段3
-    const codeFrag3 = '\n});\n</' + 'script>';
-    // 单页面应用探针部署代码片段
-    const spaCodeFrag = 'watch: {\n' +
-        '  \'$route.path\': function (newVal) {\n' +
-        '    ClientMonitor.register({\n' +
-        '        collector: \'http:/localhost:13800\',\n' +
-        '        service: \'serviceName\',\n' +
-        '        serviceVersion: \'default\',\n' +
-        '        pagePath:newVal,\n' +
-        '        useFmp: true,\n' +
-        '        enableSPA:true,\n' +
-        '        vue: Vue\n' +
-        '    });\n' +
-        '  }\n' +
-        '}';
+    const codeFrag3 = '    });\n</' + 'script>';
     // 多页面应用探针部署代码片段
     const mpaCodeFrag = '<script>\n' +
-        'ClientMonitor.register({\n' +
+        '    ClientMonitor.register({\n' +
         '        collector: \'http://localhost:13800\',\n' +
         '        service: \'serviceName\',\n' +
         '        serviceVersion: \'default\',\n' +
@@ -107,6 +94,25 @@
         '        useFmp: true\n' +
         '    });\n</' +
         'script>';
+    // 单页面应用探针部署代码片段
+    const spaCodeFrag = 'watch: {\n' +
+        '  \'$route.path\': function (newVal) {\n' +
+        '      ClientMonitor.register({\n' +
+        '        collector: \'http:/localhost:13800\',\n' +
+        '        service: \'serviceName\',\n' +
+        '        serviceVersion: \'default\',\n' +
+        '        pagePath:newVal,\n' +
+        '        useFmp: true,\n' +
+        '        enableSPA:true,\n' +
+        '        vue: Vue\n' +
+        '      });\n' +
+        '  }\n' +
+        '}';
+    // 多页面应用示例解释
+    const mpaExplain = '在监控页面的<head></head>第一行,添加以下代码：';
+    //  单页面应用示例解释
+    const spaExplain = '在编译后index.html 文件的<head></head>第一行,添加以下代码：';
+
     export default {
         name: "Probe",
         data() {
@@ -127,19 +133,26 @@
                 dynamicProbeCode: '',
                 // 代码_应用名称
                 probeCodeServiceName: '\'\',\n',
+                // 代码_spa部分
                 probeCodeSPA: '',
+                // 代码_vue部分
                 probeCodeVue: '',
+                // 代码_页面路径
                 probeCodePagePath: '        pagePath: location.href,\n',
                 // 示例类型
                 activeType: 'mpa',
+                // 多页面应用示例解释
+                mpaExplain: mpaExplain,
+                // 单页面应用示例解释
+                spaExplain: spaExplain,
                 // 多页面应用示例代码
                 mpaProbeCode: codeFrag1 + mpaCodeFrag,
                 // 单页面应用示例第二段代码
-                spaProbeCodeSecond: spaCodeFrag
+                spaProbeCodeFrag: spaCodeFrag
             }
         },
         methods: {
-            // 复制代码
+            // 复制探针部署代码
             copyProbeCode() {
                 let inputEle = document.createElement('input');
                 document.body.appendChild(inputEle);
@@ -163,20 +176,12 @@
             // 动态生成部署探针代码
             probeCode: function () {
                 return codeFrag1 + codeFrag2 + this.dynamicProbeCode +
-                    this.probeCodeServiceName + this.probeCodePagePath + this.probeCodeSPA + this.probeCodeVue +
-                    codeFrag3;
+                    this.probeCodeServiceName + this.probeCodePagePath + this.probeCodeSPA + this.probeCodeVue + codeFrag3;
             }
         },
         watch: {
-            isSPA: function (val) {
-                if ('true' === val) {
-                    this.probeCodeSPA = '        enableSPA: true,\n';
-                    this.probeCodePagePath = '        pagePath: newVal,\n';
-                } else {
-                    this.probeCodeSPA = '';
-                    this.probeCodePagePath = '        pagePath: location.href,\n';
-                }
-            },
+            // 1.检验应用名称
+            // 2.修改代码中应用名称
             serviceName: function (val) {
                 // 校验是否为英文/数字
                 let reg = new RegExp("^[0-9a-zA-Z]+$");
@@ -188,15 +193,26 @@
                 // 修改代码中应用名称
                 this.probeCodeServiceName = '\'' + val + '\',\n';
             },
-            vueObject: function (val) {
-                this.probeCodeVue = '        vue:\' ' + val + '\',\n';
+            // 根据spa选项更改代码
+            isSPA: function (val) {
+                if ('true' === val) {
+                    this.probeCodeSPA = '        enableSPA: true,\n';
+                    this.probeCodePagePath = '        pagePath: newVal,\n';
+                } else {
+                    this.probeCodeSPA = '';
+                    this.probeCodePagePath = '        pagePath: location.href,\n';
+                }
             },
+            // 修改代码vue部分
             isVue: function (val) {
                 if ('false' === val) {
                     this.probeCodeVue = '';
                 }
+            },
+            // 修改代码vue对象名称
+            vueObject: function (val) {
+                this.probeCodeVue = '        vue:\' ' + val + '\',\n';
             }
-
         }
     }
 </script>
@@ -205,20 +221,20 @@
     @import '@css/style.scss';
 
 
-
     .probe {
         height: 100%;
         width: 100%;
         overflow: hidden;
 
         .content {
-            height: calc(100% - 108px);
+            height: calc(100% - 44px);
             margin: 22px;
-            padding:32px;
+            padding: 32px;
             background-color: #fff;
             box-shadow: 0 4px 8px 0 #b7c4e0;
             border-radius: 5px;
-            .content-inner{
+
+            .content-inner {
                 height: 100%;
                 overflow: auto;
             }
@@ -242,6 +258,7 @@
             padding: 20px;
             display: block;
             color: #909db9;
+            line-height: 1.4em;
         }
 
         i {
@@ -258,6 +275,7 @@
 
         span {
             margin-top: 10px;
+            @extend .sub-normal-text;
         }
 
         .el-input {
@@ -281,10 +299,15 @@
 
         span {
             margin-left: 110px;
+            @extend .sub-normal-text;
         }
 
         .select-radio {
             display: inline-block;
+
+            span {
+
+            }
 
             .el-icon-question {
                 cursor: pointer;
@@ -309,8 +332,9 @@
         width: 100%;
         margin: 20px 0;
         background-color: #f3f9ff;
-        pre{
-            padding:4px;
+
+        pre {
+            padding: 4px;
         }
 
         i {
@@ -355,9 +379,9 @@
         background-color: #f3f9ff;
     }
 
-    .spa-code_1,.spa-code_2 {
+    .spa-code_1, .spa-code_2 {
         width: 100%;
-        margin:20px 0;
+        margin: 20px 0;
         background-color: #f3f9ff;
     }
 
@@ -368,5 +392,6 @@
     .el-icon-warning {
         color: #f8897c;
     }
+
 
 </style>
