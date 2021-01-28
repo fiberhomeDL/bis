@@ -135,9 +135,7 @@
                 // 多页面应用示例代码
                 mpaProbeCode: codeFrag1 + mpaCodeFrag,
                 // 单页面应用示例第二段代码
-                spaProbeCodeSecond: spaCodeFrag,
-                // 是否进入代码区域
-                isEnterCodeArea: false,
+                spaProbeCodeSecond: spaCodeFrag
             }
         },
         methods: {
@@ -365,7 +363,6 @@
 
     .mpa-code {
         width: 100%;
-        /*height: 100px;*/
         margin: 20px 0;
         background-color: #f3f9ff;
     }
@@ -373,7 +370,6 @@
     .spa-code_1,.spa-code_2 {
         width: 100%;
         margin:20px 0;
-        /*height: 50px;*/
         background-color: #f3f9ff;
     }
 
