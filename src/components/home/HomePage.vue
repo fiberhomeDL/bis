@@ -1,6 +1,27 @@
 <template>
   <div class="home-page hw100-oh">
-    <div class="home-page-head"></div>
+    <div class="home-page-head">
+      <div class="home-page-head-input">
+        <el-input
+            placeholder="请输入应用名称"
+            suffix-icon="el-icon-search"
+            size="small"
+            v-model="searchInput">
+        </el-input>
+      </div>
+      <div class="home-page-head-radio">
+        <span class="home-page-head-radio-title">状态</span>
+        <el-radio v-for="(item,index) in satisfactionData"
+                  :key="index"
+                  class="home-page-head-radio-item"
+                  v-model="satisfactionSelect"
+                  :label="item.label">{{ item.title }}</el-radio>
+      </div>
+      <div class="home-page-head-option">
+        <span class="home-page-head-option-download"></span>
+        <download-button @click="clickDownLoad"></download-button>
+      </div>
+    </div>
     <div class="home-page-content">
       <div class="home-page-content-body">
         <div class="home-page-content-body-item">
@@ -12,11 +33,75 @@
 </template>
 
 <script>
+import DownloadButton from "@c/common/DownloadButton";
 import ViewCard from "@/components/home/ViewCard";
 export default {
   name: "HomePage",
   components: {
-    ViewCard
+    ViewCard,
+    DownloadButton
+  },
+  data(){
+    return {
+      //搜索文本
+      searchInput: '',
+      //满意度数据源配置
+      satisfactionData:[
+        {
+          'title': '全部',
+          'label': '0'
+        },
+        {
+          'title': '满意',
+          'label': '1'
+        },{
+          'title': '一般',
+          'label': '2'
+        },{
+          'title': '不满意',
+          'label': '3'
+        }
+      ],
+      //满意度筛选选择项
+      satisfactionSelect: '1',
+      appInfo: [
+        {
+          name: 'testPG',
+          satisfaction: '1',
+          vp: 212309,
+          uv: 59,
+          error: 5,
+          warning: 14,
+          sys: '98%'
+        },
+        {
+          name: 'testPG',
+          satisfaction: '2',
+          vp: 212309,
+          uv: 59,
+          error: 5,
+          warning: 14,
+          sys: '98%'
+        },
+        {
+          name: 'testPG',
+          satisfaction: '3',
+          vp: 212309,
+          uv: 59,
+          error: 5,
+          warning: 14,
+          sys: '98%'
+        },
+      ]
+
+
+    }
+  },
+  methods: {
+    clickDownLoad(){
+      //todo 下载事件
+      alert('do download')
+    }
   }
 }
 </script>
@@ -25,6 +110,11 @@ export default {
 @import '@css/style.scss';
 
 .home-page{
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
   font-size: 14px;
 
   &-head{
