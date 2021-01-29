@@ -1,11 +1,11 @@
 <template>
   <div class="view-card">
     <div class="view-card-chart">
-      <div id="myChart" style="width: 100%;height: 100%"></div>
+      <div ref="charts" id="myChart" style="width: 100%;height: 100%"></div>
     </div>
     <div class="view-card-info flex-column">
-      <div class="view-card-info-title">testPG</div>
-      <div class="view-card-info-msg flex-row" v-for="(v,i) in msgData" :key="i">
+      <div class="view-card-info-title">{{ info.name }}</div>
+      <div class="view-card-info-msg flex-row" v-for="(v,i) in info.infoData" :key="i">
         <img class="view-card-info-msg-icon" :src="v.icon">
         <span class="view-card-info-msg-title">{{ v.title + ':' }}</span>
         <span class="view-card-info-msg-value">{{ v.value }}</span>
@@ -17,40 +17,13 @@
 <script>
 export default {
   name: "ViewCard",
+  props: ['info'],
   data(){
     return {
-      msgData: [
-        {
-          title: '访问量',
-          value: '21239',
-          icon: require('@img/common_icon/views.svg')
-        },
-        {
-          title: '用户量',
-          value: '59位',
-          icon: require('@img/common_icon/subscribers.svg')
-        },
-        {
-          title: '错误数',
-          value: '5个',
-          icon: require('@img/common_icon/error.svg')
-        },
-        {
-          title: '警告数',
-          value: '14个',
-          icon: require('@img/common_icon/warning.svg')
-        },
-        {
-          title: '性能指数',
-          value: '99%',
-          icon: require('@img/common_icon/performance.svg')
-        },
-
-      ]
     }
   },
   mounted() {
-    let myChart = this.$echarts.init(document.getElementById('myChart'));
+    let myChart = this.$echarts.init(this.$refs.charts);
     myChart.setOption({
       grid: {
         containLabel: true,

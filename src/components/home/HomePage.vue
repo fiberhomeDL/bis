@@ -24,8 +24,9 @@
     </div>
     <div class="home-page-content">
       <div class="home-page-content-body">
-        <div class="home-page-content-body-item">
-          <view-card></view-card>
+        <div :class="['home-page-content-body-item','satisfaction-'+value.satisfaction]" v-for="(value, index) in appInfo" :key="index">
+          <div :class="'tag-satisfactionSelect tag-satisfactionSelect-' + value.satisfaction">{{ value.satisfactionSelectName }}</div>
+          <view-card :info="value"></view-card>
         </div>
       </div>
     </div>
@@ -68,29 +69,98 @@ export default {
         {
           name: 'testPG',
           satisfaction: '1',
-          vp: 212309,
-          uv: 59,
-          error: 5,
-          warning: 14,
-          sys: '98%'
+          satisfactionSelectName: '满意',
+          infoData: [
+            {
+              title: '访问量',
+              value: '21239',
+              icon: require('@img/common_icon/views.svg')
+            },
+            {
+              title: '用户量',
+              value: '59位',
+              icon: require('@img/common_icon/subscribers.svg')
+            },
+            {
+              title: '错误数',
+              value: '5个',
+              icon: require('@img/common_icon/error.svg')
+            },
+            {
+              title: '警告数',
+              value: '14个',
+              icon: require('@img/common_icon/warning.svg')
+            },
+            {
+              title: '性能指数',
+              value: '99%',
+              icon: require('@img/common_icon/performance.svg')
+            },
+          ],
         },
         {
           name: 'testPG',
           satisfaction: '2',
-          vp: 212309,
-          uv: 59,
-          error: 5,
-          warning: 14,
-          sys: '98%'
+          satisfactionSelectName: '一般',
+          infoData: [
+            {
+              title: '访问量',
+              value: '21239',
+              icon: require('@img/common_icon/views.svg')
+            },
+            {
+              title: '用户量',
+              value: '59位',
+              icon: require('@img/common_icon/subscribers.svg')
+            },
+            {
+              title: '错误数',
+              value: '5个',
+              icon: require('@img/common_icon/error.svg')
+            },
+            {
+              title: '警告数',
+              value: '14个',
+              icon: require('@img/common_icon/warning.svg')
+            },
+            {
+              title: '性能指数',
+              value: '99%',
+              icon: require('@img/common_icon/performance.svg')
+            },
+          ],
         },
         {
           name: 'testPG',
           satisfaction: '3',
-          vp: 212309,
-          uv: 59,
-          error: 5,
-          warning: 14,
-          sys: '98%'
+          satisfactionSelectName: '不满意',
+          infoData: [
+            {
+              title: '访问量',
+              value: '21239',
+              icon: require('@img/common_icon/views.svg')
+            },
+            {
+              title: '用户量',
+              value: '59位',
+              icon: require('@img/common_icon/subscribers.svg')
+            },
+            {
+              title: '错误数',
+              value: '5个',
+              icon: require('@img/common_icon/error.svg')
+            },
+            {
+              title: '警告数',
+              value: '14个',
+              icon: require('@img/common_icon/warning.svg')
+            },
+            {
+              title: '性能指数',
+              value: '99%',
+              icon: require('@img/common_icon/performance.svg')
+            },
+          ],
         },
       ]
 
@@ -179,6 +249,9 @@ export default {
         border-radius: 3px;
         border: solid 1px #dae6f1;
         padding: 30px;
+        cursor: pointer;
+        position: relative;
+        overflow: hidden;
       }
 
       &-item:nth-child(2n+1) {
@@ -188,6 +261,47 @@ export default {
 
   }
 }
+
+.satisfaction-1:hover{
+  background: rgb(235,252,244);
+  border-color: rgb(66,210,117);
+}
+
+.satisfaction-2:hover{
+  background: #fdfbf5;
+  border-color: #fec055;
+}
+
+.satisfaction-3:hover{
+  background: rgb(253,245,245);
+  border-color: rgb(248,137,124);
+}
+
+.tag-satisfactionSelect{
+  position: absolute;
+  color: white;
+  line-height: 26px;
+  width: 100px;
+  text-align: center;
+  transform: rotate(45deg);
+  //right: -30px;
+  //top: 6px;
+  right: -25px;
+  top: 12px;
+  &-1{
+    background: #42d275;
+  }
+  &-2{
+    background: #fec055;
+  }
+  &-3{
+    background: rgb(248,137,124);
+  }
+}
+
+
+
+
 
 
 
