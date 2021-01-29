@@ -4,7 +4,8 @@
              :key="index"
              :class="[{'active':value.isActive}, 'menu-tab']"
              @click="tabClick(value)">
-            <span class="menu-icon"></span>
+            <img v-show="value.isActive" class="menu-icon" :src="require('../../assets/img/menu_icon/'+value.name+'_highlight.svg')"/>
+            <img v-show="!value.isActive" class="menu-icon" :src="require('../../assets/img/menu_icon/'+value.name+'.svg')"/>
             <span class="menu-title">{{ value.title }}</span>
         </div>
     </div>
@@ -67,7 +68,7 @@
                     this.tabData.forEach((item)=>{item.isActive = false});
                     value.isActive = true;
                     //  抛出组件名
-                    this.$emit('change-component', value.componentName);
+                    this.$emit('change-content', value.componentName);
                 }
             }
         }
@@ -79,6 +80,7 @@
     .menu{
         width:190px;
         height:100%;
+        padding:28px;
         background-color: #2d3e53;
         box-shadow: 0 4px 8px 0 #b7c4e0;
         &-tab{
@@ -91,6 +93,16 @@
             color: #00baff;
             position: relative;
             top: 0;
+            cursor: pointer;
+        }
+        .menu-icon{
+            height: 20px;
+            width: 20px;
+            margin-right: 10px;
+            vertical-align: middle;
+        }
+        .menu-title{
+            vertical-align: middle;
         }
     }
 

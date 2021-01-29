@@ -2,14 +2,14 @@
     <div class="detail flex-column hw100-oh">
         <common-header @change-component="changeComponent"></common-header>
         <div class="container">
-            <div class="menu">
-                <menu></menu>
+            <div class="container-sideMenu" >
+                <Menu @change-content="changeContent"></Menu>
             </div>
-        <div class="content">
-            <keep-alive>
-<!--                <component :is="activeComponent"></component>-->
-            </keep-alive>
-        </div>
+            <div class="container-content">
+               <keep-alive>
+                  <component :is="activeContent"></component>
+               </keep-alive>
+            </div>
         </div>
     </div>
 
@@ -22,7 +22,7 @@ import Menu from "@/components/common/Menu";
         name: "Detail",
         data(){
             return {
-                activeComponent: 'AppOverview',
+                activeContent: 'AppOverview',
             }
         },
         components: {
@@ -37,14 +37,18 @@ import Menu from "@/components/common/Menu";
             Alarm: ()=> import('@c/detail/Alarm.vue'),
         },
         methods:{
+            // 头部导航跳转
             changeComponent(componentName){
-                debugger;
                 this.$router.push({
                     name: 'Home',
                     params: {
                         componentName: componentName
                     }
                 })
+            },
+            // 侧边导航跳转
+            changeContent(componentName){
+                this.activeContent = componentName;
             }
         },
     }
@@ -55,15 +59,20 @@ import Menu from "@/components/common/Menu";
 .detail{
     font-size: 14px;
     background: #e9e9f3;
-
-    &-container{
+    .container{
         height: 100%;
-        overflow: hidden;
-        .menu{
+        display: flex;
+        &-sideMenu{
             width:190px;
+            height: 100%;
+            float:left;
+        }
+        &-content{
+            width:calc(100% - 190px);
+            height:100%;
+            float:left;
         }
     }
-
 }
 
 </style>

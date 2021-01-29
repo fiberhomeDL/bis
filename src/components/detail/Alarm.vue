@@ -1,5 +1,5 @@
 <template>
-    <span>Alarm</span>
+    <div>Alarm</div>
 
 </template>
 
@@ -9,6 +9,7 @@
     }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
+@import '@css/style.scss';
 
 </style>
