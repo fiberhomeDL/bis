@@ -13,8 +13,8 @@ export default {
 
 .download-button{
   display: inline-block;
-  width: 14px;
-  height: 16px;
+  width: 18px;
+  height: 18px;
   background-image: url("~@img/common_icon/download.svg");
   background-size: cover;
   cursor: pointer;

@@ -6,7 +6,7 @@
             placeholder="请输入应用名称"
             suffix-icon="el-icon-search"
             size="small"
-            v-model="searchInput">
+            v-model.trim="searchInput">
         </el-input>
       </div>
       <div class="home-page-head-radio">
@@ -24,7 +24,7 @@
     </div>
     <div class="home-page-content">
       <div class="home-page-content-body">
-        <div :class="['home-page-content-body-item','satisfaction-'+value.satisfaction]" v-for="(value, index) in appInfo" :key="index">
+        <div :class="['home-page-content-body-item','satisfaction-'+value.satisfaction]" v-for="(value, index) in appInfoByFilter" :key="index">
           <div :class="'tag-satisfactionSelect tag-satisfactionSelect-' + value.satisfaction">{{ value.satisfactionSelectName }}</div>
           <view-card :info="value"></view-card>
         </div>
@@ -64,10 +64,10 @@ export default {
         }
       ],
       //满意度筛选选择项
-      satisfactionSelect: '1',
+      satisfactionSelect: '0',
       appInfo: [
         {
-          name: 'testPG',
+          name: 'testPG1',
           satisfaction: '1',
           satisfactionSelectName: '满意',
           infoData: [
@@ -99,7 +99,7 @@ export default {
           ],
         },
         {
-          name: 'testPG',
+          name: 'testPG2',
           satisfaction: '2',
           satisfactionSelectName: '一般',
           infoData: [
@@ -131,7 +131,7 @@ export default {
           ],
         },
         {
-          name: 'testPG',
+          name: 'testPG3',
           satisfaction: '3',
           satisfactionSelectName: '不满意',
           infoData: [
@@ -171,6 +171,13 @@ export default {
     clickDownLoad(){
       //todo 下载事件
       alert('do download')
+    }
+  },
+  computed:{
+    appInfoByFilter(){
+      return this.appInfo.filter(item=>{
+        return item.name.includes(this.searchInput);
+      })
     }
   }
 }
