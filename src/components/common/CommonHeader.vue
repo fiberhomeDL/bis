@@ -16,41 +16,44 @@ export default {
   props: ['defaultComponentName'],
   data(){
     return {
-      tabData: [
-        {
-          title: '首页',
-          componentName: 'HomePage',
-          isActive: 'HomePage' == this.activeComponentName
-        },
-        {
-          title: '探针部署',
-          componentName: 'Probe',
-          isActive: 'Probe' == this.activeComponentName
-        },
-      ]
     }
   },
-    computed: {
-        activeComponentName(){
-            return this.defaultComponentName;
-        }
-    },
   methods: {
     tabClick(value){
       if(!value.isActive){
-        this.tabData.forEach((item)=>{item.isActive = false});
-        value.isActive = true;
+        // this.tabData.forEach((item)=>{item.isActive = false});
+        // value.isActive = true;
+
+        this.activeComponentName = value.componentName;
+
         //  抛出组件名
         this.$emit('change-component', value.componentName);
       }
     }
   },
+  computed:{
+    activeComponentName: function(){
+      return this.defaultComponentName
+    },
+    tabData: function (){
+      return [
+        {
+          title: '首页',
+          componentName: 'HomePage',
+          isActive: this.activeComponentName == 'HomePage'
+        },
+        {
+          title: '探针部署',
+          componentName: 'Probe',
+          isActive: this.activeComponentName == 'Probe'
+        },
+      ]
+    }
+  },
   created() {
-      // if(this.defaultComponentName){
-      //     this.tabData.forEach(item => {
-      //         if(item.componentName == this.defaultComponentName) item.isActive = true;
-      //     })
-      // }
+    // this.tabData.forEach(item => {
+    //     if(item.componentName == this.defaultComponentName) item.isActive = true;
+    // })
   }
 }
 </script>

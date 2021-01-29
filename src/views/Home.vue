@@ -15,7 +15,7 @@ export default {
   name: 'Home',
   data(){
     return {
-      activeComponent: 'HomePage',
+      activeComponent: '',
     }
   },
   components: {
@@ -32,11 +32,11 @@ export default {
     this.$nextTick(()=>{
       let activeComponentName = this.$route.params.componentName
       if(activeComponentName){
-        debugger;
         this.activeComponent = activeComponentName;
+      }else{
+        this.activeComponent = 'HomePage'
       }
     })
-
   }
 }
 </script>
