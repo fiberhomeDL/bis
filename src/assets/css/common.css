@@ -147,4 +147,7 @@
 .el-date-editor .el-range__close-icon{display: none;}
 .el-tabs__item {font-weight: bold;}
 .el-tabs__item {color: #919dbd;}
+.el-table th {padding:5px 0;}
+.el-table thead {color:#505b73;font-weight: bold;}
+.el-table td.gutter,.el-table th.gutter{background-color:#def2ff;}
 
