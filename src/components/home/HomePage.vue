@@ -4,15 +4,7 @@
     <div class="home-page-content">
       <div class="home-page-content-body">
         <div class="home-page-content-body-item">
-          <div class="view-card">
-            <div class="view-card-chart"></div>
-            <div class="view-card-info">
-              <div class="view-card-info-title">testPG</div>
-              <div class="view-card-info-">
-
-              </div>
-            </div>
-          </div>
+          <view-card></view-card>
         </div>
       </div>
     </div>
@@ -20,8 +12,12 @@
 </template>
 
 <script>
+import ViewCard from "@/components/home/ViewCard";
 export default {
-  name: "HomePage"
+  name: "HomePage",
+  components: {
+    ViewCard
+  }
 }
 </script>
 
@@ -92,6 +88,7 @@ export default {
         background-color: #f3f9ff;
         border-radius: 3px;
         border: solid 1px #dae6f1;
+        padding: 30px;
       }
 
       &-item:nth-child(2n+1) {
@@ -103,24 +100,6 @@ export default {
 }
 
 
-.view-card{
-  height: 100%;
-  width: 100%;
-  display: flex;
-  overflow: hidden;
-  justify-items: center;
 
-  &-chart{
-    width: 100%;
-    overflow: hidden;
-    padding: 26px 0 26px 26px;
-  }
-
-  &-info{
-    width: 168px;
-  }
-
-
-}
 
 </style>
