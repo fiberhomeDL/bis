@@ -13,13 +13,14 @@
 <script>
 export default {
   name: "CommonHeader",
+  props: ['defaultComponentName'],
   data(){
     return {
       tabData: [
         {
           title: '首页',
           componentName: 'HomePage',
-          isActive: true
+          isActive: false
         },
         {
           title: '探针部署',
@@ -38,6 +39,13 @@ export default {
         this.$emit('change-component', value.componentName);
       }
     }
+  },
+  created() {
+      if(this.defaultComponentName){
+          this.tabData.forEach(item => {
+              if(item.componentName == this.defaultComponentName) item.isActive = true;
+          })
+      }
   }
 }
 </script>

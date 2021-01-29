@@ -4,7 +4,7 @@
              :key="index"
              :class="[{'active':value.isActive}, 'menu-tab']"
              @click="tabClick(value)">
-            <span :style="{backgroundImage:'url('+require('../..img/menu/'+value.name+'.svg')+')'}" class="menu-icon"></span>
+            <span class="menu-icon"></span>
             <span class="menu-title">{{ value.title }}</span>
         </div>
     </div>
@@ -90,7 +90,7 @@
         &-tab.active{
             color: #00baff;
             position: relative;
-            top: 0px;
+            top: 0;
         }
     }
 

@@ -1,6 +1,6 @@
 <template>
   <div class="home flex-column hw100-oh">
-    <common-header @change-component="changeComponent"></common-header>
+    <common-header @change-component="changeComponent" :default-component-name="activeComponent"></common-header>
     <div class="home-component">
       <keep-alive>
         <component :is="activeComponent"></component>
@@ -29,6 +29,13 @@ export default {
     }
   },
   created() {
+    this.$nextTick(()=>{
+      let activeComponentName = this.$route.params.componentName
+      if(activeComponentName){
+        this.activeComponent = activeComponentName;
+      }
+    })
+
   }
 }
 </script>

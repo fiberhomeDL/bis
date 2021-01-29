@@ -1,5 +1,5 @@
 <template>
-
+    <span>Alarm</span>
 </template>
 
 <script>

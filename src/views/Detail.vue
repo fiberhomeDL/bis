@@ -1,16 +1,22 @@
 <template>
-    <div>
-        <Menu @change-component="changeComponent"></Menu>
-        <div>
+    <div class="detail flex-column hw100-oh">
+        <common-header @change-component="changeComponent"></common-header>
+        <div class="container">
+            <div class="menu">
+                <menu @change-component="changeComponent"></menu>
+            </div>
+        <div class="content">
             <keep-alive>
                 <component :is="activeComponent"></component>
             </keep-alive>
+        </div>
         </div>
     </div>
 
 </template>
 
 <script>
+import CommonHeader from "@/components/common/CommonHeader";
 import Menu from "@/components/common/Menu";
     export default {
         name: "Detail",
@@ -20,6 +26,7 @@ import Menu from "@/components/common/Menu";
             }
         },
         components: {
+            CommonHeader,
             Menu,
             AppOverview: ()=> import('@c/detail/AppOverview.vue'),
             PageMonitor: ()=> import('@c/detail/PageMonitor.vue'),
@@ -31,7 +38,13 @@ import Menu from "@/components/common/Menu";
         },
         methods:{
             changeComponent(componentName){
-                this.activeComponent = componentName;
+                debugger;
+                this.$router.push({
+                    name: 'Home',
+                    params: {
+                        componentName: componentName
+                    }
+                })
             }
         },
     }
@@ -39,5 +52,18 @@ import Menu from "@/components/common/Menu";
 
 <style lang="scss" scoped>
 @import '@css/style.scss';
+.detail{
+    font-size: 14px;
+    background: #e9e9f3;
+
+    &-container{
+        height: 100%;
+        overflow: hidden;
+        .menu{
+            width:190px;
+        }
+    }
+
+}
 
 </style>
