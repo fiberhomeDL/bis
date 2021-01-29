@@ -3,11 +3,11 @@
         <common-header @change-component="changeComponent"></common-header>
         <div class="container">
             <div class="menu">
-                <menu @change-component="changeComponent"></menu>
+                <menu></menu>
             </div>
         <div class="content">
             <keep-alive>
-                <component :is="activeComponent"></component>
+<!--                <component :is="activeComponent"></component>-->
             </keep-alive>
         </div>
         </div>

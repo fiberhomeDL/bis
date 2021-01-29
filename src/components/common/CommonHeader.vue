@@ -20,16 +20,21 @@ export default {
         {
           title: '首页',
           componentName: 'HomePage',
-          isActive: false
+          isActive: 'HomePage' == this.activeComponentName
         },
         {
           title: '探针部署',
           componentName: 'Probe',
-          isActive: false
+          isActive: 'Probe' == this.activeComponentName
         },
       ]
     }
   },
+    computed: {
+        activeComponentName(){
+            return this.defaultComponentName;
+        }
+    },
   methods: {
     tabClick(value){
       if(!value.isActive){
@@ -41,11 +46,11 @@ export default {
     }
   },
   created() {
-      if(this.defaultComponentName){
-          this.tabData.forEach(item => {
-              if(item.componentName == this.defaultComponentName) item.isActive = true;
-          })
-      }
+      // if(this.defaultComponentName){
+      //     this.tabData.forEach(item => {
+      //         if(item.componentName == this.defaultComponentName) item.isActive = true;
+      //     })
+      // }
   }
 }
 </script>

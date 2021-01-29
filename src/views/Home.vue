@@ -32,6 +32,7 @@ export default {
     this.$nextTick(()=>{
       let activeComponentName = this.$route.params.componentName
       if(activeComponentName){
+        debugger;
         this.activeComponent = activeComponentName;
       }
     })
