@@ -22,6 +22,10 @@ export default new Vuex.Store({
     selectedServiceId: 1,
   },
   mutations: {
+    changeSelectedServiceId (state, selectedId) {
+      // 变更状态
+      state.selectedServiceId = selectedId;
+    }
   },
   actions: {
   },
