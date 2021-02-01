@@ -2,15 +2,7 @@
     <div class="content-errorlog">
         <div class="select-area">
             <div class="select-area_item">
-                <span>应用：</span>
-                <el-select v-model="service" placeholder="请选择" :size="'small'">
-                    <el-option
-                            v-for="item in options"
-                            :key="item.value"
-                            :label="item.label"
-                            :value="item.value">
-                    </el-option>
-                </el-select>
+                <service-select></service-select>
             </div>
             <div class="select-area_item">
                 <span>页面：</span>
@@ -112,9 +104,10 @@
 <script>
     import DownloadButton from "../common/DownloadButton";
     import TimePicker from "../common/TimePicker";
+    import ServiceSelect from "../common/ServiceSelect";
     export default {
         name: "ErrorLog",
-        components: {DownloadButton,TimePicker},
+        components: {DownloadButton,ServiceSelect,TimePicker},
         data(){
             return{
                 errorData:[{service:'sim',pageName:'index.html',errorInfo:'xxxx',time:'xxxx',type:'ajax',grade:'warining'},
