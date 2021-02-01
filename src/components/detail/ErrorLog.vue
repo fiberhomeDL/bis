@@ -210,7 +210,7 @@
             box-shadow: 0 4px 8px 0 #b7c4e0;
             .select-area_item{
                 display: inline-block;
-                margin-left:10px;
+                margin-left:14px;
                 .el-icon-search{
                     margin-right: 8px;
                 }
@@ -220,6 +220,15 @@
                 ::v-deep .el-input__inner {
                     height: 32px;
                 }
+                .download-icon{
+                    vertical-align: middle;
+                }
+                span{
+                    @extend .sub-normal-text;
+                }
+            }
+            .select-area_item:first-child{
+                margin-left:0;
             }
         }
         .error-information{
@@ -234,7 +243,6 @@
             .table-container{
                 width: 100%;
                 height: calc(100% - 44px);
-
             }
             .page-area{
                 width: 100%;
@@ -256,6 +264,9 @@
     border:solid 1px #dfe8f7;
     padding:2px;
     color:#575777;
+}
+::v-deep .el-date-editor .el-range-separator {
+    padding: 0;
 }
 
 
