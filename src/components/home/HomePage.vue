@@ -24,7 +24,7 @@
     </div>
     <div class="home-page-content">
       <div class="home-page-content-body">
-        <div :class="['home-page-content-body-item','satisfaction-'+value.satisfaction]" v-for="(value, index) in appInfoByFilter" :key="index">
+        <div @click="doServiceClick(value)" :class="['home-page-content-body-item','satisfaction-'+value.satisfaction]" v-for="(value, index) in appInfoByFilter" :key="index">
           <div :class="'tag-satisfactionSelect tag-satisfactionSelect-' + value.satisfaction">{{ value.satisfactionSelectName }}</div>
           <view-card :info="value"></view-card>
         </div>
@@ -67,6 +67,7 @@ export default {
       satisfactionSelect: '0',
       appInfo: [
         {
+          id: '1',
           name: 'testPG1',
           satisfaction: '1',
           satisfactionSelectName: '满意',
@@ -99,6 +100,7 @@ export default {
           ],
         },
         {
+          id: '2',
           name: 'testPG2',
           satisfaction: '2',
           satisfactionSelectName: '一般',
@@ -131,6 +133,7 @@ export default {
           ],
         },
         {
+          id: '3',
           name: 'testPG3',
           satisfaction: '3',
           satisfactionSelectName: '不满意',
@@ -171,12 +174,26 @@ export default {
     clickDownLoad(){
       //todo 下载事件
       alert('do download')
+    },
+    doServiceClick(value){
+      this.$router.push({
+        name: 'Detail',
+        params: {
+          id: value.id,
+          name: value.name
+        }
+      })
     }
   },
   computed:{
     appInfoByFilter(){
       return this.appInfo.filter(item=>{
-        return item.name.includes(this.searchInput);
+        if(this.satisfactionSelect  == 0){
+          return item.name.includes(this.searchInput);
+        }else{
+          return item.name.includes(this.searchInput) && item.satisfaction == this.satisfactionSelect
+        }
+
       })
     }
   }
