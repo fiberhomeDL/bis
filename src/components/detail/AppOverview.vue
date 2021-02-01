@@ -1,8 +1,8 @@
 <template>
     <div class="app-overview flex-column">
       <div class="app-overview-header flex-row">
-        <span class="app-overview-header-title">应用：</span>
         <service-select @onSelectChange="onSelectChange"></service-select>
+        <time-picker></time-picker>
       </div>
       <div class="app-overview-wrapper">
 
@@ -12,9 +12,10 @@
 
 <script>
 import ServiceSelect from "@/components/common/ServiceSelect";
+import TimePicker from "@/components/common/TimePicker";
 export default {
   name: "AppOverview",
-  components: {ServiceSelect},
+  components: {ServiceSelect,TimePicker},
   data(){
     return{
     }
