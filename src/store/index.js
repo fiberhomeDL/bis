@@ -18,7 +18,8 @@ export default new Vuex.Store({
         id: 3,
         name: 'testPG3',
       }
-    ]
+    ],
+    selectedServiceId: 1,
   },
   mutations: {
   },
