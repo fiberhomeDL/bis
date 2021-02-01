@@ -20,6 +20,8 @@ export default new Vuex.Store({
       }
     ],
     selectedServiceId: 1,
+    // 时间
+    time:[new Date((new Date().getTime() - 15 * 60 * 1000)),new Date()],
   },
   mutations: {
   },
