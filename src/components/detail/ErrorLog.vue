@@ -3,7 +3,7 @@
         <div class="select-area">
             <div class="select-area_item">
                 <span>应用：</span>
-                <el-select v-model="service" placeholder="请选择">
+                <el-select v-model="service" placeholder="请选择" :size="'small'">
                     <el-option
                             v-for="item in options"
                             :key="item.value"
@@ -14,7 +14,7 @@
             </div>
             <div class="select-area_item">
                 <span>页面：</span>
-                <el-select v-model="service" placeholder="请选择">
+                <el-select v-model="service" placeholder="请选择" :size="'small'">
                     <el-option
                             v-for="item in options"
                             :key="item.value"
@@ -25,7 +25,7 @@
             </div>
             <div class="select-area_item">
                 <span>错误类别：</span>
-                <el-select v-model="service" placeholder="请选择">
+                <el-select v-model="service" placeholder="请选择" :size="'small'">
                     <el-option
                             v-for="item in options"
                             :key="item.value"
@@ -36,7 +36,7 @@
             </div>
             <div class="select-area_item">
                 <span>错误等级：</span>
-                <el-select v-model="service" placeholder="请选择">
+                <el-select v-model="service" placeholder="请选择" :size="'small'">
                     <el-option
                             v-for="item in options"
                             :key="item.value"
@@ -46,18 +46,7 @@
                 </el-select>
             </div>
             <div class="select-area_item">
-                <span>时间选择：</span>
-                <el-date-picker
-                        v-model="timeValue"
-                        type="datetimerange"
-                        value-format="yyyy-MM-dd HH:mm:ss"
-                        :picker-options="pickerOptions"
-                        range-separator="至"
-                        start-placeholder="开始时间"
-                        end-placeholder="结束时间"
-                        align="right"
-                        size="small">
-                </el-date-picker>
+                <time-picker></time-picker>
             </div>
             <div class="select-area_item">
                 <el-button type="primary" size="small">
@@ -122,68 +111,14 @@
 
 <script>
     import DownloadButton from "../common/DownloadButton";
+    import TimePicker from "../common/TimePicker";
     export default {
         name: "ErrorLog",
-        components: {DownloadButton},
+        components: {DownloadButton,TimePicker},
         data(){
             return{
                 errorData:[{service:'sim',pageName:'index.html',errorInfo:'xxxx',time:'xxxx',type:'ajax',grade:'warining'},
                     {service:'sim2',pageName:'index.html',errorInfo:'xxxx',time:'xxxx',type:'ajax',grade:'warining'},],
-                // 时间
-                timeValue:[],
-                // 时间组件快捷菜单
-                pickerOptions: {
-                    shortcuts: [{
-                        text: '最近15分钟',
-                        onClick(picker) {
-                            const end = new Date();
-                            const start = new Date();
-                            start.setTime(start.getTime() - 3600 * 250);
-                            picker.$emit('pick', [start, end]);
-                        }
-                    }, {
-                        text: '最近30分钟',
-                        onClick(picker) {
-                            const end = new Date();
-                            const start = new Date();
-                            start.setTime(start.getTime() - 3600 * 500);
-                            picker.$emit('pick', [start, end]);
-                        }
-                    }, {
-                        text: '最近1小时',
-                        onClick(picker) {
-                            const end = new Date();
-                            const start = new Date();
-                            start.setTime(start.getTime() - 3600 * 1000);
-                            picker.$emit('pick', [start, end]);
-                        }
-                    }, {
-                        text: '最近1天',
-                        onClick(picker) {
-                            const end = new Date();
-                            const start = new Date();
-                            start.setTime(start.getTime() - 3600 * 1000 * 24);
-                            picker.$emit('pick', [start, end]);
-                        }
-                    }, {
-                        text: '最近1周',
-                        onClick(picker) {
-                            const end = new Date();
-                            const start = new Date();
-                            start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
-                            picker.$emit('pick', [start, end]);
-                        }
-                    }, {
-                        text: '最近1月',
-                        onClick(picker) {
-                            const end = new Date();
-                            const start = new Date();
-                            start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
-                            picker.$emit('pick', [start, end]);
-                        }
-                    }]
-                },
-
             }
         },
         methods:{
@@ -210,13 +145,11 @@
             box-shadow: 0 4px 8px 0 #b7c4e0;
             .select-area_item{
                 display: inline-block;
-                margin-left:14px;
+                margin-left:10px;
                 .el-icon-search{
                     margin-right: 8px;
                 }
-                .el-range-editor.el-input__inner{
-                    border: solid 1px #cfd6e4;
-                }
+
                 ::v-deep .el-input__inner {
                     height: 32px;
                 }
@@ -265,10 +198,6 @@
     padding:2px;
     color:#575777;
 }
-::v-deep .el-date-editor .el-range-separator {
-    padding: 0;
-}
-
 
 
 </style>
