@@ -191,6 +191,18 @@
     padding:2px;
     color:#575777;
 }
+    @media screen and (max-width: 1680px){
+        .content-errorlog .select-area {
+            height: 100px;
+        }
+        .content-errorlog .select-area .select-area_item:nth-child(5){
+            margin:10px 0 0 0;
+        }
+        .content-errorlog .error-information[data-v-9e13ed4c] {
+            height: calc(100% - 143px);
+        }
+
+    }
 
 
 </style>
