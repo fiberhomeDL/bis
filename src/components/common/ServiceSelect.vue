@@ -1,5 +1,5 @@
 <template>
-  <el-select v-model="changeValue" placeholder="请选择" :size="'medium'" @change="$emit('onSelectChange', changeValue)">
+  <el-select v-model="changeValue" placeholder="请选择" :size="'small'" @change="$emit('onSelectChange', changeValue)">
     <el-option
         v-for="item in services"
         :key="item.id"

@@ -1,7 +1,7 @@
 <template>
     <div class="app-overview flex-column">
       <div class="app-overview-header flex-row">
-        <span class="app-overview-header-title">应用:</span>
+        <span class="app-overview-header-title">应用：</span>
         <service-select @onSelectChange="onSelectChange"></service-select>
       </div>
       <div class="app-overview-wrapper">
