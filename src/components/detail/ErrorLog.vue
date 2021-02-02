@@ -48,11 +48,12 @@
                 <download-button class="download-icon"></download-button>
             </div>
         </div>
-        <div class="error-information">
+      <div class="hw100-oh" style="padding: 22px;">
+        <div class="hw100-oh error-information">
             <div class="table-container">
                 <el-table
                         :data="errorData"
-                        style="width: 100%"
+                        style="width: 100%;"
                         :header-cell-style="tableHeaderCellStyle"
                         highlight-current-row>
                     <el-table-column
@@ -85,6 +86,7 @@
                             min-width="20%">
                     </el-table-column>
                 </el-table>
+
             </div>
             <div class="page-area">
                 <el-pagination
@@ -96,6 +98,7 @@
                 </el-pagination>
             </div>
         </div>
+      </div>
 
     </div>
 </template>
@@ -159,11 +162,18 @@
 <style lang="scss" scoped>
 @import '@css/style.scss';
     .content-errorlog{
+        display: flex;
+        flex-direction: column;
         width: 100%;
         height: 100%;
         .select-area{
+            min-height: 52px;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            //height: auto;
             width:100%;
-            height: 52px;
+            //height: 52px;
             padding: 10px 22px;
             background-color: #fff;
             box-shadow: 0 4px 8px 0 #b7c4e0;
@@ -189,17 +199,19 @@
             }
         }
         .error-information{
-            width:calc(100% - 44px);
-            height:calc(100% - 96px);
-            margin:22px;
+            //width:calc(100% - 44px);
+            //height:calc(100% - 96px);
+            //margin:22px;
             padding:32px;
             background-color: #fff;
             box-shadow: 0 4px 8px 0 #b7c4e0;
             border-radius: 3px;
+            position: relative;
 
             .table-container{
                 width: 100%;
                 height: calc(100% - 44px);
+                //position: absolute;
             }
             .page-area{
                 width: 100%;

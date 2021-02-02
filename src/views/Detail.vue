@@ -61,16 +61,21 @@ import Menu from "@/components/common/Menu";
     background: #e9e9f3;
     .container{
         height: 100%;
+        width: 100%;
+        overflow: hidden;
         display: flex;
         &-sideMenu{
             width:190px;
             height: 100%;
-            float:left;
+            //float:left;
+          display: inline-block;
         }
         &-content{
+          display: inline-block;
+            //width: 100%;
             width:calc(100% - 190px);
             height:100%;
-            float:left;
+            //float:left;
         }
     }
 }
