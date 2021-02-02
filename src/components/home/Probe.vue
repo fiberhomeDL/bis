@@ -9,7 +9,6 @@
                             <el-input v-model.trim="serviceName" placeholder="请输入应用英文名称"></el-input>
                             <p class="select-input_error" v-show="isServiceNameError">请输入英文名称</p>
                         </div>
-                        <el-button type="primary" @click="linkeTo">模拟跳转到应用详情</el-button>
                     </div>
                     <div class="select-item_2">
                         <div class="select-radio">
@@ -153,10 +152,6 @@
             }
         },
         methods: {
-            // 模拟路由
-            linkeTo(){
-                this.$router.push({path:'/detail',query:{serviceId:'1'}});
-            },
             // 复制探针部署代码
             copyProbeCode() {
                 let inputEle = document.createElement('input');
