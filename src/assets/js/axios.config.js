@@ -3,7 +3,7 @@ import Vue from 'vue';
 import axios from 'axios';
 
 // 设置 axios 请求 baseUrl
-axios.defaults.baseURL = 'https://www.fastmock.site/mock/eb7e660cc675e3580e2c524192d9dc06/eshow';
+axios.defaults.baseURL = '';
 
 /**
  * 设置拦截器，interceptors 响应处理，
@@ -39,7 +39,7 @@ axios.interceptors.response.use(
         //  统一处理数据，使组件中的请求只获取到需要的业务数据，
         // 而不需要去关注返回的状态码等与业务无关的数据
         // console.log('响应拦截器');
-        return response.data.data;
+        return response.data;
     },
     error => {
         // 处理错误的响应
