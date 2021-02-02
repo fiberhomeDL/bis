@@ -150,4 +150,6 @@
 .el-table th {padding:5px 0;}
 .el-table thead {color:#505b73;font-weight: bold;}
 .el-table td.gutter,.el-table th.gutter{background-color:#def2ff;}
+.el-pagination {text-align: right;}
+.el-pagination__total {float: left;}
 

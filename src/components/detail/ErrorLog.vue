@@ -6,20 +6,19 @@
             </div>
             <div class="select-area_item">
                 <span>页面：</span>
-                <el-select v-model="service" placeholder="请选择" :size="'small'">
-                    <el-option
-                            v-for="item in options"
-                            :key="item.value"
-                            :label="item.label"
-                            :value="item.value">
-                    </el-option>
-                </el-select>
+                <el-autocomplete
+                        class="inline-input"
+                        v-model="page"
+                        :fetch-suggestions="querySearch"
+                        placeholder="请输入内容"
+                        @select="handleSelect">
+                </el-autocomplete>
             </div>
             <div class="select-area_item">
                 <span>错误类别：</span>
-                <el-select v-model="service" placeholder="请选择" :size="'small'">
+                <el-select v-model="errorType" placeholder="请选择" :size="'small'">
                     <el-option
-                            v-for="item in options"
+                            v-for="item in errorTypeOptions"
                             :key="item.value"
                             :label="item.label"
                             :value="item.value">
@@ -28,9 +27,9 @@
             </div>
             <div class="select-area_item">
                 <span>错误等级：</span>
-                <el-select v-model="service" placeholder="请选择" :size="'small'">
+                <el-select v-model="errorGrade" placeholder="请选择" :size="'small'">
                     <el-option
-                            v-for="item in options"
+                            v-for="item in errorGradeOptions"
                             :key="item.value"
                             :label="item.label"
                             :value="item.value">
@@ -102,9 +101,10 @@
 </template>
 
 <script>
-    import DownloadButton from "../common/DownloadButton";
-    import TimePicker from "../common/TimePicker";
     import ServiceSelect from "../common/ServiceSelect";
+    import TimePicker from "../common/TimePicker";
+    import DownloadButton from "../common/DownloadButton";
+
     export default {
         name: "ErrorLog",
         components: {DownloadButton,ServiceSelect,TimePicker},
@@ -112,12 +112,43 @@
             return{
                 errorData:[{service:'sim',pageName:'index.html',errorInfo:'xxxx',time:'xxxx',type:'ajax',grade:'warining'},
                     {service:'sim2',pageName:'index.html',errorInfo:'xxxx',time:'xxxx',type:'ajax',grade:'warining'},],
+                // 应用
+                service:'',
+                // 页面
+                page:'index.html',
+                pageData:[ { "value": "三全鲜食（北新泾店）", "address": "长宁区新渔路144号" },
+                    { "value": "Hot honey 首尔炸鸡（仙霞路）", "address": "上海市长宁区淞虹路661号" },],
+                // 错误类型
+                errorType:'',
+                // 错误类型选项
+                errorTypeOptions:[],
+                // 错误等级
+                errorGrade:'',
+                // 错误等级选项
+                errorGradeOptions:[],
+
             }
         },
         methods:{
+            querySearch(queryString, cb) {
+                var restaurants = this.pageData;
+                var results = queryString ? restaurants.filter(this.createFilter(queryString)) : restaurants;
+                // 调用 callback 返回建议列表的数据
+                cb(results);
+            },
+            createFilter(queryString) {
+                return (restaurant) => {
+                    return (restaurant.value.toLowerCase().indexOf(queryString.toLowerCase()) === 0);
+                };
+            },
+            handleSelect(item) {
+                console.log(item);
+            },
+            // 设置表格header样式
             tableHeaderCellStyle(){
                 return 'background-color: #def2ff';
             },
+            // 分页
             handleCurrentChange(){},
             currentPage(){},
             currentPageSize(){},
@@ -174,12 +205,6 @@
                 width: 100%;
                 height: 28px;
                 margin-top:14px;
-                .el-pagination{
-                    text-align:right;
-                }
-                ::v-deep .el-pagination__total{
-                    float:left;
-                }
             }
         }
 
@@ -196,6 +221,5 @@
         .content-errorlog .select-area .select-area_item:nth-child(5){margin:10px 0 0 0;}
         .content-errorlog .error-information[data-v-9e13ed4c] {height: calc(100% - 143px);}
     }
-
 
 </style>
