@@ -6,47 +6,47 @@
       </div>
       <div class="app-overview-wrapper">
         <div class="app-overview-body">
+<!--          <div class="app-overview-body-content">-->
+            <el-row :gutter="20">
+              <el-col :span="12">
+                <!--    应用访问量      -->
+                <app-overview-pv></app-overview-pv>
+              </el-col>
+              <el-col :span="12">
+                <!--    错误量      -->
+                <app-overview-error></app-overview-error>
+              </el-col>
+            </el-row>
+            <el-row :gutter="20">
+              <el-col :span="8">
+                <!--    浏览器统计      -->
+                <app-overview-pie :pie-title="'浏览器统计'" :pie-data="browserUseData"></app-overview-pie>
+              </el-col>
+              <el-col :span="8">
+                <!--    操作系统统计      -->
+                <app-overview-pie :pie-title="'操作系统统计'" :pie-data="osData"></app-overview-pie>
+              </el-col>
+              <el-col :span="8">
+                <!--    屏幕分辨率使用分析      -->
+                <app-overview-pie :pie-title="'屏幕分辨率使用分析'" :pie-data="screenData"></app-overview-pie>
+              </el-col>
+            </el-row>
+            <el-row :gutter="20" style="margin-top: 16px">
+              <el-col :span="6">
+                <app-overview-bar :sub-title="'页面白屏时间'" :remark="'FPT'"></app-overview-bar>
+              </el-col>
+              <el-col :span="6">
+                <app-overview-bar :sub-title="'页面首屏时间'" :remark="'FMP'"></app-overview-bar>
+              </el-col>
+              <el-col :span="6">
+                <app-overview-bar :sub-title="'Html加载时间 '" :remark="'DOM READY'"></app-overview-bar>
+              </el-col>
+              <el-col :span="6">
+                <app-overview-bar :sub-title="'页面完全加载时间'" :remark="'LOAD'"></app-overview-bar>
+              </el-col>
 
-          <el-row :gutter="20">
-            <el-col :span="12">
-              <!--    应用访问量      -->
-              <app-overview-pv></app-overview-pv>
-            </el-col>
-            <el-col :span="12">
-              <!--    错误量      -->
-              <app-overview-error></app-overview-error>
-            </el-col>
-          </el-row>
-          <el-row :gutter="20">
-            <el-col :span="8">
-              <!--    浏览器统计      -->
-              <app-overview-pie :pie-title="'浏览器统计'" :pie-data="browserUseData"></app-overview-pie>
-            </el-col>
-            <el-col :span="8">
-              <!--    操作系统统计      -->
-              <app-overview-pie :pie-title="'操作系统统计'" :pie-data="osData"></app-overview-pie>
-            </el-col>
-            <el-col :span="8">
-              <!--    屏幕分辨率使用分析      -->
-              <app-overview-pie :pie-title="'屏幕分辨率使用分析'" :pie-data="screenData"></app-overview-pie>
-            </el-col>
-          </el-row>
-          <el-row :gutter="20" style="margin-top: 16px">
-            <el-col :span="6">
-              <app-overview-bar :sub-title="'页面白屏时间'" :remark="'FPT'"></app-overview-bar>
-            </el-col>
-            <el-col :span="6">
-              <app-overview-bar :sub-title="'页面首屏时间'" :remark="'FMP'"></app-overview-bar>
-            </el-col>
-            <el-col :span="6">
-              <app-overview-bar :sub-title="'Html加载时间 '" :remark="'DOM READY'"></app-overview-bar>
-            </el-col>
-            <el-col :span="6">
-              <app-overview-bar :sub-title="'页面完全加载时间'" :remark="'LOAD'"></app-overview-bar>
-            </el-col>
-
-          </el-row>
-
+            </el-row>
+<!--          </div>-->
         </div>
       </div>
     </div>
@@ -106,7 +106,7 @@ export default {
   width: 100%;
   overflow: hidden;
   &-header{
-    height: 52px;
+    min-height: 52px;
     background-color: #ffffff;
     box-shadow: 0px 4px 8px 0px #b7c4e0;
     align-items: center;
@@ -125,6 +125,7 @@ export default {
     width: 100%;
     padding: 20px;
     overflow: hidden;
+    //flex: 1;
   }
 
   &-body{
@@ -133,10 +134,14 @@ export default {
     background: #fff;
     overflow: hidden;
     overflow-y: auto;
-    box-shadow: 0px 4px 8px 0px
-    #b7c4e0;
+    box-shadow: 0px 4px 8px 0px #b7c4e0;
     border-radius: 4px;
     padding: 24px 20px;
+
+    //&-content{
+    //  padding: 24px;
+    //  //margin: 24px 20px;
+    //}
   }
 
 

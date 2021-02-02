@@ -61,7 +61,7 @@ export default {
 <style lang="scss" scoped>
 @import '@css/style.scss';
 .common-header{
-  height: 48px;
+  min-height: 48px;
   width: 100%;
   display: flex;
   background-image: url("~@img/home/top-bj.jpg");
