@@ -7,7 +7,10 @@
             </div>
             <div class="container-content">
                <keep-alive>
-                  <component :is="activeContent"></component>
+                  <component
+                      :is="activeContent"
+                      @change-content="toDeepPage"
+                  ></component>
                </keep-alive>
             </div>
         </div>
@@ -32,11 +35,16 @@ import Menu from "@/components/common/Menu";
             PageMonitor: ()=> import('@c/detail/PageMonitor.vue'),
             ErrorLog: ()=> import('@c/detail/ErrorLog.vue'),
             ClusterAnalysis: ()=> import('@c/detail/ClusterAnalysis.vue'),
+            ClusterAnalysisDetail: ()=>import('@c/detail/ClusterAnalysisDetail.vue'),
             TerminalAnalysis: ()=> import('@c/detail/TerminalAnalysis.vue'),
             BehaviorTrack: ()=> import('@c/detail/BehaviorTrack.vue'),
             Alarm: ()=> import('@c/detail/Alarm.vue'),
         },
         methods:{
+            //内部跳转方法
+            toDeepPage(param){
+              this.activeContent = param.to;
+            },
             // 头部导航跳转
             changeComponent(componentName){
                 this.$router.push({
