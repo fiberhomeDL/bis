@@ -31,7 +31,7 @@ props: ['subTitle','remark'],
  }
 
   &-sub{
-    font-size: 17px;
+    font-size: 16px;
   }
   &-remark{
     color: #919dbd;
