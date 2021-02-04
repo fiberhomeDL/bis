@@ -106,7 +106,7 @@
     import LinesChart from "../common/LinesChart";
     import PageLoadFalls from "../common/PageLoadFalls";
     import ProgressBar from "../common/ProgressBar";
-    import ClusterAnalysisBar from "@/components/common/cluster_analysis/ClusterAnalysisBar";
+    import ClusterAnalysisBar from "../common/cluster_analysis/ClusterAnalysisBar";
     import NumberBlock from "../common/page_monitor/NumberBlock";
 
     export default {
