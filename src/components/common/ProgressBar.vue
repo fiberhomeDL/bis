@@ -106,6 +106,9 @@
         .bar-outer:nth-child(n+6):hover{
             border-left:solid 1px #00baff;
         }
+        .bar-outer:nth-child(n+6).active{
+            border-left:solid 1px #00baff;
+        }
     }
 
 </style>
