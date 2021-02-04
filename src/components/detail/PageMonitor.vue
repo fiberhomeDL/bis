@@ -46,12 +46,13 @@
                         <div class="page-detail-pv">
                             <span class="font-pv">浏览量</span>
                             <div class="number-pv">
-                                <div class="number-pv-bk">
-                                    <span class="number-pv-single">2</span>
-                                </div>
-                                <div class="number-pv-bk">
-                                    <span class="number-pv-single">8</span>
-                                </div>
+<!--                                <div class="number-pv-bk">-->
+<!--                                    <span class="number-pv-single">2</span>-->
+<!--                                </div>-->
+<!--                                <div class="number-pv-bk">-->
+<!--                                    <span class="number-pv-single">8</span>-->
+<!--                                </div>-->
+                                <number-block :data=20098></number-block>
                             </div>
                         </div>
                         <div class="page-detail-falls detail-item">
@@ -85,6 +86,9 @@
                         </div>
                         <div class="page-detail-error-number detail-item">
                             <sub-header-title :sub-title="'页面错误量'"></sub-header-title>
+                            <div class="error-statistics">
+                                <cluster-analysis-bar></cluster-analysis-bar>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -102,10 +106,12 @@
     import LinesChart from "../common/LinesChart";
     import PageLoadFalls from "../common/PageLoadFalls";
     import ProgressBar from "../common/ProgressBar";
+    import ClusterAnalysisBar from "@/components/common/cluster_analysis/ClusterAnalysisBar";
+    import NumberBlock from "../common/page_monitor/NumberBlock";
 
     export default {
         name: "PageMonitor",
-        components: {ServiceSelect, TimePicker, SubHeaderTitle, ErrorRateProgress, LinesChart,PageLoadFalls,ProgressBar},
+        components: {ServiceSelect, TimePicker, SubHeaderTitle, ErrorRateProgress, LinesChart,PageLoadFalls,ProgressBar,ClusterAnalysisBar,NumberBlock},
         data() {
             return {
                 // 排序数据
@@ -191,12 +197,16 @@
             // 关键词搜索
             searchByKeyword() {
             },
+            // 页面详情
+            showDetail(id){
+
+            },
         }
     }
 </script>
 
-<style lang="scss" scoped>
-    @import '@css/style.scss';
+<style lang="scss">
+@import '@css/style.scss';
 
     .content-page-monitor {
         width: 100%;
@@ -295,23 +305,7 @@
                                 font-size: 24px;
                                 color: #667085;
                             }
-
-                            .number-pv {
-                                margin-top: 28px;
-
-                                &-bk {
-                                    width: 36px;
-                                    height: 65px;
-                                    display: inline-block;
-                                    margin-right: 4px;
-                                    background-color: #f3fafd;
-
-                                    .number-pv-single {
-                                        font-size: 56px;
-                                        color: #37cbf9;
-                                    }
-                                }
-                            }
+                            .number-pv {margin-top: 28px;}
                         }
 
                         .detail-item {
@@ -351,6 +345,9 @@
 
                         .page-detail-error-number {
                             height: calc(40% - 22px);
+                            .error-statistics{
+                                height: calc(100% - 28px);
+                            }
                         }
                     }
                 }

@@ -33,7 +33,6 @@
                 return Math.max.apply(Math,this.data.map(item => { return item.data }));
             }
         }
-
     }
 </script>
 
