@@ -136,7 +136,8 @@ export default {
     overflow-y: auto;
     box-shadow: 0px 4px 8px 0px #b7c4e0;
     border-radius: 4px;
-    padding: 24px 20px;
+    padding: 34px 32px;
+    //padding: 24px 20px;
 
     //&-content{
     //  padding: 24px;

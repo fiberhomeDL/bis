@@ -1,6 +1,6 @@
 <template>
   <div class="ao-browser">
-    <sub-header-title :sub-title="pieTitle"></sub-header-title>
+    <sub-header-title :sub-title="pieTitle" v-if="!noTitle"></sub-header-title>
     <div class="ao-browser-charts" ref="aoBrowserCharts"></div>
   </div>
 </template>
@@ -8,7 +8,7 @@
 <script>
 import SubHeaderTitle from "@/components/common/SubHeaderTitle";
 export default {
-  props: ['pieTitle','pieData'],
+  props: ['pieTitle','pieData','noTitle'],
   name: "AppOverviewBrowser",
   components: {SubHeaderTitle},
   mounted() {
@@ -38,9 +38,6 @@ export default {
           type: 'pie',
           radius: ['50%', '60%'],
           labelLine:{
-            // length: 40,
-            // alignTo: 'labelLine',
-            // length2: 15
             position: 'outer',
             alignTo: 'labelLine',
             bleedMargin: 5
