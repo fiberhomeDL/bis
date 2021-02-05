@@ -46,12 +46,6 @@
                         <div class="page-detail-pv">
                             <span class="font-pv">浏览量</span>
                             <div class="number-pv">
-<!--                                <div class="number-pv-bk">-->
-<!--                                    <span class="number-pv-single">2</span>-->
-<!--                                </div>-->
-<!--                                <div class="number-pv-bk">-->
-<!--                                    <span class="number-pv-single">8</span>-->
-<!--                                </div>-->
                                 <number-block :data=20098></number-block>
                             </div>
                         </div>
@@ -111,13 +105,23 @@
 
     export default {
         name: "PageMonitor",
-        components: {ServiceSelect, TimePicker, SubHeaderTitle, ErrorRateProgress, LinesChart,PageLoadFalls,ProgressBar,ClusterAnalysisBar,NumberBlock},
+        components: {
+            ServiceSelect,
+            TimePicker,
+            SubHeaderTitle,
+            ErrorRateProgress,
+            LinesChart,
+            PageLoadFalls,
+            ProgressBar,
+            ClusterAnalysisBar,
+            NumberBlock
+        },
         data() {
             return {
                 // 排序数据
                 orderData: 'fpt',
                 // 排序数据选项
-                orderDataOptions: [{value: 'fpt', label: '白屏时间(ms)'},{value: 'fmp', label: '首屏时间(ms)'}],
+                orderDataOptions: [{value: 'fpt', label: '白屏时间(ms)'}, {value: 'fmp', label: '首屏时间(ms)'}],
                 // 页面名称数据
                 pageNameData: [{id: 1, name: 'index.html', data: 88},
                     {id: 2, name: 'egje/asfsfebg/gekeg/home.jsp', data: 220},
@@ -182,7 +186,7 @@
                     },
                 ],
                 // 页面加载数据
-                pageLoadData:[
+                pageLoadData: [
                     {title: 'DNS查询 DNS Lookup', startTime: 0, consumeTime: 20},
                     {title: 'TCP连接 TCP', startTime: 20, consumeTime: 30},
                     {title: 'SSL建连 SSL', startTime: 40, consumeTime: 10},
@@ -198,7 +202,7 @@
             searchByKeyword() {
             },
             // 页面详情
-            showDetail(id){
+            showDetail(id) {
 
             },
         }
@@ -206,12 +210,12 @@
 </script>
 
 <style lang="scss">
-@import '@css/style.scss';
+    @import '@css/style.scss';
 
     .content-page-monitor {
         width: 100%;
         height: 100%;
-        font-size:14px;
+        font-size: 14px;
 
         .flex-row {
             display: flex;
@@ -243,7 +247,7 @@
             padding: 32px;
             background-color: #fff;
             box-shadow: 0 4px 8px 0 #b7c4e0;
-            border-radius: 3px;
+            border-radius: 5px;
 
             &-container {
                 height: 100%;
@@ -305,7 +309,10 @@
                                 font-size: 24px;
                                 color: #667085;
                             }
-                            .number-pv {margin-top: 28px;}
+
+                            .number-pv {
+                                margin-top: 28px;
+                            }
                         }
 
                         .detail-item {
@@ -345,7 +352,8 @@
 
                         .page-detail-error-number {
                             height: calc(40% - 22px);
-                            .error-statistics{
+
+                            .error-statistics {
                                 height: calc(100% - 28px);
                             }
                         }
