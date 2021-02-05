@@ -1,6 +1,8 @@
 <template>
   <div class="home-page hw100-oh">
+<!--    顶栏-->
     <div class="home-page-head">
+<!--      应用名称搜索框-->
       <div class="home-page-head-input">
         <el-input
             placeholder="请输入应用名称"
@@ -9,24 +11,37 @@
             v-model.trim="searchInput">
         </el-input>
       </div>
+<!--      满意度单选框-->
       <div class="home-page-head-radio">
         <span class="home-page-head-radio-title">状态</span>
-        <el-radio v-for="(item,index) in satisfactionData"
+        <el-radio class="home-page-head-radio-item"
+                  v-for="(item,index) in satisfactionData"
                   :key="index"
-                  class="home-page-head-radio-item"
                   v-model="satisfactionSelect"
-                  :label="item.label">{{ item.title }}</el-radio>
+                  :label="item.label">{{ item.title }}
+        </el-radio>
       </div>
+<!--      操作栏: 下载-->
       <div class="home-page-head-option">
-        <span class="home-page-head-option-download"></span>
-        <download-button @click="clickDownLoad"></download-button>
+        <download-button @click="doDownLoad"></download-button>
       </div>
     </div>
     <div class="home-page-content">
       <div class="home-page-content-body">
-        <div @click="doServiceClick(value)" :class="['home-page-content-body-item','satisfaction-'+value.satisfaction]" v-for="(value, index) in appInfoByFilter" :key="index">
-          <div :class="'tag-satisfactionSelect tag-satisfactionSelect-' + value.satisfaction">{{ value.satisfactionSelectName }}</div>
-          <view-card :info="value"></view-card>
+<!--        拼写满意度样式名称-->
+        <div v-for="(value, index) in appInfoByFilter"
+             :key="index"
+             :class="['home-page-content-body-item','satisfaction-'+value.satisfaction]"
+             @click="doServiceClick(value)" >
+<!--          满意度标识(右上角↗)-->
+          <satisfaction-tag :level="value.satisfaction"></satisfaction-tag>
+<!--          应用卡片-->
+          <view-card
+              :service-name="value.name"
+              :service-info="value.infoData"
+              :charts-data="value.chartsData"
+          >
+          </view-card>
         </div>
       </div>
     </div>
@@ -36,20 +51,26 @@
 <script>
 import DownloadButton from "@c/common/DownloadButton";
 import ViewCard from "@/components/home/ViewCard";
+import SatisfactionTag from "@/components/common/home_page/SatisfactionTag";
 export default {
   name: "HomePage",
   components: {
+    SatisfactionTag,
     ViewCard,
     DownloadButton
   },
   data(){
     return {
-      //搜索文本
+      //应用名称搜索文本
       searchInput: '',
+      //满意度选择项 及 默认值
+      satisfactionSelect: '0',
       //满意度数据源配置
       satisfactionData:[
         {
+          //展示名称 必填
           'title': '全部',
+          //对应value值
           'label': '0'
         },
         {
@@ -63,116 +84,82 @@ export default {
           'label': '3'
         }
       ],
-      //满意度筛选选择项
-      satisfactionSelect: '0',
+      //应用详情
       appInfo: [
         {
           id: '1',
+          //应用名
           name: 'testPG1',
+          //满意度 '1'满意 '2'一般 '3'不满意
           satisfaction: '1',
-          satisfactionSelectName: '满意',
-          infoData: [
-            {
-              title: '访问量',
-              value: '21239',
-              icon: require('@img/common_icon/views.svg')
-            },
-            {
-              title: '用户量',
-              value: '59位',
-              icon: require('@img/common_icon/subscribers.svg')
-            },
-            {
-              title: '错误数',
-              value: '5个',
-              icon: require('@img/common_icon/error.svg')
-            },
-            {
-              title: '警告数',
-              value: '14个',
-              icon: require('@img/common_icon/warning.svg')
-            },
-            {
-              title: '性能指数',
-              value: '99%',
-              icon: require('@img/common_icon/performance.svg')
-            },
-          ],
+          //数据面板
+          infoData: {
+            viewCount: "21239",
+            subscribersCount: '59',
+            errorCount: '5',
+            warningCount: '14',
+            performanceCount: '99',
+          },
+          //柱状图数据
+          chartsData: {
+            //x轴坐标名
+            xData: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24"],
+            //y轴数据
+            uvData: [100,200,300,400,500,600,700,800,300,100,200,100,100,200,300,400,500,600,700,800,300,100,200,100],
+            pvData: [100,200,100,300,800,700,600,500,400,300,200,100,100,200,100,300,800,700,600,500,400,300,200,100],
+          }
         },
         {
-          id: '2',
-          name: 'testPG2',
+          id: '1',
+          //应用名
+          name: 'testPG1',
+          //满意度 '1'满意 '2'一般 '3'不满意
           satisfaction: '2',
-          satisfactionSelectName: '一般',
-          infoData: [
-            {
-              title: '访问量',
-              value: '21239',
-              icon: require('@img/common_icon/views.svg')
-            },
-            {
-              title: '用户量',
-              value: '59位',
-              icon: require('@img/common_icon/subscribers.svg')
-            },
-            {
-              title: '错误数',
-              value: '5个',
-              icon: require('@img/common_icon/error.svg')
-            },
-            {
-              title: '警告数',
-              value: '14个',
-              icon: require('@img/common_icon/warning.svg')
-            },
-            {
-              title: '性能指数',
-              value: '99%',
-              icon: require('@img/common_icon/performance.svg')
-            },
-          ],
+          //数据面板
+          infoData: {
+            viewCount: "21239",
+            subscribersCount: '59',
+            errorCount: '5',
+            warningCount: '14',
+            performanceCount: '99',
+          },
+          //柱状图数据
+          chartsData: {
+            //x轴坐标名
+            xData: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24"],
+            //y轴数据
+            uvData: [100,200,300,400,500,600,700,800,300,100,200,100,100,200,300,400,500,600,700,800,300,100,200,100],
+            pvData: [100,200,100,300,800,700,600,500,400,300,200,100,100,200,100,300,800,700,600,500,400,300,200,100],
+          }
         },
         {
-          id: '3',
-          name: 'testPG3',
+          id: '1',
+          //应用名
+          name: 'testPG1',
+          //满意度 '1'满意 '2'一般 '3'不满意
           satisfaction: '3',
-          satisfactionSelectName: '不满意',
-          infoData: [
-            {
-              title: '访问量',
-              value: '21239',
-              icon: require('@img/common_icon/views.svg')
-            },
-            {
-              title: '用户量',
-              value: '59位',
-              icon: require('@img/common_icon/subscribers.svg')
-            },
-            {
-              title: '错误数',
-              value: '5个',
-              icon: require('@img/common_icon/error.svg')
-            },
-            {
-              title: '警告数',
-              value: '14个',
-              icon: require('@img/common_icon/warning.svg')
-            },
-            {
-              title: '性能指数',
-              value: '99%',
-              icon: require('@img/common_icon/performance.svg')
-            },
-          ],
-        },
+          //数据面板
+          infoData: {
+            viewCount: "21239",
+            subscribersCount: '59',
+            errorCount: '5',
+            warningCount: '14',
+            performanceCount: '99',
+          },
+          //柱状图数据
+          chartsData: {
+            //x轴坐标名
+            xData: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24"],
+            //y轴数据
+            uvData: [100,200,300,400,500,600,700,800,300,100,200,100,100,200,300,400,500,600,700,800,300,100,200,100],
+            pvData: [100,200,100,300,800,700,600,500,400,300,200,100,100,200,100,300,800,700,600,500,400,300,200,100],
+          }
+        }
       ]
-
-
     }
   },
   methods: {
-    clickDownLoad(){
-      //todo 下载事件
+    doDownLoad(){
       alert('do download')
     },
     doServiceClick(value){
@@ -241,7 +228,6 @@ export default {
         font-size: 18px;
         cursor: pointer;
       }
-
       &-btn:hover{
         color: #409EFF;
       }
@@ -261,7 +247,7 @@ export default {
       overflow-y: auto;
       background-color: #ffffff;
       box-shadow: 0px 4px 8px 0px #b7c4e0;
-      border-radius: 4px;
+      border-radius: 5px;
       padding: 24px 24px 4px;
 
       &-item{
@@ -300,29 +286,6 @@ export default {
   background: rgb(253,245,245);
   border-color: rgb(248,137,124);
 }
-
-.tag-satisfactionSelect{
-  position: absolute;
-  color: white;
-  line-height: 26px;
-  width: 100px;
-  text-align: center;
-  transform: rotate(45deg);
-  //right: -30px;
-  //top: 6px;
-  right: -25px;
-  top: 12px;
-  &-1{
-    background: #42d275;
-  }
-  &-2{
-    background: #fec055;
-  }
-  &-3{
-    background: rgb(248,137,124);
-  }
-}
-
 
 
 
