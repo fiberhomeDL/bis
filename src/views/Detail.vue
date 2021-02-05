@@ -38,6 +38,7 @@ import Menu from "@/components/common/Menu";
             ClusterAnalysisDetail: ()=>import('@c/detail/ClusterAnalysisDetail.vue'),
             TerminalAnalysis: ()=> import('@c/detail/TerminalAnalysis.vue'),
             BehaviorTrack: ()=> import('@c/detail/BehaviorTrack.vue'),
+            BehaviorTrackDetail: ()=>import('@c/detail/BehaviorTrackDetail.vue'),
             Alarm: ()=> import('@c/detail/Alarm.vue'),
         },
         methods:{

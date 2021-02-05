@@ -86,7 +86,6 @@
                             min-width="20%">
                     </el-table-column>
                 </el-table>
-
             </div>
             <div class="page-area">
                 <el-pagination
@@ -99,7 +98,6 @@
             </div>
         </div>
       </div>
-
     </div>
 </template>
 
@@ -205,7 +203,7 @@
             padding:32px;
             background-color: #fff;
             box-shadow: 0 4px 8px 0 #b7c4e0;
-            border-radius: 3px;
+            border-radius: 5px;
             position: relative;
 
             .table-container{

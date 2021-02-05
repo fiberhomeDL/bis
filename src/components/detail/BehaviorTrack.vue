@@ -6,11 +6,11 @@
             </div>
             <div class="select-area_item">
                 <el-input
-                        placeholder="请输入用户IP地址"
+                        placeholder="请输入用户IP地址或警员ID"
                         suffix-icon="el-icon-search"
                         size="small"
                         clearable
-                        v-model="userIp"
+                        v-model="keyword"
                         @keydown.enter.native="searchByIp">
                 </el-input>
             </div>
@@ -26,24 +26,33 @@
         <div class="trace-information">
             <div class="trace-container">
                 <div v-for="(item,index) in traceData"
+                     class="trace-container-item"
                      :key="index"
-                     v-model="traceDataSelected">
-                    <div class="trace-container-item" @click="goToDetail(item.id)">
-                        <div class="trace-container-item_col item-user-ip">
-                            <span class="item-title"> 用户IP:</span>
-                            {{item.ip}}
-                            <el-tooltip effect="light" :visible-arrow=false placement="top">
-                                <div slot="content">{{item.browserVersion}}</div>
-                                <img class="item-icon_user" :src="require('../../assets/img/terminal_icon/'+item.browserType+'.svg')"/>
-                            </el-tooltip>
-                            <el-tooltip effect="light" :visible-arrow=false placement="top">
-                                <div slot="content">{{item.OperateVersion}}</div>
-                                <img class="item-icon_user" :src="require('../../assets/img/terminal_icon/'+item.OperateType+'.svg')"/>
-                            </el-tooltip>
-                            <el-tooltip effect="light" :visible-arrow=false placement="top">
-                                <div slot="content">{{item.screenHeight}}*{{item.screenWidth}}</div>
-                                <img class="item-icon_user" :src="require('../../assets/img/terminal_icon/pc.svg')"/>
-                            </el-tooltip>
+                     v-model="traceDataSelected"
+                     @click="goToDetail(item.id)">
+                        <div class="trace-container-item_col item-user-info">
+                            <div class="item-user-info_col">
+                                <span> 用户IP:</span>
+                                <span>{{item.ip}}</span>
+                            </div>
+                            <div class="item-user-info_col">
+                                <span> 警员ID:</span>
+                                <span>{{item.policeId}}</span>
+                            </div>
+                            <div class="item-user-info_terminal">
+                                <el-tooltip effect="light" :visible-arrow=false placement="top">
+                                    <div slot="content">{{item.browserVersion}}</div>
+                                    <img class="item-icon_terminal" :src="require('../../assets/img/terminal_icon/'+item.browserType+'.svg')"/>
+                                </el-tooltip>
+                                <el-tooltip effect="light" :visible-arrow=false placement="top">
+                                    <div slot="content">{{item.OperateVersion}}</div>
+                                    <img class="item-icon_terminal" :src="require('../../assets/img/terminal_icon/'+item.OperateType+'.svg')"/>
+                                </el-tooltip>
+                                <el-tooltip effect="light" :visible-arrow=false placement="top">
+                                    <div slot="content">{{item.screenHeight}}&times{{item.screenWidth}}</div>
+                                    <img class="item-icon_terminal" :src="require('../../assets/img/terminal_icon/pc.svg')"/>
+                                </el-tooltip>
+                            </div>
                         </div>
                         <div class="trace-container-item_col item-page">
                             <img class="item-icon" :src="require('../../assets/img/common_icon/page.svg')"/>
@@ -61,11 +70,6 @@
                             <span v-if="item.isError" class="item-content item-content_error">有<span class="red-circle"></span></span>
                             <span v-else>无</span>
                         </div>
-                        <div class="trace-container-item_col item-detail">
-                            <span class="item-titile_detail">查看详情>></span>
-                        </div>
-                    </div>
-
                 </div>
             </div>
             <div class="page-area">
@@ -78,7 +82,6 @@
                 </el-pagination>
             </div>
         </div>
-
     </div>
 </template>
 
@@ -92,13 +95,13 @@
         components: {DownloadButton, ServiceSelect, TimePicker},
         data() {
             return {
-                // 用户ip
-                userIp: '',
+                // 搜索关键词
+                keyword: '',
                 // 追踪数据
                 traceData:[
-                    {id:1,ip:'10.0.23.78',browserType:'Google',browserVersion:'87.1',
+                    {id:1,ip:'10.0.23.78',policeId:'ME_002',browserType:'Google',browserVersion:'87.1',
                         OperateType:'Windows',OperateVersion:'Win10',pageName:'index.html',screenHeight:1920,screenWidth:1080,time:'2020-02-01 12:00:00',isError:true},
-                    {id:2,ip:'10.0.23.88',browserType:'Google',browserVersion:'83.22',
+                    {id:2,ip:'10.0.23.88',policeId:'ME_03221',browserType:'Google',browserVersion:'83.22',
                         OperateType:'Windows',OperateVersion:'Win8',pageName:'/sdfe/sefe/sfefeg/safae/sfe/index.html',screenHeight:1366,screenWidth:768,time:'2020-02-01 12:00:00',isError:false}],
                 // 选中追踪条目
                 traceDataSelected:'',
@@ -111,9 +114,8 @@
             },
             // 查看详情
             goToDetail(id){
-                console.info(id);
+                this.$emit('change-content',{from: 'BehaviorTrack',to: 'BehaviorTrackDetail'});
             },
-
         }
     }
 </script>
@@ -124,38 +126,21 @@
     .content-behavior-track {
         width: 100%;
         height: 100%;
-
         .select-area {
             width: 100%;
             height: 52px;
             padding: 10px 22px;
             background-color: #fff;
             box-shadow: 0 4px 8px 0 #b7c4e0;
-
-            .right {
-                float: right;
-            }
-
+            .right {float: right;}
             .select-area_item {
                 display: inline-block;
                 margin-left: 10px;
-
-                .el-icon-search {
-                    margin-right: 8px;
-                }
-
-                ::v-deep .el-input__inner {
-                    height: 32px;
-                }
-
-                .download-icon {
-                    vertical-align: middle;
-                }
+                .el-icon-search {margin-right: 8px;}
+                ::v-deep .el-input__inner {height: 32px;}
+                .download-icon {vertical-align: middle;}
             }
-
-            .select-area_item:first-child {
-                margin-left: 0;
-            }
+            .select-area_item:first-child {margin-left: 0;}
         }
 
         .trace-information {
@@ -165,16 +150,12 @@
             padding: 32px;
             background-color: #fff;
             box-shadow: 0 4px 8px 0 #b7c4e0;
-            border-radius: 3px;
-
+            border-radius: 5px;
             .trace-container {
                 width: 100%;
                 height: calc(100% - 44px);
-                .trace-container-item:hover{
-                    border: solid 1px #00baff;
-                }
+                .trace-container-item:hover{border: solid 1px #00baff;}
                 .trace-container-item{
-                    height: 53px;
                     width: 100%;
                     padding:10px 40px;
                     margin-bottom: 28px;
@@ -182,8 +163,12 @@
                     border-radius: 3px;
                     border: solid 1px #dae6f1;
                     cursor: pointer;
+                    display: flex;
                     .trace-container-item_col{
                         display: inline-block;
+                        margin-right: 60px;
+                        text-align: left;
+                        line-height: 30px;
                         .item-title{
                             color: #919dbd;
                             margin-right: 8px;
@@ -192,16 +177,12 @@
                             color: #00baff;
                             float:right;
                         }
-                        .item-content{
-                            color: #575777;
-                        }
-                        .item-content_error{
-                            color: #ea4335;
-                        }
-                        .item-icon_user{
+                        .item-content{color: #575777;}
+                        .item-content_error{color: #ea4335;}
+                        .item-icon_terminal{
                             height: 22px;
                             width: 22px;
-                            margin-left:22px;
+                            margin-right:28px;
                             position: relative;
                             top:4px;
                         }
@@ -229,32 +210,33 @@
                             box-shadow: 0 3px 6px 0 #ffe0dc;
                         }
                     }
-                    .item-user-ip{
-                        width:25%;
-                        font-size: 16px;
-                        font-weight: bold;
-                        .item-title{
+                    .trace-container-item_col:last-child{margin-right: 0;}
+                    .item-user-info{
+                        width:530px;
+                        display: flex;
+                        .item-user-info_col{
+                            width: 160px;
+                            margin-right: 28px;
                             font-size: 16px;
-                            font-weight: bold;
-                            margin-right: 8px;
                             color: #505b73;
+                            span{margin-right: 8px;}
+                            span:nth-child(2){
+                                font-weight: bold;
+                            }
+                        }
+                        .item-user-info_terminal{
+                            width: 150px;
+                            color: #626f8c;
                         }
                     }
-                    .item-page{
-                        width:30%;
-                    }
-                    .item-time{
-                        width:20%;
-                    }
-                    .item-exist-error{
-                        width:15%;
-                    }
-                    .item-detail{
-                        width:10%;
-                    }
+                    .item-page{width:590px;}
+                    .item-time{width:300px;}
+                    .item-exist-error{width:180px;}
+                }
+                .trace-container-item:last-child{
+                    margin-bottom: 0;
                 }
             }
-
             .page-area {
                 width: 100%;
                 height: 28px;
