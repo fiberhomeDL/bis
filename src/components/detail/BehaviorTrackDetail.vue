@@ -21,6 +21,32 @@
                     <div class="trace-info-page">
                         <div class="trace-info-page-records">
                             <sub-header-title :sub-title="'用户行为记录'"></sub-header-title>
+                            <div class="records-select-area">
+                                <span>类型:</span>
+                                <div class="records-select-area_item">
+                                    <el-select v-model="recordsType" placeholder="请选择" :size="'small'">
+                                        <el-option
+                                                v-for="item in recordsTypeOptions"
+                                                :key="item.value"
+                                                :label="item.label"
+                                                :value="item.value">
+                                        </el-option>
+                                    </el-select>
+                                </div>
+                                <div class="records-select-area_item">
+                                <el-input
+                                        placeholder="关键词搜索"
+                                        suffix-icon="el-icon-search"
+                                        size="small"
+                                        clearable
+                                        v-model="keywords"
+                                        @keydown.enter.native="searchByKeywords">
+                                </el-input>
+                                </div>
+                            </div>
+                            <div class="records-item-area">
+
+                            </div>
                         </div>
                         <div class="trace-info-page-record_detail">
                             <div class="info">
@@ -54,7 +80,11 @@
                                             <page-load-falls :data="pageLoadData"></page-load-falls>
                                         </el-tab-pane>
                                         <el-tab-pane label="关键性能指标" name="loadPerf">
-                                            进度条
+                                            <div class="page-pref">
+                                                <process-bar
+                                                        :pb-obj="pagePerformance"
+                                                ></process-bar>
+                                            </div>
                                         </el-tab-pane>
                                         <el-tab-pane label="页面加载资源信息" name="loadRes">
                                             <div class="table-container">
@@ -102,6 +132,7 @@
     import TimePicker from "@/components/common/TimePicker";
     import SubHeaderTitle from "@/components/common/SubHeaderTitle";
     import PageLoadFalls from "@/components/common/PageLoadFalls";
+    import ProcessBar from "@/components/common/terminal_analysis/ProcessBar";
 
     export default {
         name: "BehaviorTrackDetail",
@@ -109,6 +140,7 @@
             TimePicker,
             SubHeaderTitle,
             PageLoadFalls,
+            ProcessBar
         },
         data() {
             return {
@@ -132,7 +164,39 @@
                     {name:'sgjeigj.css',type:'css',size:49,time:23},
                     {name:'sgjeigj.img',type:'img',size:49,time:23},
                     {name:'sgjeigj.svg',type:'img',size:49,time:23},
-                ]
+                ],
+                pagePerformance: {
+                    mainColor: '#86ebdc',
+                    unit: 'ms',
+                    pbData: [
+                        {
+                            name: '白屏时间',
+                            value: 100
+                        },
+                        {
+                            name: '首屏时间',
+                            value: 80
+                        },
+                        {
+                            name: 'Html加载时间',
+                            value: 60
+                        },
+                        {
+                            name: '页面完全加载时间',
+                            value: 40
+                        },
+                    ],
+                },
+                // 记录类型
+                recordsType:'全部',
+                // 记录类型选项
+                recordsTypeOptions:[
+                    {value:'all',label:'全部'},
+                    {value:'pageView',label:'页面浏览'},
+                    {value:'error',label:'发生错误'},
+                ],
+                // 搜索关键词
+                keywords:'',
             }
         },
         methods: {
@@ -149,11 +213,15 @@
             tableHeaderCellStyle(){
                 return 'background-color: #def2ff';
             },
+            // 关键词搜索
+            searchByKeywords(){
+
+            },
         }
     }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
     @import '@css/style.scss';
 
     .content-track-detail {
@@ -206,9 +274,27 @@
                     display: flex;
                     padding-top:32px;
                     &-records{
+                        height: 100%;
                         width: 50%;
+                        .records-select-area{
+                            padding:22px 2px;
+                            display: flex;
+                            align-items: center;
+                            span{
+                                color: #919dbd;
+                            }
+                            .records-select-area_item{
+                                width: 220px;
+                                height: 100%;
+                                margin-left: 12px;
+                            }
+                        }
+                        .records-item-area{
+                            padding:22px;
+                        }
                     }
                     .trace-info-page-record_detail{
+                        height: 100%;
                         width: 50%;
                         margin-left:32px;
                         .info{
@@ -232,6 +318,14 @@
                             }
                             .event-tab{
                                 height: 50%;
+                                .el-tab-pane{
+                                    width: 100%;
+                                    height: 100%;
+                                }
+                                .page-pref{
+                                    width: 100%;
+                                    height: 300px;
+                                }
                                 .table-container{
                                     width: 100%;
                                     height: 100%;

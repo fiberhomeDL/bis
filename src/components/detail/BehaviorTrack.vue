@@ -72,15 +72,15 @@
                         </div>
                 </div>
             </div>
-            <div class="page-area">
-                <el-pagination
-                        @current-change="handleCurrentChange"
-                        :current-page.sync="currentPage"
-                        :page-size="currentPageSize"
-                        layout="total,prev,pager,next"
-                        :total="traceData.length">
-                </el-pagination>
-            </div>
+<!--            <div class="page-area">-->
+<!--                <el-pagination-->
+<!--                        @current-change="handleCurrentChange"-->
+<!--                        :current-page.sync="currentPage"-->
+<!--                        :page-size="currentPageSize"-->
+<!--                        layout="total,prev,pager,next"-->
+<!--                        :total="traceData.length">-->
+<!--                </el-pagination>-->
+<!--            </div>-->
         </div>
     </div>
 </template>
