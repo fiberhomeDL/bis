@@ -1,14 +1,14 @@
 <template>
   <div class="view-card">
     <div class="view-card-chart">
-      <div ref="charts" id="myChart" style="width: 100%;height: 100%"></div>
+      <div class="hw100-oh" ref="charts"></div>
     </div>
     <div class="view-card-info flex-column">
-      <div class="view-card-info-title">{{ info.name }}</div>
-      <div class="view-card-info-msg flex-row" v-for="(v,i) in info.infoData" :key="i">
+      <div class="view-card-info-title">{{ serviceName }}</div>
+      <div class="view-card-info-msg flex-row" v-for="(v,i) in serviceData" :key="i">
         <img class="view-card-info-msg-icon" :src="v.icon">
         <span class="view-card-info-msg-title">{{ v.title + ':' }}</span>
-        <span class="view-card-info-msg-value">{{ v.value }}</span>
+        <span class="view-card-info-msg-value">{{ v.value }}{{ v.unit }}</span>
       </div>
     </div>
   </div>
@@ -17,14 +17,46 @@
 <script>
 export default {
   name: "ViewCard",
-  props: ['info'],
-  data(){
-    return {
+  props: ['serviceInfo','serviceName','chartsData'],
+  computed: {
+    serviceData(){
+      return [
+        {
+          title: '访问量',
+          icon: require('@img/common_icon/views.svg'),
+          unit: '',
+          value: this.serviceInfo.viewCount || '--',
+        },
+        {
+          title: '用户量',
+          icon: require('@img/common_icon/subscribers.svg'),
+          unit: '位',
+          value: this.serviceInfo.subscribersCount || '--',
+        },
+        {
+          title: '错误数',
+          icon: require('@img/common_icon/error.svg'),
+          unit: '个',
+          value: this.serviceInfo.errorCount || '--',
+        },
+        {
+          title: '警告数',
+          icon: require('@img/common_icon/warning.svg'),
+          unit: '个',
+          value: this.serviceInfo.warningCount || '--',
+        },
+        {
+          title: '性能指数',
+          icon: require('@img/common_icon/performance.svg'),
+          unit: '%',
+          value: this.serviceInfo.performanceCount || '--',
+        }
+      ]
+
     }
   },
   mounted() {
-    let myChart = this.$echarts.init(this.$refs.charts);
-    myChart.setOption({
+    this.$echarts.init(this.$refs.charts).setOption({
       grid: {
         containLabel: true,
         top: 40,
@@ -51,7 +83,7 @@ export default {
       xAxis: [
         {
           type: 'category',
-          data: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24"],
+          data: this.chartsData.xData,
           offset: 10,
           axisTick: {
             lineStyle: {
@@ -91,7 +123,7 @@ export default {
         {
           name: '浏览量',
           type: 'bar',
-          data: [100,200,300,400,500,600,700,800,300,100,200,100,100,200,300,400,500,600,700,800,300,100,200,100],
+          data: this.chartsData.pvData,
           itemStyle: {
             //柱形图圆角，鼠标移上去效果，如果只是一个数字则说明四个参数全部设置为那么多
             normal: {
@@ -104,7 +136,7 @@ export default {
         {
           name: '用户量',
           type: 'bar',
-          data: [100, 200, 100, 300, 800, 700, 600, 500, 400, 300, 200, 100,100, 200, 100, 300, 800, 700, 600, 500, 400, 300, 200, 100],
+          data: this.chartsData.uvData,
           itemStyle: {
             //柱形图圆角，鼠标移上去效果，如果只是一个数字则说明四个参数全部设置为那么多
             normal: {

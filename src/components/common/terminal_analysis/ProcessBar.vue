@@ -2,7 +2,7 @@
   <div class="pb hw100-oh flex-column">
     <div class="pb-item flex-row" v-for="(value, index) in pbObj.pbData" :key="index">
 <!--      数据条名称-->
-      <span class="pb-item-name">{{ value.name }}</span>
+      <span class="pb-item-name" :style="{width: nameWidth + 'px'}">{{ value.name }}</span>
 <!--      计算数据条宽度-->
       <div class="pb-item-bg" :style="{background: pbObj.mainColor,width: 60 * value.value / maxValue + '%'}"></div>
 <!--      拼写单位-->
@@ -14,7 +14,12 @@
 <script>
 export default {
   name: "ProcessBar",
-  props: ['pbObj'],
+  props: {
+    'pbObj': Object,
+    'nameWidth': {
+      default: 70
+    }
+  },
   data(){
     return {
       // mainColor: '#86ebdc',
@@ -58,7 +63,7 @@ export default {
   &-item{
     align-items: center;
     &-name {
-      width: 70px;
+      //width: 70px;
       text-align: right;
       text-overflow: ellipsis;
       white-space: nowrap;
