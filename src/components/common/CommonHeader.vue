@@ -1,8 +1,11 @@
 <template>
   <div class="common-header">
-      <div class="common-header-img"></div>
-      <div class="common-header-title">THEMIS APM</div>
-      <div v-for="(value,index) in tabData"
+<!--    Logo-->
+      <div class="common-header-img" @click="toHomePage()"></div>
+<!--    标题-->
+      <div class="common-header-title" @click="toHomePage()">THEMIS APM BIS</div>
+<!--    导航栏数据源在computed中定义-->
+      <div v-for="(value,index) in tabDataIncludeActive"
            :key="index"
            :class="[{'active':value.isActive}, 'common-header-tab']"
            @click="tabClick(value)"
@@ -13,48 +16,52 @@
 <script>
 export default {
   name: "CommonHeader",
+  //默认active的tab
   props: ['defaultComponentName'],
   data(){
     return {
-    }
-  },
-  methods: {
-    tabClick(value){
-      if(!value.isActive){
-        // this.tabData.forEach((item)=>{item.isActive = false});
-        // value.isActive = true;
-
-        this.activeComponentName = value.componentName;
-
-        //  抛出组件名
-        this.$emit('change-component', value.componentName);
-      }
-    }
-  },
-  computed:{
-    activeComponentName: function(){
-      return this.defaultComponentName
-    },
-    tabData: function (){
-      return [
-        {
-          title: '首页',
-          componentName: 'HomePage',
-          isActive: this.activeComponentName == 'HomePage'
-        },
-        {
-          title: '探针部署',
-          componentName: 'Probe',
-          isActive: this.activeComponentName == 'Probe'
-        },
+      //参数本地化
+      activeComponentName: this.defaultComponentName,
+      //配置tab信息及名称
+      tabData: [
+          {
+            title: '首页',
+            componentName: 'HomePage',
+          },
+          {
+            title: '探针部署',
+            componentName: 'Probe',
+          },
       ]
     }
   },
-  created() {
-    // this.tabData.forEach(item => {
-    //     if(item.componentName == this.defaultComponentName) item.isActive = true;
-    // })
-  }
+  computed:{
+    //添加active属性
+    tabDataIncludeActive(){
+      return this.tabData.map(item => {
+        //设置active类名是否展示
+        item.isActive = (item.componentName == this.activeComponentName);
+        return item;
+      })
+    }
+  },
+  methods: {
+    //点击tab => 切换active样式
+    tabClick(value){
+      //判断是否change
+      if(!value.isActive){
+        //切换tab样式
+        this.activeComponentName = value.componentName;
+        //抛出组件名
+        this.$emit('change-component', value.componentName);
+      }
+    },
+    //返回首页的方法
+    toHomePage(){
+      this.activeComponentName = 'HomePage';
+      this.$emit('change-component', 'HomePage');
+    }
+  },
 }
 </script>
 
@@ -74,15 +81,16 @@ export default {
     height: 28px;
     background-image: url("~@img/common_icon/logo.svg");
     background-size: cover;
-    box-shadow: -2px 4px 15px 0px
-    rgba(0, 85, 191, 0.8);
+    box-shadow: -2px 4px 15px 0px rgba(0, 85, 191, 0.8);
     border-radius: 14px;
+    cursor: pointer;
   }
 
   &-title{
     color: #ffffff;
     font-size: 20px;
     padding: 0 80px 0 10px;
+    cursor: pointer;
   }
 
   &-tab{
@@ -92,6 +100,7 @@ export default {
     cursor: pointer;
     position: relative;
     top: -2px;
+    border-bottom: 3px solid transparent;
   }
 
   &-tab:not(:first-of-type){
@@ -101,8 +110,6 @@ export default {
   &-tab.active{
     border-bottom: 3px solid #00baff;
     color: white;
-    position: relative;
-    top: 0px;
   }
 
 
