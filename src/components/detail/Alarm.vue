@@ -151,7 +151,7 @@
 
                 .pagination-input {
                     padding: 0 4px;
-                    width: 3%;
+                    width: 64px;
                 }
 
                 .icon-page {
