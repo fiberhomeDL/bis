@@ -56,7 +56,8 @@ export default {
     }
   },
   mounted() {
-    this.$echarts.init(this.$refs.charts).setOption({
+    let chartsDom = this.$refs.charts;
+    this.$echarts.init(chartsDom).setOption({
       grid: {
         containLabel: true,
         top: 40,

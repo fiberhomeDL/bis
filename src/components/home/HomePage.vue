@@ -173,14 +173,12 @@ export default {
     }
   },
   computed:{
+    //绑定筛选条件 前端动态筛选
     appInfoByFilter(){
+      //是否启用满意度筛选
+      let satisfactionSelectFlag = this.satisfactionSelect == 0;
       return this.appInfo.filter(item=>{
-        if(this.satisfactionSelect  == 0){
-          return item.name.includes(this.searchInput);
-        }else{
-          return item.name.includes(this.searchInput) && item.satisfaction == this.satisfactionSelect
-        }
-
+        return item.name.includes(this.searchInput) && (satisfactionSelectFlag || item.satisfaction == this.satisfactionSelect)
       })
     }
   }
