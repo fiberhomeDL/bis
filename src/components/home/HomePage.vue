@@ -27,11 +27,15 @@
       </div>
     </div>
     <div class="home-page-content">
-      <div class="home-page-content-body">
+      <div class="home-page-content-body" :class="{'nodata': appInfoByFilter.length == 0}">
 <!--        拼写满意度样式名称-->
         <div v-for="(value, index) in appInfoByFilter"
              :key="index"
-             :class="['home-page-content-body-item','satisfaction-'+value.satisfaction]"
+             :class="[
+                'home-page-content-body-item',
+                'satisfaction-'+value.satisfaction,
+                appInfoByFilter.length == 0 ? 'nodata' : ''
+             ]"
              @click="doServiceClick(value)" >
 <!--          满意度标识(右上角↗)-->
           <satisfaction-tag :level="value.satisfaction"></satisfaction-tag>
@@ -112,7 +116,7 @@ export default {
         {
           id: '1',
           //应用名
-          name: 'testPG1',
+          name: 'testPG2',
           //满意度 '1'满意 '2'一般 '3'不满意
           satisfaction: '2',
           //数据面板
@@ -135,7 +139,7 @@ export default {
         {
           id: '1',
           //应用名
-          name: 'testPG1',
+          name: 'testPG3',
           //满意度 '1'满意 '2'一般 '3'不满意
           satisfaction: '3',
           //数据面板

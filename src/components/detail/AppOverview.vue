@@ -10,7 +10,8 @@
             <el-row :gutter="20">
               <el-col :span="12">
                 <!--    应用访问量      -->
-                <app-overview-pv></app-overview-pv>
+                <sub-header-title :sub-title="'应用访问量'"></sub-header-title>
+                <app-overview-pv style="margin-top: 14px"></app-overview-pv>
               </el-col>
               <el-col :span="12">
                 <!--    错误量      -->
@@ -59,10 +60,11 @@ import AppOverviewPv from "@/components/common/app_overview/AppOverviewPv";
 import AppOverviewError from "@/components/common/app_overview/AppOverviewError";
 import AppOverviewPie from "@/components/common/app_overview/AppOverviewPie";
 import AppOverviewBar from "@/components/common/app_overview/AppOverviewBar";
+import SubHeaderTitle from "@/components/common/SubHeaderTitle";
 
 export default {
   name: "AppOverview",
-  components: {ServiceSelect,TimePicker,AppOverviewPv,AppOverviewError,AppOverviewPie,AppOverviewBar},
+  components: {SubHeaderTitle, ServiceSelect,TimePicker,AppOverviewPv,AppOverviewError,AppOverviewPie,AppOverviewBar},
   data(){
     return{
       browserUseData: [

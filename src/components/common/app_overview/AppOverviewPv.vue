@@ -1,8 +1,6 @@
 <template>
   <div class="ao-pv">
-    <sub-header-title :sub-title="'应用访问量'"></sub-header-title>
     <div class="ao-pv-charts" ref="aoPvCharts"></div>
-
   </div>
 </template>
 
@@ -10,6 +8,8 @@
 import SubHeaderTitle from "@/components/common/SubHeaderTitle";
 export default {
   name: "AppOverviewPv",
+
+  
   components: { SubHeaderTitle },
   mounted() {
     let myChart = this.$echarts.init(this.$refs.aoPvCharts);
@@ -116,7 +116,7 @@ export default {
   &-charts{
     width: 100%;
     height: 200px;
-    margin-top: 14px;
+    //margin-top: 14px;
   }
 }
 
