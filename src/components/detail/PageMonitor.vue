@@ -13,30 +13,32 @@
         <div class="page-information hw100-oh">
             <div class="page-information-container">
                 <div class="page-information-container-left">
-                    <div class="page-name-container">
-                        <div class="page-select-area_item">
-                            <span>排序:</span>
-                            <el-select v-model="orderData" placeholder="请选择" :size="'small'" class="order-select">
-                                <el-option
-                                        v-for="item in orderDataOptions"
-                                        :key="item.value"
-                                        :label="item.label"
-                                        :value="item.value">
-                                </el-option>
-                            </el-select>
-                        </div>
-                        <div class="page-select-area_item">
-                            <el-input
-                                    placeholder="关键词搜索"
-                                    suffix-icon="el-icon-search"
-                                    size="small"
-                                    clearable
-                                    v-model="keyword"
-                                    @keydown.enter.native="searchByKeyword">
-                            </el-input>
-                        </div>
+                    <!--                    <div class="page-name-container">-->
+                    <div class="page-select-area_item">
+                        <span>排序:</span>
+                        <el-select v-model="orderData" placeholder="请选择" :size="'small'" class="order-select">
+                            <el-option
+                                    v-for="item in orderDataOptions"
+                                    :key="item.value"
+                                    :label="item.label"
+                                    :value="item.value">
+                            </el-option>
+                        </el-select>
+                    </div>
+                    <div class="page-select-area_item">
+                        <el-input
+                                placeholder="关键词搜索"
+                                suffix-icon="el-icon-search"
+                                size="small"
+                                clearable
+                                v-model="keyword"
+                                @keydown.enter.native="searchByKeyword">
+                        </el-input>
+                    </div>
+                    <div class="page-name-bar">
                         <progress-bar :data="pageNameData"></progress-bar>
                     </div>
+                    <!--                    </div>-->
                 </div>
                 <div class="page-information-container-right">
                     <div class="page-total-name">
@@ -49,12 +51,14 @@
                                 <number-block :data=20098></number-block>
                             </div>
                         </div>
-                        <div class="page-detail-falls detail-item">
-                            <sub-header-title :sub-title="'页面加载瀑布图'"></sub-header-title>
-                            <page-load-falls :data="pageLoadData"></page-load-falls>
+                        <div>
+                            <sub-header-title :sub-title="'页面加载瀑布图'" class="page-detail-title"></sub-header-title>
+                            <div class="falls-chart">
+                                <page-load-falls :data="pageLoadData"></page-load-falls>
+                            </div>
                         </div>
-                        <div class="page-detail-lancy detail-item">
-                            <sub-header-title :sub-title="'页面加载延时'"></sub-header-title>
+                        <div class="detail-item">
+                            <sub-header-title :sub-title="'页面加载延时'" class="page-detail-title"></sub-header-title>
                             <div class="latency-chart">
                                 <lines-chart :lengend="['P50', 'P75', 'P90', 'P95','P99']"
                                              :xAxisData="xAxisData"
@@ -70,16 +74,18 @@
                             <error-rate-progress :error-type="'Ajax错误'" :error-rate="7"></error-rate-progress>
                             <error-rate-progress :error-type="'未知错误'" :error-rate="88.88"></error-rate-progress>
                         </div>
-                        <div class="page-detail-preformance detail-item">
-                            <sub-header-title :sub-title="'关键性能指标'"></sub-header-title>
-                            <lines-chart
-                                    :lengend="['白屏时间', '首屏时间', 'Html加载时间', '页面完全加载时间']"
-                                    :xAxisData="xAxisData"
-                                    :data="performanceData">
-                            </lines-chart>
+                        <div>
+                            <sub-header-title :sub-title="'关键性能指标'" class="page-detail-title"></sub-header-title>
+                            <div class="page-pref">
+                                <lines-chart
+                                        :lengend="['白屏时间', '首屏时间', 'Html加载时间', '页面完全加载时间']"
+                                        :xAxisData="xAxisData"
+                                        :data="performanceData">
+                                </lines-chart>
+                            </div>
                         </div>
-                        <div class="page-detail-error-number detail-item">
-                            <sub-header-title :sub-title="'页面错误量'"></sub-header-title>
+                        <div class="detail-item">
+                            <sub-header-title :sub-title="'页面错误量'" class="page-detail-title"></sub-header-title>
                             <div class="error-statistics">
                                 <cluster-analysis-bar></cluster-analysis-bar>
                             </div>
@@ -129,7 +135,19 @@
                     {id: 4, name: 'home.jsp', data: 100},
                     {id: 5, name: 'home.jsp', data: 77},
                     {id: 6, name: 'home.jsp', data: 30},
-                    {id: 7, name: '/abgeg/ge/sgeg/home.jsp', data: 23}],
+                    {id: 7, name: '/abgeg/ge/sgeg/home.jsp', data: 23},
+                    {id: 8, name: 'egje/asfsfebg/gekeg/home.jsp', data: 220},
+                    {id: 9, name: 'home.jsp', data: 110},
+                    {id: 10, name: 'home.jsp', data: 100},
+                    {id: 11, name: 'home.jsp', data: 77},
+                    {id: 12, name: 'home.jsp', data: 30},
+                    {id: 13, name: '/abgeg/ge/sgeg/home.jsp', data: 23},
+                    {id: 14, name: 'home.jsp', data: 100},
+                    {id: 15, name: 'home.jsp', data: 77},
+                    {id: 16, name: 'home.jsp', data: 30},
+                    {id: 17, name: '/abgeg/ge/sgeg/home.jsp', data: 23},
+                ],
+
                 // 搜索关键词
                 keyword: '',
                 // x轴时间刻度
@@ -255,28 +273,33 @@
                 display: flex;
 
                 &-left {
-                    height: 100%;
-                    width: 20%;
+                    width: 320px;
                     display: inline-block;
                     border-right: solid 1px #dfe8f7;
+                    padding-right: 32px;
+                    overflow: hidden;
 
-                    .page-name-container {
-                        height: 100%;
-                        width: 100%;
-                        padding-right: 32px;
+                    .page-select-area_item {
+                        margin-bottom: 22px;
 
-                        .page-select-area_item {
-                            margin-bottom: 22px;
+                        span {
+                            @extend .sub-normal-text;
+                        }
 
-                            span {
-                                @extend .sub-normal-text;
-                            }
+                        .order-select {
+                            width: calc(100% - 40px);
+                            margin-left: 8px;
+                            position: relative;
+                        }
+                    }
 
-                            .order-select {
-                                width: calc(100% - 40px);
-                                margin-left: 8px;
-                                position: relative;
-                            }
+                    .page-name-bar {
+                        height: calc(100% - 64px);
+                        overflow-y: auto;
+
+                        .progress-bar {
+                            width: calc(100% - 8px);
+                            margin-right: 8px;
                         }
                     }
                 }
@@ -284,6 +307,7 @@
                 &-right {
                     height: 100%;
                     width: 100%;
+                    overflow: auto;
                     display: inline-block;
                     padding-left: 32px;
 
@@ -296,12 +320,17 @@
                     }
 
                     .page-detail-left {
-                        height: 100%;
+                        height: calc(100% - 18px);
                         width: 50%;
                         float: left;
 
+                        .page-detail-title {
+                            margin-bottom: 18px;
+                        }
+
                         .page-detail-pv {
-                            height: 20%;
+                            height: 164px;
+                            width: 100%;
                             padding: 22px;
                             text-align: center;
 
@@ -319,43 +348,47 @@
                             margin-top: 22px;
                         }
 
-                        .page-detail-falls {
-                            height: calc(40% - 22px);
+                        .falls-chart {
+                            width: 100%;
+                            height: 218px;
                         }
 
-                        .page-detail-lancy {
-                            height: calc(40% - 22px);
-
-                            .latency-chart {
-                                height: calc(100% - 28px);
-                            }
+                        .latency-chart {
+                            width: 100%;
+                            height: 214px;
                         }
                     }
 
                     .page-detail-right {
-                        height: 100%;
                         width: calc(50% - 32px);
                         margin-left: 32px;
                         float: left;
 
+                        .page-detail-title {
+                            margin-bottom: 18px;
+                        }
+
                         .page-detail-error-rate {
-                            height: 20%;
+                            width: 627px;
+                            height: 164px;
+                            padding:22px 0;
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
                         }
 
                         .detail-item {
                             margin-top: 22px;
                         }
 
-                        .page-detail-preformance {
-                            height: calc(40% - 22px);
+                        .page-pref {
+                            width: 100%;
+                            height: 218px;
                         }
 
-                        .page-detail-error-number {
-                            height: calc(40% - 22px);
-
-                            .error-statistics {
-                                height: calc(100% - 28px);
-                            }
+                        .error-statistics {
+                            width: 100%;
+                            height: 214px;
                         }
                     }
                 }
