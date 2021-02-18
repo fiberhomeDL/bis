@@ -1,7 +1,7 @@
 <template>
-    <div class="chart-container">
+<!--    <div class="chart-container">-->
         <div class="lines-chart" ref="linesChart"></div>
-    </div>
+<!--    </div>-->
 </template>
 
 <script>
@@ -42,7 +42,7 @@
                     x:20,
                     x2:20,
                     left:14,
-                    bottom: 10,
+                    bottom: 0,
                     top:40,
                     containLabel: true
                 },
@@ -75,14 +75,14 @@
 
 <style lang="scss" scoped>
     @import '@css/style.scss';
-    .chart-container{
-        width: 100%;
-        height: 100%;
+    /*.chart-container{*/
+    /*    width: 100%;*/
+    /*    height: 100%;*/
         .lines-chart{
             width: 100%;
-            height: calc(100% - 32px);
-            margin: 16px 0;
+            height: 100%;
+            /*margin: 16px 0;*/
         }
-    }
+    /*}*/
 
 </style>

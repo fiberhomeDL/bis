@@ -46,9 +46,7 @@
 
     .load-falls {
         width: 100%;
-        height: calc(100% - 36px);
-        margin: 18px 0;
-
+        height: 100%;
         &-item {
             display: flex;
             margin-bottom: 20px;
@@ -70,7 +68,6 @@
                     position: relative;
                 }
             }
-
             &-time {
                 width: 50px;
                 float: right;

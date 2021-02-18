@@ -234,6 +234,7 @@
             .content-inner {
                 height: 100%;
                 overflow: auto;
+                padding-right: 20px;
             }
             .content-inner_code {
                 padding-bottom: 22px;

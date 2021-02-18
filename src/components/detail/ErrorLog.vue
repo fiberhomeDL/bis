@@ -111,8 +111,22 @@
         components: {DownloadButton,ServiceSelect,TimePicker},
         data(){
             return{
-                errorData:[{service:'sim',pageName:'index.html',errorInfo:'xxxx',time:'xxxx',type:'ajax',grade:'warining'},
-                    {service:'sim2',pageName:'index.html',errorInfo:'xxxx',time:'xxxx',type:'ajax',grade:'warining'},],
+                // 错误数据，一页13个
+                errorData:[
+                    {service:'sim',pageName:'index.html',errorInfo:'xxxx',time:'xxxx',type:'ajax',grade:'warining'},
+                    {service:'sim2',pageName:'index.html',errorInfo:'xxxx',time:'xxxx',type:'ajax',grade:'warining'},
+                    {service:'sim',pageName:'index.html',errorInfo:'xxxx',time:'xxxx',type:'ajax',grade:'warining'},
+                    {service:'sim2',pageName:'index.html',errorInfo:'xxxx',time:'xxxx',type:'ajax',grade:'warining'},
+                    {service:'sim',pageName:'index.html',errorInfo:'xxxx',time:'xxxx',type:'ajax',grade:'warining'},
+                    {service:'sim2',pageName:'index.html',errorInfo:'xxxx',time:'xxxx',type:'ajax',grade:'warining'},
+                    {service:'sim',pageName:'index.html',errorInfo:'xxxx',time:'xxxx',type:'ajax',grade:'warining'},
+                    {service:'sim2',pageName:'index.html',errorInfo:'xxxx',time:'xxxx',type:'ajax',grade:'warining'},
+                    {service:'sim',pageName:'index.html',errorInfo:'xxxx',time:'xxxx',type:'ajax',grade:'warining'},
+                    {service:'sim2',pageName:'index.html',errorInfo:'xxxx',time:'xxxx',type:'ajax',grade:'warining'},
+                    {service:'sim',pageName:'index.html',errorInfo:'xxxx',time:'xxxx',type:'ajax',grade:'warining'},
+                    {service:'sim2',pageName:'index.html',errorInfo:'xxxx',time:'xxxx',type:'ajax',grade:'warining'},
+                    {service:'sim',pageName:'index.html',errorInfo:'xxxx',time:'xxxx',type:'ajax',grade:'warining'},
+                ],
                 // 应用
                 service:'',
                 // 页面
@@ -127,7 +141,6 @@
                 errorGrade:'',
                 // 错误等级选项
                 errorGradeOptions:[],
-
             }
         },
         methods:{
@@ -169,9 +182,7 @@
             display: flex;
             flex-wrap: wrap;
             align-items: center;
-            //height: auto;
             width:100%;
-            //height: 52px;
             padding: 10px 22px;
             background-color: #fff;
             box-shadow: 0 4px 8px 0 #b7c4e0;
@@ -197,9 +208,7 @@
             }
         }
         .error-information{
-            //width:calc(100% - 44px);
-            //height:calc(100% - 96px);
-            //margin:22px;
+            height: 100%;
             padding:32px;
             background-color: #fff;
             box-shadow: 0 4px 8px 0 #b7c4e0;
@@ -209,7 +218,7 @@
             .table-container{
                 width: 100%;
                 height: calc(100% - 44px);
-                //position: absolute;
+                overflow: auto;
             }
             .page-area{
                 width: 100%;
@@ -228,8 +237,7 @@
 }
     @media screen and (max-width: 1680px){
         .content-errorlog .select-area {height: 100px;}
-        .content-errorlog .select-area .select-area_item:nth-child(5){margin:10px 0 0 0;}
-        .content-errorlog .error-information[data-v-9e13ed4c] {height: calc(100% - 143px);}
+        .content-errorlog .select-area .select-area_item:nth-child(5){margin-left:0;}
     }
 
 </style>

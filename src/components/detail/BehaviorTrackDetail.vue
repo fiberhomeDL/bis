@@ -12,7 +12,7 @@
         <div class="hw100-oh" style="padding: 22px;">
             <div class="hw100-oh detail-info">
                 <div class="trace-info">
-                    <div class="trace-info-user">
+                    <div class="trace-info-overview">
                         <div class="item user-info">
                             <span> 用户IP:</span>
                             <span>10.23.78</span>
@@ -24,12 +24,12 @@
                         <div class="item">
                             <img class="item-icon_terminal"
                                  :src="require('../../assets/img/terminal_icon/Google.svg')"/>
-                            <div slot="content">87.0</div>
+                            <span>87.0</span>
                             <img class="item-icon_terminal"
                                  :src="require('../../assets/img/terminal_icon/Windows.svg')"/>
-                            <div slot="content">Win10</div>
+                            <span>Win10</span>
                             <img class="item-icon_terminal" :src="require('../../assets/img/terminal_icon/pc.svg')"/>
-                            <div slot="content">1920&times1680</div>
+                            <span>1920&times1680</span>
                         </div>
                         <div class="item">
                             <img class="icon-title" :src="require('../../assets/img/track/app.svg')"/>
@@ -115,7 +115,7 @@
                                     </div>
                                     <div class="event-tab">
                                         <el-tabs v-model="activeName" @tab-click="handleClick">
-                                            <el-tab-pane label="页面加载瀑布图" name="loadFall">
+                                            <el-tab-pane label="页面加载瀑布图" name="loadFall" class="page-falls">
                                                 <page-load-falls :data="pageLoadData"></page-load-falls>
                                             </el-tab-pane>
                                             <el-tab-pane label="关键性能指标" name="loadPerf">
@@ -129,8 +129,7 @@
                                                 <div class="table-container">
                                                     <el-table
                                                             :data="pageLoadRes"
-                                                            style="width: 100%;"
-                                                            height="250"
+                                                            style="width: 99%;"
                                                             :header-cell-style="tableHeaderCellStyle"
                                                             highlight-current-row>
                                                         <el-table-column
@@ -150,7 +149,7 @@
                                                         </el-table-column>
                                                         <el-table-column
                                                                 prop="time"
-                                                                label="请求时间"
+                                                                label="请求时间(ms)"
                                                                 min-width="20%">
                                                         </el-table-column>
                                                     </el-table>
@@ -245,6 +244,8 @@
                     {name: 'sgjeigj.css', type: 'css', size: 49, time: 23},
                     {name: 'sgjeigj.img', type: 'img', size: 49, time: 23},
                     {name: 'sgjeigj.svg', type: 'img', size: 49, time: 23},
+                    {name: 'sgjeigj.img', type: 'img', size: 49, time: 23},
+                    {name: 'sgjeigj.svg', type: 'img', size: 49, time: 23},
                 ],
                 pagePerformance: {
                     mainColor: '#86ebdc',
@@ -291,6 +292,10 @@
                         message: 'ajgkejg/agekgjka/index.html',
                         time: '2020-12-22 12:00:00'
                     },
+                    {id: 'ege32mamg', type: 'error', message: 'Script Error', time: '2020-12-22 12:00:00'},
+                    {id: 'ege32mamg', type: 'error', message: 'Script Error', time: '2020-12-22 12:00:00'},
+                    {id: 'ege32mamg', type: 'error', message: 'Script Error', time: '2020-12-22 12:00:00'},
+                    {id: 'ege32mamg', type: 'error', message: 'Script Error', time: '2020-12-22 12:00:00'},
                 ],
                 // 选中类型
                 selectType:'pageView'
@@ -363,19 +368,26 @@
             border-radius: 5px;
             position: relative;
 
-            .trace-info {
-                height: 52px;
-                width: 100%;
-                border-bottom: solid 1px #e9e9f3;
 
-                .trace-info-user {
+            .trace-info {
+                height: 100%;
+                width: 100%;
+                /*overflow: auto;*/
+                display: flex;
+                flex-direction: column;
+
+                .trace-info-overview {
+                    min-height: 52px;
                     width: 100%;
-                    font-size: 16px;
-                    color: #575777;
-                    text-align: left;
-                    margin-bottom: 32px;
+                    padding-bottom: 32px;
                     display: flex;
                     align-items: center;
+                    flex-wrap: wrap;
+                    text-align: left;
+                    font-size: 16px;
+                    color: #575777;
+                    border-bottom: solid 1px #e9e9f3;
+
 
                     .item {
                         display: flex;
@@ -410,12 +422,11 @@
                             margin-right: 8px;
                         }
                     }
-
                 }
 
                 .trace-info-page {
                     width: 100%;
-                    height: calc(100% - 52px);
+                    height: calc(100% - 48px);
                     display: flex;
                     padding-top: 32px;
 
@@ -440,6 +451,8 @@
                         }
 
                         .records-item-area {
+                            width:100%;
+                            height: calc(100% - 110px);
                             padding-right: 32px;
                             overflow: auto;
                             .record-item {
@@ -492,19 +505,26 @@
                         height: 100%;
                         width: 50%;
                         margin-left: 32px;
+                        overflow-y: auto;
 
                         .info {
-                            height: 50%;
+                            width:100%;
+                            height: 100%;
+                            display: flex;
+                            flex-direction: column;
+
                             .detail-event-type{
-
-                                padding:22px 0;
-
+                                width:100%;
+                                /*height:calc(100% - 28px);*/
+                                padding-top:22px;
+                                /*overflow: auto;*/
                                 .event-detail {
+                                    width: 100%;
+                                    height: 200px;
                                     margin-bottom: 22px;
                                     padding: 32px;
                                     background-color: #f3f9ff;
                                     border-radius: 3px;
-
 
                                     &-item {
                                         margin-bottom: 22px;
@@ -537,32 +557,43 @@
                                 }
 
                                 .event-tab {
-                                    height: 50%;
-
+                                    width: 100%;
+                                    height: calc(100% - 224px);
+                                    .el-tabs{
+                                        width: 100%;
+                                        height: 100%;
+                                        .el-tabs__content{
+                                            width: 100%;
+                                            height: calc(100% - 53px);
+                                            padding-top: 22px;
+                                        }
+                                    }
                                     .el-tab-pane {
                                         width: 100%;
                                         height: 100%;
                                     }
-
                                     .page-pref {
                                         width: 100%;
-                                        height: 300px;
+                                        height:100%;
                                     }
-
                                     .table-container {
                                         width: 100%;
                                         height: 100%;
                                     }
                                 }
+                                ::v-deep .event-tab:first-child{
+                                    .el-tabs__content{
+                                        margin-right: 8px;
+                                    }
+                                }
                                 .error-detail{
                                     width: 100%;
-                                    height: 600px;
+                                    height: 598px;
                                     padding: 32px;
                                     background-color: #f3f9ff;
                                     border-radius: 3px;
                                 }
                             }
-
                         }
 
                     }

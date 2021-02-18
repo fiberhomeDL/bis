@@ -2,7 +2,7 @@
     <div class="progress-bar">
         <div v-for="(item,index) in data" class="bar-outer" :class="isActive == index ? 'active' : '' " @click="seletItem(index,item.id)">
             <div class="top-bar" v-show="index<5" :style="{background:color[index]}"></div>
-            <div v-if="item.name.length>20" class="title">...{{item.name.substring(item.name.length-20)}}</div>
+            <div v-if="item.name.length>18" class="title">...{{item.name.substring(item.name.length-18)}}</div>
             <div v-else class="title">{{item.name}}</div>
             <div class="number">{{item.data}}</div>
             <div class="bar-inner" :style="{width:item.data/max*100+'%'}"></div>
@@ -40,7 +40,7 @@
     @import '@css/style.scss';
     .progress-bar{
         width:100%;
-        height: 100%;
+        /*height: 100%;*/
         .bar-outer{
             width:100%;
             height:32px;

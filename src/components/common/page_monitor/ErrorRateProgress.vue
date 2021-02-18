@@ -22,6 +22,7 @@
     position: relative;
     text-align: center;
     width:150px;
+    cursor: pointer;
     .progress-content{
         position: absolute;
         top: 50%;
