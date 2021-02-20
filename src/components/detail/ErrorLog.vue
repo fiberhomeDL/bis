@@ -1,17 +1,19 @@
 <template>
     <div class="content-errorlog">
+<!--        选择区域-->
         <div class="select-area">
             <div class="select-area_item">
                 <service-select></service-select>
             </div>
             <div class="select-area_item">
-                <span>页面：</span>
+                <span>页面:</span>
                 <el-autocomplete
-                        class="inline-input"
+                        class="page-name-input"
                         v-model="page"
                         :fetch-suggestions="querySearch"
-                        placeholder="请输入内容"
-                        @select="handleSelect">
+                        clearable
+                        size="small"
+                        placeholder="请输入内容">
                 </el-autocomplete>
             </div>
             <div class="select-area_item">
@@ -26,28 +28,18 @@
                 </el-select>
             </div>
             <div class="select-area_item">
-                <span>错误等级：</span>
-                <el-select v-model="errorGrade" placeholder="请选择" :size="'small'">
-                    <el-option
-                            v-for="item in errorGradeOptions"
-                            :key="item.value"
-                            :label="item.label"
-                            :value="item.value">
-                    </el-option>
-                </el-select>
-            </div>
-            <div class="select-area_item">
                 <time-picker></time-picker>
             </div>
-            <div class="select-area_item">
-                <el-button type="primary" size="small">
+            <div class="select-area_item select-button">
+                <el-button type="primary" size="small" @click="getErrorLogData">
                     <i class="el-icon-search"></i>搜索
                 </el-button>
             </div>
             <div class="select-area_item">
-                <download-button class="download-icon"></download-button>
+                <download-button class="download-icon" @click="download"></download-button>
             </div>
         </div>
+<!--        错误信息-->
       <div class="hw100-oh" style="padding: 22px;">
         <div class="hw100-oh error-information">
             <div class="table-container">
@@ -77,21 +69,20 @@
                     </el-table-column>
                     <el-table-column
                             prop="type"
-                            label="类别"
+                            label="错误类别"
                             min-width="20%">
                     </el-table-column>
                     <el-table-column
                             prop="grade"
-                            label="等级"
+                            label="错误等级"
                             min-width="20%">
                     </el-table-column>
                 </el-table>
             </div>
+<!--            分页-->
             <div class="page-area">
                 <el-pagination
                         @current-change="handleCurrentChange"
-                        :current-page.sync="currentPage"
-                        :page-size="currentPageSize"
                         layout="total,prev,pager,next"
                         :total="errorData.length">
                 </el-pagination>
@@ -102,9 +93,9 @@
 </template>
 
 <script>
-    import ServiceSelect from "../common/ServiceSelect";
-    import TimePicker from "../common/TimePicker";
-    import DownloadButton from "../common/DownloadButton";
+    import ServiceSelect from "@/components/common/ServiceSelect";
+    import TimePicker from "@/components/common/TimePicker";
+    import DownloadButton from "@/components/common/DownloadButton";
 
     export default {
         name: "ErrorLog",
@@ -130,47 +121,90 @@
                 // 应用
                 service:'',
                 // 页面
-                page:'index.html',
-                pageData:[ { "value": "三全鲜食（北新泾店）", "address": "长宁区新渔路144号" },
-                    { "value": "Hot honey 首尔炸鸡（仙霞路）", "address": "上海市长宁区淞虹路661号" },],
+                page:'All',
+                // 全部页面数据
+                pageData:[
+                    { "value": "index.html"},
+                    { "value": "home.html"},
+                ],
                 // 错误类型
-                errorType:'',
+                errorType:'All',
                 // 错误类型选项
-                errorTypeOptions:[],
-                // 错误等级
-                errorGrade:'',
-                // 错误等级选项
-                errorGradeOptions:[],
+                errorTypeOptions:[
+                    {value:'All',label:'全部'},
+                    {value:'Js',label:'Js错误'},
+                    {value:'Ajax',label:'Ajax'},
+                    {value:'Resource',label:'静态资源加载异常'},
+                    {value:'Promise',label:'Promise错误'},
+                    {value:'Vue',label:'Vue错误'},
+                    {value:'Unknow',label:'未知错误'},
+                ],
+                // 当前页数
+                currentPage:1,
             }
         },
+        mounted() {
+            // 查询所有页面
+            this.getAllPage();
+
+        },
         methods:{
+            // 查询应用下所有页面
+            getAllPage(){
+                // 应用ID
+                const serviceId = this.$store.state.selectedServiceId;
+
+                // 。。。
+
+                // 查询错误日志数据
+                this.getErrorLogData();
+            },
+            // 查询错误日志数据
+            getErrorLogData(){
+                // 应用ID
+                const serviceId = this.$store.state.selectedServiceId;
+                // 时间
+                const time = this.$store.state.time;
+                // 页面ID
+
+                // 错误类别
+
+                // 页面大小对象{pageNum: 1, pageSize: 35, needTotal: true}
+
+            },
+            // 页面名称联想搜索
             querySearch(queryString, cb) {
-                var restaurants = this.pageData;
-                var results = queryString ? restaurants.filter(this.createFilter(queryString)) : restaurants;
+                let pageData = this.pageData;
+                let results = queryString ? pageData.filter(this.createFilter(queryString)) : pageData;
                 // 调用 callback 返回建议列表的数据
                 cb(results);
             },
+            // 页面名称过滤器
             createFilter(queryString) {
                 return (restaurant) => {
                     return (restaurant.value.toLowerCase().indexOf(queryString.toLowerCase()) === 0);
                 };
             },
-            handleSelect(item) {
-                console.log(item);
-            },
             // 设置表格header样式
             tableHeaderCellStyle(){
                 return 'background-color: #def2ff';
             },
-            // 分页
-            handleCurrentChange(){},
-            currentPage(){},
-            currentPageSize(){},
+            // 下载
+            download(){
+
+            },
+            // 处理分页
+            handleCurrentChange(val){
+                // 设置当前页号
+                this.currentPage = val;
+                // 查询错误日志数据
+                this.getErrorLogData();
+            },
         }
     }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 @import '@css/style.scss';
     .content-errorlog{
         display: flex;
@@ -202,9 +236,20 @@
                 span{
                     @extend .sub-normal-text;
                 }
+                .page-name-input{
+                    padding-left:8px;
+                }
             }
             .select-area_item:first-child{
                 margin-left:0;
+            }
+            .select-area_item:last-child{
+                margin-left:auto;
+            }
+            .select-button{
+                span{
+                    color:#fff;
+                }
             }
         }
         .error-information{
@@ -235,9 +280,9 @@
     padding:2px;
     color:#575777;
 }
-    @media screen and (max-width: 1680px){
+    @media screen and (max-width: 1440px){
         .content-errorlog .select-area {height: 100px;}
-        .content-errorlog .select-area .select-area_item:nth-child(5){margin-left:0;}
+        .content-errorlog .select-area .select-area_item:nth-child(4){margin-left:0;}
     }
 
 </style>

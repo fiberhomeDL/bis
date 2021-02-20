@@ -1,6 +1,6 @@
 <template>
     <div class="progress-bar">
-        <div v-for="(item,index) in data" class="bar-outer" :class="isActive == index ? 'active' : '' " @click="seletItem(index,item.id)">
+        <div v-for="(item,index) in data" class="bar-outer" :class="isActive == index ? 'active' : '' " @click="selectItem(index,item.id)">
             <div class="top-bar" v-show="index<5" :style="{background:color[index]}"></div>
             <div v-if="item.name.length>18" class="title">...{{item.name.substring(item.name.length-18)}}</div>
             <div v-else class="title">{{item.name}}</div>
@@ -22,7 +22,7 @@
         },
         methods: {
             // 选中该项
-            seletItem(index,id) {
+            selectItem(index,id) {
                 this.isActive = index;
                 this.$emit('show-detail', id);
             }

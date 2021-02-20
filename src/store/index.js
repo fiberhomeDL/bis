@@ -25,7 +25,9 @@ export default new Vuex.Store({
     // 时间
     time:[new Date((new Date().getTime() - 15 * 60 * 1000)),new Date()],
     // 聚合分析-错误列表-跳转的ID
-    clusterAnalysisId: ''
+    clusterAnalysisId: '',
+    // 用户行为追踪-行为列表-跳转ID
+    behaviorTraceId:''
   },
   mutations: {
     changeSelectedServiceId (state, selectedId) {
@@ -34,6 +36,9 @@ export default new Vuex.Store({
     },
     changeClusterAnalysisId (state, id){
       state.clusterAnalysisId = id;
+    },
+    changeBehaviorTraceId (state, id){
+      state.behaviorTraceId = id;
     }
   },
   actions: {

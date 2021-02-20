@@ -1,5 +1,5 @@
 <template>
-    <div class="progress-container">
+    <div class="progress-container" @click="selectItem(errorType)">
         <el-progress type="circle" :percentage=errorRate :show-text=false color="#ed5145"></el-progress>
         <div class="progress-content">
             <p class="progress-content-rate">{{errorRate}}%</p>
@@ -12,6 +12,12 @@
     export default {
         name: "ErrorRateProgress",
         props: ['errorType', 'errorRate'],
+        methods: {
+            // 选中该项
+            selectItem(type) {
+                this.$emit('show-detail', type);
+            }
+        },
     }
 </script>
 

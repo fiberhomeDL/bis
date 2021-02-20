@@ -91,17 +91,14 @@
         }
         &-tab.active{
             color: #00baff;
-            position: relative;
-            top: 0;
-            cursor: pointer;
         }
-        .menu-icon{
+        &-icon{
             height: 20px;
             width: 20px;
             margin-right: 10px;
             vertical-align: middle;
         }
-        .menu-title{
+        &-title{
             vertical-align: middle;
         }
     }

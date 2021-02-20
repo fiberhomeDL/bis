@@ -1,5 +1,6 @@
 <template>
     <div class="content-behavior-track">
+<!--        选择区域-->
         <div class="select-area">
             <div class="select-area_item">
                 <service-select></service-select>
@@ -11,7 +12,7 @@
                         size="small"
                         clearable
                         v-model="keyword"
-                        @keydown.enter.native="searchByIp">
+                        @keydown.enter.native="getUserTraceData">
                 </el-input>
             </div>
             <div class="right">
@@ -19,11 +20,12 @@
                     <time-picker></time-picker>
                 </div>
                 <div class="select-area_item">
-                    <download-button class="download-icon"></download-button>
+                    <download-button class="download-icon" @click="download"></download-button>
                 </div>
             </div>
         </div>
         <div class="trace-information">
+<!--            用户行为记录列表-->
             <div class="trace-container">
                 <div v-for="(item,index) in traceData"
                      class="trace-container-item"
@@ -43,57 +45,56 @@
                             <el-tooltip effect="light" :visible-arrow=false placement="top">
                                 <div slot="content">{{item.browserVersion}}</div>
                                 <img class="item-icon_terminal"
-                                     :src="require('../../assets/img/terminal_icon/'+item.browserType+'.svg')"/>
+                                     :src="require('@img/terminal_icon/'+item.browserType+'.svg')"/>
                             </el-tooltip>
                             <el-tooltip effect="light" :visible-arrow=false placement="top">
                                 <div slot="content">{{item.OperateVersion}}</div>
                                 <img class="item-icon_terminal"
-                                     :src="require('../../assets/img/terminal_icon/'+item.OperateType+'.svg')"/>
+                                     :src="require('@img/terminal_icon/'+item.OperateType+'.svg')"/>
                             </el-tooltip>
                             <el-tooltip effect="light" :visible-arrow=false placement="top">
                                 <div slot="content">{{item.screenHeight}}&times{{item.screenWidth}}</div>
                                 <img class="item-icon_terminal"
-                                     :src="require('../../assets/img/terminal_icon/pc.svg')"/>
+                                     :src="require('@img/terminal_icon/pc.svg')"/>
                             </el-tooltip>
                         </div>
                     </div>
                     <div class="trace-container-item_col item-page">
-                        <img class="item-icon" :src="require('../../assets/img/common_icon/page.svg')"/>
+                        <img class="item-icon" :src="require('@img/common_icon/page.svg')"/>
                         <span class="item-title">页面:</span>
-                        <span v-if="item.pageName.length>48" class="item-content">...{{item.pageName.substring(item.pageName.length-48)}}</span>
-                        <span v-else class="item-content">{{item.pageName}}</span>
+                        <span v-if="item.pageName.length>48" class="normal-text">...{{item.pageName.substring(item.pageName.length-48)}}</span>
+                        <span v-else class="normal-text">{{item.pageName}}</span>
                     </div>
                     <div class="trace-container-item_col item-time">
-                        <img class="item-icon" :src="require('../../assets/img/common_icon/time.svg')"/>
+                        <img class="item-icon" :src="require('@img/common_icon/time.svg')"/>
                         <span class="item-title">访问时间:</span>
-                        <span class="item-content">{{item.time}}</span>
+                        <span class="normal-text">{{item.time}}</span>
                     </div>
                     <div class="trace-container-item_col item-exist-error">
-                        <img class="item-icon" :src="require('../../assets/img/common_icon/error.svg')"/>
+                        <img class="item-icon" :src="require('@img/common_icon/error.svg')"/>
                         <span class="item-title">有无错误:</span>
-                        <span v-if="item.isError" class="item-content item-content_error">有<span
+                        <span v-if="item.isError" class="item-content_error">有<span
                                 class="red-circle"></span></span>
                         <span v-else>无</span>
                     </div>
                 </div>
             </div>
-            <!--            <div class="page-area">-->
-            <!--                <el-pagination-->
-            <!--                        @current-change="handleCurrentChange"-->
-            <!--                        :current-page.sync="currentPage"-->
-            <!--                        :page-size="currentPageSize"-->
-            <!--                        layout="total,prev,pager,next"-->
-            <!--                        :total="traceData.length">-->
-            <!--                </el-pagination>-->
-            <!--            </div>-->
+<!--            分页-->
+            <div class="page-area">
+                <el-pagination
+                        @current-change="handleCurrentChange"
+                        layout="total,prev,pager,next"
+                        :total="traceData.length">
+                </el-pagination>
+            </div>
         </div>
     </div>
 </template>
 
 <script>
-    import ServiceSelect from "../common/ServiceSelect";
-    import TimePicker from "../common/TimePicker";
-    import DownloadButton from "../common/DownloadButton";
+    import ServiceSelect from "@/components/common/ServiceSelect";
+    import TimePicker from "@/components/common/TimePicker";
+    import DownloadButton from "@/components/common/DownloadButton";
 
     export default {
         name: "BehaviorTrack",
@@ -180,19 +181,60 @@
                         time: '2020-02-01 12:00:00',
                         isError: false
                     },
+                    {
+                        id: 9,
+                        ip: '10.0.23.88',
+                        policeId: 'ME_03221',
+                        browserType: 'Google',
+                        browserVersion: '83.22',
+                        OperateType: 'Windows',
+                        OperateVersion: 'Win8',
+                        pageName: '/sdfe/sefe/sfefeg/safae/sfe/index.html',
+                        screenHeight: 1366,
+                        screenWidth: 768,
+                        time: '2020-02-01 12:00:00',
+                        isError: false
+                    },
                 ],
                 // 选中追踪条目
                 traceDataSelected: '',
+                // 当前页数
+                currentPage: 1,
             }
         },
+        mounted() {
+            // 查询用户行为记录数据
+            this.getUserTraceData();
+        },
         methods: {
-            // 根据ip搜索数据
-            searchByIp() {
+            // 查询用户行为记录数据
+            getUserTraceData(){
+                // 应用ID
+                const serviceId = this.$store.state.selectedServiceId;
+                // 时间
+                const time = this.$store.state.time;
+                // 关键词  keyword
+
+
+                // graphql
+
+
+            },
+            // 下载
+            download(){
 
             },
             // 查看详情
             goToDetail(id) {
+                this.$store.commit('changeBehaviorTraceId', id);
                 this.$emit('change-content', {from: 'BehaviorTrack', to: 'BehaviorTrackDetail'});
+            },
+            // 处理分页
+            handleCurrentChange(val) {
+                // 设置当前页号
+                this.currentPage = val;
+                // 查询错误日志数据
+                this.getErrorLogData();
             },
         }
     }
@@ -259,7 +301,7 @@
                 .trace-container-item {
                     width: 100%;
                     padding: 10px 40px;
-                    margin-bottom: 28px;
+                    margin-bottom: 24px;
                     background-color: #f3f9ff;
                     border-radius: 3px;
                     border: solid 1px #dae6f1;
@@ -282,10 +324,6 @@
                         .item-titile_detail {
                             color: #00baff;
                             float: right;
-                        }
-
-                        .item-content {
-                            color: #575777;
                         }
 
                         .item-content_error {
@@ -380,8 +418,6 @@
                 margin-top: 14px;
             }
         }
-
     }
-
 
 </style>

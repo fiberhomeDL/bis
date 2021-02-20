@@ -1,8 +1,9 @@
 <template>
     <div class="content-alarm">
+<!--        选项区域-->
         <div class="select-area">
             <div class="select-area_item">
-                <service-select></service-select>
+                <service-select @onSelectChange="getAlarmData"></service-select>
             </div>
             <div class="select-area_item">
                 <el-input
@@ -11,42 +12,46 @@
                         size="small"
                         clearable
                         v-model="keywords"
-                        @keydown.enter.native="searchByKeywords">
+                        @keydown.enter.native="getAlarmData">
                 </el-input>
             </div>
             <div class="select-area_item">
-                <time-picker></time-picker>
+                <time-picker @changeTime="getAlarmData"></time-picker>
             </div>
         </div>
         <div class="hw100-oh" style="padding: 22px;">
+<!--            分页-->
             <div class="hw100-oh alarm-info">
                 <div class="pagination-area">
                     <span class="el-icon-arrow-left icon-page" @click="reducePage"></span>
                     <el-input v-model="pageInputNumber" size="mini" class="pagination-input"
-                              @change="queryResultList"></el-input>
-                    <span style="color:rgb(80,91,115);">/{{alarmTotal}}</span>
+                              @change="getAlarmData"></el-input>
+                    <span style="color:rgb(80,91,115);">/{{totalPage}}</span>
                     <span class="el-icon-arrow-right icon-add-page icon-page" @click="addPage"></span>
                 </div>
+<!--                告警列表-->
                 <div class="list-area">
                     <div v-for="(item,index) in alarmList">
                         <div class="time-group">
                             <div class="time-item-area">
-                                <span class="circle-style circle-style-blue"></span>
+                                <span class="circle-style"></span>
                                 <span class="time-text">{{item.startTime}}</span>
                             </div>
                             <div class="time-item-content">{{item.message}}</div>
                         </div>
                     </div>
                 </div>
-
             </div>
         </div>
     </div>
 </template>
 
 <script>
-    import ServiceSelect from "../common/ServiceSelect";
-    import TimePicker from "../common/TimePicker";
+    import ServiceSelect from "@/components/common/ServiceSelect";
+    import TimePicker from "@/components/common/TimePicker";
+
+    // 一页显示告警数量
+    const pageSize = 9;
 
     export default {
         name: "Alarm",
@@ -71,34 +76,46 @@
                 pageInputNumber: 1,
             }
         },
+        mounted() {
+            // 查询告警数据
+            this.getAlarmData();
+        },
         methods: {
-            handleSelect() {
+           // 查询告警数据
+            getAlarmData(){
+                // 页号置为1
+                this.pageInputNumber = 1;
+                // 应用ID
+                const serviceId = this.$store.state.selectedServiceId;
+                // 时间
+                const time = this.$store.state.time;
+                // 关键词
+
+                // 页码
+
+
             },
             // 减少页面
             reducePage() {
                 if (1 !== this.pageInputNumber) {
                     this.pageInputNumber--;
                     // 更新数据
+                    this.getAlarmData();
                 }
             },
             // 增加页面
             addPage() {
-                if (this.alarmTotal !== this.pageInputNumber) {
+                if (this.totalPage !== this.pageInputNumber) {
                     this.pageInputNumber++;
                     // 更新数据
+                    this.getAlarmData();
                 }
-            },
-            // 查询结果
-            queryResultList() {
-            },
-            // 关键词搜索
-            searchByKeywords() {
             },
         },
         computed: {
             // 告警数量
-            alarmTotal: function () {
-                return this.alarmList.length;
+            totalPage: function () {
+                return Math.ceil(this.alarmList.length/pageSize);
             }
         },
 
@@ -203,8 +220,6 @@
                     }
                 }
             }
-
-
         }
     }
 

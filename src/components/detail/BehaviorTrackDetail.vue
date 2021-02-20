@@ -5,13 +5,11 @@
                 <i class="el-icon-arrow-left"></i>
                 <span class="back" @click="goBack">返回</span>
             </div>
-            <div class="right">
-                <time-picker></time-picker>
-            </div>
         </div>
         <div class="hw100-oh" style="padding: 22px;">
             <div class="hw100-oh detail-info">
                 <div class="trace-info">
+                    <!--行为追踪记录概览-->
                     <div class="trace-info-overview">
                         <div class="item user-info">
                             <span> 用户IP:</span>
@@ -23,37 +21,39 @@
                         </div>
                         <div class="item">
                             <img class="item-icon_terminal"
-                                 :src="require('../../assets/img/terminal_icon/Google.svg')"/>
+                                 :src="require('@img/terminal_icon/Google.svg')"/>
                             <span>87.0</span>
                             <img class="item-icon_terminal"
-                                 :src="require('../../assets/img/terminal_icon/Windows.svg')"/>
+                                 :src="require('@img/terminal_icon/Windows.svg')"/>
                             <span>Win10</span>
-                            <img class="item-icon_terminal" :src="require('../../assets/img/terminal_icon/pc.svg')"/>
+                            <img class="item-icon_terminal" :src="require('@img/terminal_icon/pc.svg')"/>
                             <span>1920&times1680</span>
                         </div>
                         <div class="item">
-                            <img class="icon-title" :src="require('../../assets/img/track/app.svg')"/>
+                            <img class="icon-title" :src="require('@img/track/app.svg')"/>
                             <span class="item-service-title"> 应用:</span>
                             <span>test</span>
                         </div>
                         <div class="item">
-                            <img class="icon-title" :src="require('../../assets/img/common_icon/page.svg')"/>
+                            <img class="icon-title" :src="require('@img/common_icon/page.svg')"/>
                             <span class="item-service-title"> 页面:</span>
                             <span>index.html</span>
                         </div>
                         <div class="item">
-                            <img class="icon-title" :src="require('../../assets/img/common_icon/time.svg')"/>
+                            <img class="icon-title" :src="require('@img/common_icon/time.svg')"/>
                             <span class="item-service-title"> 访问时间:</span>
-                            <span>2020-01-21 12:00:00</span>
+                            <span>2020-12-30 08:00:00</span>
                         </div>
                     </div>
                     <div class="trace-info-page">
+                        <!--用户行为记录列表-->
                         <div class="trace-info-page-records">
                             <sub-header-title :sub-title="'用户行为记录'"></sub-header-title>
                             <div class="records-select-area">
                                 <span>类型:</span>
                                 <div class="records-select-area_item">
-                                    <el-select v-model="recordsType" placeholder="请选择" :size="'small'">
+                                    <el-select v-model="recordsType" placeholder="请选择" :size="'small'"
+                                               @change="handleData">
                                         <el-option
                                                 v-for="item in recordsTypeOptions"
                                                 :key="item.value"
@@ -69,14 +69,16 @@
                                             size="small"
                                             clearable
                                             v-model="keywords"
-                                            @keydown.enter.native="searchByKeywords">
+                                            @keydown.enter.native="handleData">
                                     </el-input>
                                 </div>
                             </div>
+                            <!--列表项-->
                             <div class="records-item-area">
-                                <div v-for="(item,index) in recordList" class="record-item"
-                                     @click="selectRecord(item.id)">
-                                    <img class="item-icon" :src="require('../../assets/img/track/'+item.type+'.svg')"/>
+                                <div v-for="(item,index) in recordList"
+                                     :class="[{'active':(item.id===selectedRecord.id)}, 'record-item']"
+                                     @click="selectRecord(item)">
+                                    <img class="item-icon" :src="require('@img/track/'+item.type+'.svg')"/>
                                     <div class="record-item_name">
                                         <span v-if="item.type==='pageView'">页面浏览</span>
                                         <span v-else>发生错误</span>
@@ -86,36 +88,39 @@
                                 </div>
                             </div>
                         </div>
+                        <!--事件详情信息-->
                         <div class="trace-info-page-record_detail">
                             <div class="info">
                                 <sub-header-title :sub-title="'事件详情信息'"></sub-header-title>
-                                <div v-show="selectType==='pageView'" class="detail-event-type">
+                                <!--页面浏览详情-->
+                                <div v-show="selectedRecord.type==='pageView'" class="detail-event-type">
                                     <div class="event-detail">
                                         <div class="event-detail-item">
-                                            <img :src="require('../../assets/img/track/type.svg')"/>
+                                            <img :src="require('@img/track/type.svg')"/>
                                             <span class="event-detail-item_title sub-normal-text">事件类型:</span>
-                                            <img :src="require('../../assets/img/track/pageView.svg')"/>
+                                            <img :src="require('@img/track/pageView.svg')"/>
                                             <span>页面浏览</span>
                                         </div>
                                         <div class="event-detail-item">
-                                            <img :src="require('../../assets/img/common_icon/time.svg')"/>
+                                            <img :src="require('@img/common_icon/time.svg')"/>
                                             <span class="event-detail-item_title sub-normal-text">发生时间:</span>
-                                            <span>2020-12-23 23:23:23</span>
+                                            <span>{{ selectedRecord.time }}</span>
                                         </div>
                                         <div class="event-detail-item">
-                                            <img :src="require('../../assets/img/track/event.svg')"/>
+                                            <img :src="require('@img/track/event.svg')"/>
                                             <span class="event-detail-item_title sub-normal-text">事件内容:</span>
-                                            <span>http://sengjga/index.html</span>
+                                            <span>{{selectedRecord.message}}</span>
                                         </div>
                                         <div class="event-detail-item">
-                                            <img :src="require('../../assets/img/common_icon/page.svg')"/>
+                                            <img :src="require('@img/common_icon/page.svg')"/>
                                             <span class="event-detail-item_title sub-normal-text">发生页面:</span>
-                                            <span>http://sengjga/index.html</span>
+                                            <span>{{selectedRecord.message}}</span>
                                         </div>
                                     </div>
+                                    <!--页面浏览tab-->
                                     <div class="event-tab">
                                         <el-tabs v-model="activeName" @tab-click="handleClick">
-                                            <el-tab-pane label="页面加载瀑布图" name="loadFall" class="page-falls">
+                                            <el-tab-pane label="页面加载瀑布图" name="loadFall">
                                                 <page-load-falls :data="pageLoadData"></page-load-falls>
                                             </el-tab-pane>
                                             <el-tab-pane label="关键性能指标" name="loadPerf">
@@ -158,46 +163,46 @@
                                         </el-tabs>
                                     </div>
                                 </div>
-                                <div v-show="selectType==='error'" class="detail-event-type">
+                                <!--页面错误详情-->
+                                <div v-show="selectedRecord.type==='error'" class="detail-event-type">
                                     <div class="error-detail">
                                         <div class="event-detail-item">
-                                            <img :src="require('../../assets/img/track/type.svg')"/>
+                                            <img :src="require('@img/track/type.svg')"/>
                                             <span class="event-detail-item_title sub-normal-text">事件类型:</span>
-                                            <img :src="require('../../assets/img/track/error.svg')"/>
-                                            <span>页面浏览</span>
+                                            <img :src="require('@img/track/error.svg')"/>
+                                            <span>发生错误</span>
                                         </div>
                                         <div class="event-detail-item">
-                                            <img :src="require('../../assets/img/common_icon/time.svg')"/>
+                                            <img :src="require('@img/common_icon/time.svg')"/>
                                             <span class="event-detail-item_title sub-normal-text">发生时间:</span>
                                             <span>2020-12-23 23:23:23</span>
                                         </div>
                                         <div class="event-detail-item">
-                                            <img :src="require('../../assets/img/track/event.svg')"/>
+                                            <img :src="require('@img/track/event.svg')"/>
                                             <span class="event-detail-item_title sub-normal-text">事件内容:</span>
                                             <span>http://sengjga/index.html</span>
                                         </div>
                                         <div class="event-detail-item">
-                                            <img :src="require('../../assets/img/common_icon/page.svg')"/>
+                                            <img :src="require('@img/common_icon/page.svg')"/>
                                             <span class="event-detail-item_title sub-normal-text">发生页面:</span>
                                             <span>http://sengjga/index.html</span>
                                         </div>
                                         <div class="event-detail-item">
-                                            <img :src="require('../../assets/img/track/error_type.svg')"/>
+                                            <img :src="require('@img/track/error_type.svg')"/>
                                             <span class="event-detail-item_title sub-normal-text">错误类型:</span>
                                             <span>AJAX</span>
                                         </div>
                                         <div class="event-detail-item">
-                                            <img :src="require('../../assets/img/track/error_grade.svg')"/>
+                                            <img :src="require('@img/track/error_grade.svg')"/>
                                             <span class="event-detail-item_title sub-normal-text">错误等级:</span>
                                             <span>Warning</span>
                                         </div>
                                         <div class="event-detail-item">
-                                            <img :src="require('../../assets/img/track/error_message.svg')"/>
+                                            <img :src="require('@img/track/error_message.svg')"/>
                                             <span class="event-detail-item_title sub-normal-text">错误信息:</span>
                                             <span class="error-message">Script Error:sjeigjskgsnsmnemgnsmngsemgnsmgnsjskjgrkgksngsnemgnsemngjskjgskgejmgnemgnsmngmsngsmgmsgsdj</span>
                                         </div>
                                     </div>
-
                                 </div>
                             </div>
                         </div>
@@ -209,7 +214,6 @@
 </template>
 
 <script>
-    import TimePicker from "@/components/common/TimePicker";
     import SubHeaderTitle from "@/components/common/SubHeaderTitle";
     import PageLoadFalls from "@/components/common/PageLoadFalls";
     import ProcessBar from "@/components/common/terminal_analysis/ProcessBar";
@@ -217,7 +221,6 @@
     export default {
         name: "BehaviorTrackDetail",
         components: {
-            TimePicker,
             SubHeaderTitle,
             PageLoadFalls,
             ProcessBar
@@ -269,39 +272,68 @@
                         },
                     ],
                 },
+                keywords: '',
                 // 记录类型
-                recordsType: '全部',
+                recordsType: 'all',
                 // 记录类型选项
                 recordsTypeOptions: [
                     {value: 'all', label: '全部'},
                     {value: 'pageView', label: '页面浏览'},
                     {value: 'error', label: '发生错误'},
                 ],
-                // 搜索关键词
-                keywords: '',
                 // 记录数据
-                recordList: [
-                    {id: '1232mamg', type: 'pageView', message: 'index.html', time: '2020-12-22 12:00:00'},
-                    {id: 'ege32mamg', type: 'error', message: 'Script Error', time: '2020-12-22 12:00:00'},
-                    {id: 'egeg232mamg', type: 'error', message: 'Script Error', time: '2020-12-22 12:00:00'},
-                    {id: 'sgeg232mamg', type: 'error', message: 'Script Error', time: '2020-12-22 12:00:00'},
-                    {id: 'geg232mamg', type: 'error', message: 'Script Error', time: '2020-12-22 12:00:00'},
+                recordData: [
+                    {id: '1232mamg1', type: 'pageView', message: 'index.html', time: '2020-12-22 12:00:00',},
+                    {id: 'ege32mamg2', type: 'error', message: 'Script Error', time: '2020-12-22 12:00:00'},
+                    {id: 'egeg232mamg3', type: 'error', message: 'Script Error', time: '2020-12-22 12:00:00'},
+                    {id: 'sgeg232mamg4', type: 'error', message: 'Script Error', time: '2020-12-22 12:00:00'},
+                    {id: 'geg232mamg5', type: 'error', message: 'Script Error', time: '2020-12-22 12:00:00'},
                     {
-                        id: 'egsgs232mamg',
+                        id: 'egsgs232mamg6',
                         type: 'pageView',
                         message: 'ajgkejg/agekgjka/index.html',
-                        time: '2020-12-22 12:00:00'
+                        time: '2020-12-23 13:03:03'
                     },
-                    {id: 'ege32mamg', type: 'error', message: 'Script Error', time: '2020-12-22 12:00:00'},
-                    {id: 'ege32mamg', type: 'error', message: 'Script Error', time: '2020-12-22 12:00:00'},
-                    {id: 'ege32mamg', type: 'error', message: 'Script Error', time: '2020-12-22 12:00:00'},
-                    {id: 'ege32mamg', type: 'error', message: 'Script Error', time: '2020-12-22 12:00:00'},
+                    {id: 'ege32mamg7', type: 'error', message: 'Script Error', time: '2020-12-22 12:00:00'},
+                    {id: 'ege32mamg8', type: 'error', message: 'Script Error', time: '2020-12-22 12:00:00'},
+                    {id: 'ege32mamg9', type: 'error', message: 'Script Error', time: '2020-12-22 12:00:00'},
+                    {id: 'ege32mamg10', type: 'error', message: 'Script Error', time: '2020-12-22 12:00:00'},
                 ],
-                // 选中类型
-                selectType:'pageView'
+                // 记录列表
+                recordList: [],
+                // 选中记录数据
+                selectedRecord: {},
             }
         },
+        mounted() {
+            // 查询行为追踪详情数据
+            this.getBehaviorTraceDetail();
+
+        },
         methods: {
+            // 查询行为追踪详情数据
+            getBehaviorTraceDetail() {
+                // 用户行为追踪id
+                const behaviorTraceId = this.$store.state.behaviorTraceId;
+
+                // graphql查询详情数据
+
+                // 处理数据
+                this.handleData();
+
+            },
+            // 处理数据
+            handleData() {
+                let that = this;
+                // 根据类型和关键字过滤记录数据
+                that.recordList = that.recordData.filter(function (item) {
+                        return 'all' === that.recordsType ? item.message.includes(that.keywords) :
+                            item.type === that.recordsType && (item.message.includes(that.keywords));
+                    }
+                );
+                // 默认显示第一条数据详情
+                that.selectedRecord = JSON.parse(JSON.stringify(that.recordList[0]));
+            },
             // 返回
             goBack() {
                 this.$emit('change-content', {
@@ -316,15 +348,19 @@
             tableHeaderCellStyle() {
                 return 'background-color: #def2ff';
             },
-            // 关键词搜索
-            searchByKeywords() {
-
-            },
             // 选择记录
-            selectRecord(id) {
-                this.selectType='error';
+            selectRecord(item) {
+                let that = this;
+                // 更换当前记录详情数据
+                that.selectedRecord = JSON.parse(JSON.stringify(item));
             },
-        }
+        },
+        watch: {
+            // 关键词搜索，过滤数据
+            keywords: function () {
+                this.handleData();
+            }
+        },
     }
 </script>
 
@@ -354,15 +390,10 @@
                 text-align: center;
                 line-height: 30px;
             }
-
-            .right {
-                float: right;
-            }
         }
 
         .detail-info {
             padding: 32px;
-            /*display: flex;*/
             background-color: #fff;
             box-shadow: 0 4px 8px 0 #b7c4e0;
             border-radius: 5px;
@@ -372,7 +403,6 @@
             .trace-info {
                 height: 100%;
                 width: 100%;
-                /*overflow: auto;*/
                 display: flex;
                 flex-direction: column;
 
@@ -392,6 +422,7 @@
                     .item {
                         display: flex;
                         margin-right: 4%;
+                        margin-left: auto;
 
                         .item-icon_terminal {
                             width: 22px;
@@ -414,10 +445,12 @@
                             margin-right: 8px;
                         }
                     }
-                    .user-info{
+
+                    .user-info {
                         color: #505b73;
                         font-weight: bold;
-                        span:first-child{
+
+                        span:first-child {
                             font-weight: normal;
                             margin-right: 8px;
                         }
@@ -451,10 +484,11 @@
                         }
 
                         .records-item-area {
-                            width:100%;
+                            width: 100%;
                             height: calc(100% - 110px);
                             padding-right: 32px;
                             overflow: auto;
+
                             .record-item {
                                 width: 100%;
                                 height: 53px;
@@ -498,6 +532,15 @@
                                     color: #00baff;
                                 }
                             }
+
+                            .record-item.active {
+                                border: solid 1px #00baff;
+                                color: #00baff;
+
+                                .record-item_time {
+                                    color: #00baff;
+                                }
+                            }
                         }
                     }
 
@@ -508,16 +551,15 @@
                         overflow-y: auto;
 
                         .info {
-                            width:100%;
+                            width: 100%;
                             height: 100%;
                             display: flex;
                             flex-direction: column;
 
-                            .detail-event-type{
-                                width:100%;
-                                /*height:calc(100% - 28px);*/
-                                padding-top:22px;
-                                /*overflow: auto;*/
+                            .detail-event-type {
+                                width: 100%;
+                                padding-top: 22px;
+
                                 .event-detail {
                                     width: 100%;
                                     height: 200px;
@@ -539,7 +581,8 @@
                                         .event-detail-item_title {
                                             margin-right: 20px;
                                         }
-                                        .error-message{
+
+                                        .error-message {
                                             width: calc(100% - 106px);
                                             display: block;
                                             overflow-wrap: break-word;
@@ -559,34 +602,45 @@
                                 .event-tab {
                                     width: 100%;
                                     height: calc(100% - 224px);
-                                    .el-tabs{
+
+                                    .el-tabs {
                                         width: 100%;
                                         height: 100%;
-                                        .el-tabs__content{
+
+                                        .el-tabs__content {
                                             width: 100%;
                                             height: calc(100% - 53px);
                                             padding-top: 22px;
+
+                                            .page-pref {
+                                                width: 100%;
+                                                height: 100%;
+
+                                                .pb-item {
+                                                    margin-bottom: 20px;
+                                                }
+                                            }
                                         }
                                     }
+
                                     .el-tab-pane {
                                         width: 100%;
                                         height: 100%;
                                     }
-                                    .page-pref {
-                                        width: 100%;
-                                        height:100%;
-                                    }
+
                                     .table-container {
                                         width: 100%;
                                         height: 100%;
                                     }
                                 }
-                                ::v-deep .event-tab:first-child{
-                                    .el-tabs__content{
+
+                                ::v-deep .event-tab:first-child {
+                                    .el-tabs__content {
                                         margin-right: 8px;
                                     }
                                 }
-                                .error-detail{
+
+                                .error-detail {
                                     width: 100%;
                                     height: 598px;
                                     padding: 32px;
