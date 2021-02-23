@@ -5,7 +5,11 @@ import store from './store'
 
 
 import '@js/axios.config';
+
+// import moment from 'moment'
+
 import ElementUI from 'element-ui';
+
 // import 'element-ui/lib/theme-chalk/index.css';
 import '@css/index.css';
 import '@css/common.css';
@@ -13,6 +17,7 @@ import '@css/common.css';
 
 import * as echarts from 'echarts'
 Vue.prototype.$echarts = echarts
+// Vue.prototype.$moment = moment;
 
 Vue.use(ElementUI);
 
