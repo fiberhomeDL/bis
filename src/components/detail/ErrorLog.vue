@@ -100,6 +100,7 @@
     import DownloadButton from "@/components/common/DownloadButton";
     import httpReq from "@js/error_log";
     import util from "@js/common"
+    import XLSX from 'xlsx'
 
     export default {
         name: "ErrorLog",
@@ -191,9 +192,44 @@
             tableHeaderCellStyle() {
                 return 'background-color: #def2ff';
             },
-            // 下载
+            // 下载错误日志Excel
             download() {
+                let that = this;
+                // 表格数据
+                let errorData = [];
+                // 设置表头
+                errorData.push({A: '应用', B: '错误页面', C: '错误信息', D: '时间', E: '错误类别', F: '错误等级'});
+                // 写入每行数据
+                that.errorData.forEach(function (item, index) {
+                    let row = {
+                        A: item.service,
+                        B: item.pagePath,
+                        C: item.message,
+                        D: new Date(item.time).toLocaleString(),
+                        E: item.category,
+                        F: item.grade
+                    };
+                    errorData.push(row);
+                });
 
+                //创建book
+                let wb = XLSX.utils.book_new();
+                //json转sheet
+                let ws = XLSX.utils.json_to_sheet(errorData, {header:['A','B','C','D','E','F'], skipHeader:true});
+                //设置列宽
+                ws['!cols']= [
+                    {width: 15},
+                    {width: 20},
+                    {width: 100},
+                    {width: 25},
+                    {width: 15},
+                    {width: 15}
+                ];
+                let timestamp = (new Date()).getTime();
+                //sheet写入book
+                XLSX.utils.book_append_sheet(wb, ws, '错误日志');
+                //输出
+                XLSX.writeFile(wb,'错误日志'+timestamp+'.xlsx');
             },
             // 处理分页
             handleCurrentChange(val) {
