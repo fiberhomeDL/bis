@@ -148,7 +148,7 @@
                 // const serviceId = this.$store.state.selectedServiceId;
                 let serviceId = "dGVzdC11aQ==.1";
                 return httpReq.getAllPageData(serviceId).then(data => {
-                    that.pageOptions = data.data.getEndpoints;
+                    that.pageOptions = data.getEndpoints;
                     // 添加全部选项
                     that.pageOptions.unshift({key: 'All', label: '全部'});
                 });
@@ -173,8 +173,8 @@
                     needTotal: true
                 }
                 return httpReq.getErrorLogData(serviceId, pagePathId, category, paging, duration).then(data => {
-                    that.errorData = data.data.queryBrowserErrorLogs.logs;
-                    that.totalErrorData = data.data.queryBrowserErrorLogs.total;
+                    that.errorData = data.queryBrowserErrorLogs.logs;
+                    that.totalErrorData = data.queryBrowserErrorLogs.total;
                 });
 
             },
