@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import util from "@js/common"
 
 Vue.use(Vuex)
 
@@ -23,7 +24,7 @@ export default new Vuex.Store({
     //被选中数组ID
     selectedServiceId: 1,
     // 时间
-    time:[new Date((new Date().getTime() - 15 * 60 * 1000)),new Date()],
+    time:[new Date((new Date().getTime() - 15 * 60 * 1000)).toLocaleString(),new Date().toLocaleString()],
     // 聚合分析-错误列表-跳转的ID
     clusterAnalysisId: '',
     // 用户行为追踪-行为列表-跳转ID

@@ -4,7 +4,7 @@
         <el-date-picker
                 v-model="$store.state.time"
                 type="datetimerange"
-                value-format="yyyy-MM-dd HH:mm:ss"
+                value-format="yyyy-MM-dd HH:mm"
                 :picker-options="pickerOptions"
                 range-separator="至"
                 start-placeholder="开始时间"
