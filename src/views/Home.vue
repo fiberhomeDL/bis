@@ -40,13 +40,6 @@ export default {
     let activeComponentName = this.$route.params.componentName
     //路由有无传递信息的两种赋值
     activeComponentName ? this.activeComponent = activeComponentName : this.activeComponent = 'HomePage';
-
-
-    //进入首页获取应用列表
-    httpRequest.getAllService().then(data => {
-      //提交vuex
-      this.$store.commit('setServices', data.services);
-    });
   }
 }
 </script>

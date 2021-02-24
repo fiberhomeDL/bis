@@ -1,9 +1,14 @@
 <template>
-  <div class="home-page hw100-oh">
+  <div class="home-page hw100-oh"
+       v-loading="loading"
+       element-loading-text="拼命加载中"
+       element-loading-spinner="el-icon-loading"
+       element-loading-background="rgba(0, 0, 0, 0.8)"
+  >
 <!--    顶栏-->
     <div class="home-page-head">
 <!--      应用名称搜索框-->
-      <div class="home-page-head-input">
+      <div class="home-page-head-input">  
         <el-input
             placeholder="请输入应用名称"
             suffix-icon="el-icon-search"
@@ -66,6 +71,7 @@ export default {
   },
   data(){
     return {
+      loading: true,
       //应用名称搜索文本
       searchInput: '',
       //满意度选择项 及 默认值
@@ -114,52 +120,6 @@ export default {
         //     pvData: [100,200,100,300,800,700,600,500,400,300,200,100,100,200,100,300,800,700,600,500,400,300,200,100],
         //   }
         // },
-        // {
-        //   id: '2',
-        //   //应用名
-        //   name: 'testPG2',
-        //   //满意度 '1'满意 '2'一般 '3'不满意
-        //   satisfaction: '2',
-        //   //数据面板
-        //   infoData: {
-        //     viewCount: "21239",
-        //     subscribersCount: '59',
-        //     errorCount: '5',
-        //     warningCount: '14',
-        //     performanceCount: '99',
-        //   },
-        //   //柱状图数据
-        //   chartsData: {
-        //     //x轴坐标名
-        //     xData: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24"],
-        //     //y轴数据
-        //     uvData: [100,200,300,400,500,600,700,800,300,100,200,100,100,200,300,400,500,600,700,800,300,100,200,100],
-        //     pvData: [100,200,100,300,800,700,600,500,400,300,200,100,100,200,100,300,800,700,600,500,400,300,200,100],
-        //   }
-        // },
-        // {
-        //   id: '3',
-        //   //应用名
-        //   name: 'testPG3',
-        //   //满意度 '1'满意 '2'一般 '3'不满意
-        //   satisfaction: '3',
-        //   //数据面板
-        //   infoData: {
-        //     viewCount: "21239",
-        //     subscribersCount: '59',
-        //     errorCount: '5',
-        //     warningCount: '14',
-        //     performanceCount: '99',
-        //   },
-        //   //柱状图数据
-        //   chartsData: {
-        //     //x轴坐标名
-        //     xData: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24"],
-        //     //y轴数据
-        //     uvData: [100,200,300,400,500,600,700,800,300,100,200,100,100,200,300,400,500,600,700,800,300,100,200,100],
-        //     pvData: [100,200,100,300,800,700,600,500,400,300,200,100,100,200,100,300,800,700,600,500,400,300,200,100],
-        //   }
-        // }
       ]
     }
   },
@@ -171,7 +131,7 @@ export default {
       this.$store.commit('changeSelectedServiceId',value.id);
       this.$router.push({
         name: 'Detail',
-        params: {
+        query: {
           id: value.id,
           name: value.name
         }
@@ -193,6 +153,7 @@ export default {
     this.$nextTick(()=>{
       httpReq.init().then(data => {
         this.appInfo = data;
+        this.loading = false;
       })
 
       // this.appInfo = result

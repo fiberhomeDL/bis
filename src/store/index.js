@@ -9,7 +9,7 @@ export default new Vuex.Store({
     //应用数据数组
     services: [],
     //被选中服务ID
-    selectedServiceId: 1,
+    selectedServiceId: undefined,
     // 时间
     time:[new Date((new Date().getTime() - 15 * 60 * 1000)).toLocaleString(),new Date().toLocaleString()],
     // 聚合分析-错误列表-跳转的ID
@@ -22,8 +22,8 @@ export default new Vuex.Store({
     setServices(state,payload){
       state.services = payload;
     },
+    //变更选中应用id
     changeSelectedServiceId (state, selectedId) {
-      // 变更状态
       state.selectedServiceId = selectedId;
     },
     changeClusterAnalysisId (state, id){
