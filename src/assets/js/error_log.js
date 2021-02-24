@@ -69,21 +69,6 @@ let httpReq = {
     }
 }
 
-
-// function getAllPageData() {
-//     this.$http.post('/graphql', graphqlPageData).then(data => {
-//         console.info(data);
-//         return data;
-//     });
-// }
-// // 获取错误日志数据
-// function getErrorLog() {
-//     this.$http.post('/graphql', graphqlErrorLog).then(data => {
-//         console.info(data);
-//         return data;
-//     });
-// }
-
 export default httpReq;
 
 

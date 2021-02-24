@@ -45,6 +45,33 @@ let util = {
         duration.end = end;
         return duration;
     },
+    /**
+     * @param modelValue [Tue Feb 23 2021 10:56:15 GMT+0800 (中国标准时间), Tue Feb 23 2021 11:11:15 GMT+0800 (中国标准时间)]
+     * @return x轴刻度
+     * @description 根据时间组件生成X轴刻度
+     */
+    initXAxisData(time) {
+        let _this = this;
+        // 时间度量
+        const durationStep = this.formatStartAndEndTime(time).step;
+        // 图X轴刻度计算
+        let xAxisData = []; // x轴坐标刻度
+        let xStart = new Date(time[0]);
+        let xEnd = durationStep === 'MINUTE' ? new Date(new Date(_this.modelValue[1]).getTime() - 1000 * 60) : new Date(time[1]);
+        while ((xEnd.getTime() - xStart.getTime()) >= 0) {
+            if (durationStep === 'MINUTE') {
+                xAxisData.push((xStart.getMonth() + 1) + '-' + xStart.getDate() + ' ' + xStart.getHours() + ':' + xStart.getMinutes());
+                xStart = new Date(xStart.getTime() + 1000 * 60);
+            } else if (durationStep === 'HOUR') {
+                xAxisData.push((xStart.getMonth() + 1) + '-' + xStart.getDate() + ' ' + xStart.getHours());
+                xStart = new Date(xStart.getTime() + 1000 * 60 * 60);
+            } else {
+                xAxisData.push((xStart.getMonth() + 1) + '-' + xStart.getDate());
+                xStart = new Date(xStart.getTime() + 1000 * 60 * 60 * 24);
+            }
+        }
+        return xAxisData;
+    },
 
 }
 

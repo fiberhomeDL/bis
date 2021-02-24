@@ -116,6 +116,7 @@
     import ProgressBar from "@/components/common/ProgressBar";
     import ClusterAnalysisBar from "@/components/common/cluster_analysis/ClusterAnalysisBar";
     import NumberBlock from "@/components/common/page_monitor/NumberBlock";
+    import httpReq from "@js/page_monitor";
 
     export default {
         name: "PageMonitor",
@@ -238,11 +239,23 @@
         methods: {
             // 查询应用下所有页面
             getAllPage() {
+                let that = this;
                 // 应用ID
-                const serviceId = this.$store.state.selectedServiceId;
-                // 时间
-                const time = this.$store.state.time;
+                // const serviceId = this.$store.state.selectedServiceId;
+                let serviceId = "dGVzdC11aQ==.1";
+                return httpReq.getAllPageData(serviceId).then(data => {
+                    let pageData = data.getEndpoints;
+                    console.info(pageData);
+                    // 时间
+                    let time = that.$store.state.time;
+                    let duration = {start: "2021-02-23 0706", end: "2021-02-23 0721", step: "MINUTE"};
+                    return httpReq.getPageFptAvg(duration).then(data => {
+                        console.info(data);
+                    });
+                });
+
                 // graphql请求数据   1.查询应用下所有页面  2.查询页面所有白屏时间、首屏时间、html加载时间、load时间
+
 
                 // 处理数据
                 this.handleData();
