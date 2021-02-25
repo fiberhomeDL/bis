@@ -6,7 +6,7 @@
         <div class="container">
 <!--          侧边栏-->
             <div class="container-sideMenu" >
-                <Menu @change-content="changeContent"></Menu>
+                <Menu :active-component-name="activeContent" @change-content="changeContent"></Menu>
             </div>
 <!--          组件内部-->
             <div class="container-content">
@@ -14,6 +14,7 @@
                   <component
                       :is="activeContent"
                       @change-content="toDeepPage"
+                      @change-component="changeContent"
                   ></component>
                </keep-alive>
             </div>
@@ -61,7 +62,7 @@ export default {
         toDeepPage(param){
           this.activeContent = param.to;
         },
-        // 头部导航跳转
+        // 跳转至首页
         changeComponent(componentName){
             this.$router.push({
                 name: 'Home',
@@ -77,7 +78,7 @@ export default {
     },
     created() {
       //如果用户在Detail页面下刷新，依旧保持选中应用的状态
-      this.$store.commit('changeSelectedServiceId',this.$route.query.id)
+      this.$store.commit('changeSelectedServiceId',this.$route.query.id);
     }
 }
 </script>

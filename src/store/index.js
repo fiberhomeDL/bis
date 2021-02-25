@@ -15,7 +15,13 @@ export default new Vuex.Store({
     // 聚合分析-错误列表-跳转的ID
     clusterAnalysisId: '',
     // 用户行为追踪-行为列表-跳转ID
-    behaviorTraceId:''
+    behaviorTraceId:'',
+
+    //应用总览 跳转到 页面监控 页面 所带的页面信息
+    toPageMonitorParam: {
+      id: undefined,
+      name: undefined,
+    }
   },
   getters: {
     //获取选中的服务名称
@@ -30,6 +36,21 @@ export default new Vuex.Store({
     }
   },
   mutations: {
+    //clear toPageMonitorParam
+    clearMonitorParam(state){
+      /*获取值后调用*/
+      state.toPageMonitorParam = {
+        id: undefined,
+        name: undefined,
+      }
+    },
+
+    //set toPageMonitorParam
+    setMonitorParam(state, payload){
+      state.toPageMonitorParam = payload;
+    },
+
+
     //为应用列表赋值
     setServices(state,payload){
       state.services = payload;

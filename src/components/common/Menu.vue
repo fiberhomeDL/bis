@@ -14,61 +14,70 @@
 <script>
     export default {
         name: "Menu",
-        data(){
-            return {
-                tabData: [
-                    {
-                        title: '应用总览',
-                        name:'overview',
-                        componentName: 'AppOverview',
-                        isActive: true
-                    },
-                    {
-                        title: '页面监控',
-                        name:'monitor',
-                        componentName: 'PageMonitor',
-                        isActive: false
-                    },
-                    {
-                        title: '错误日志',
-                        name:'errorlog',
-                        componentName: 'ErrorLog',
-                        isActive: false
-                    },
-                    {
-                        title: '聚合分析',
-                        name:'cluster',
-                        componentName: 'clusterAnalysis',
-                        isActive: false
-                    },
-                    {
-                        title: '终端分析',
-                        name:'terminal',
-                        componentName: 'TerminalAnalysis',
-                        isActive: false
-                    },
-                    {
-                        title: '用户行为追踪',
-                        name:'track',
-                        componentName: 'BehaviorTrack',
-                        isActive: false
-                    },
-                    {
-                        title: '告警',
-                        name:'alarm',
-                        componentName: 'Alarm',
-                        isActive: false
-                    },
-                ]
-            }
+        //传入展示应用名称
+        props: ['activeComponentName'],
+        computed: {
+          //展示应用
+          activeName(){
+            return this.activeComponentName;
+          },
+          //应用列表数据 isActive根据activeName为判断依据
+          tabData(){
+            return [
+              {
+                title: '应用总览',
+                name:'overview',
+                componentName: 'AppOverview',
+                isActive: this.activeName === 'AppOverview'
+              },
+              {
+                title: '页面监控',
+                name:'monitor',
+                componentName: 'PageMonitor',
+                isActive: this.activeName === 'PageMonitor'
+              },
+              {
+                title: '错误日志',
+                name:'errorlog',
+                componentName: 'ErrorLog',
+                isActive: this.activeName === 'ErrorLog'
+              },
+              {
+                title: '聚合分析',
+                name:'cluster',
+                componentName: 'clusterAnalysis',
+                isActive: this.activeName === 'clusterAnalysis'
+              },
+              {
+                title: '终端分析',
+                name:'terminal',
+                componentName: 'TerminalAnalysis',
+                isActive: this.activeName === 'TerminalAnalysis'
+              },
+              {
+                title: '用户行为追踪',
+                name:'track',
+                componentName: 'BehaviorTrack',
+                isActive: this.activeName === 'BehaviorTrack'
+              },
+              {
+                title: '告警',
+                name:'alarm',
+                componentName: 'Alarm',
+                isActive: this.activeName === 'Alarm'
+              },
+            ]
+          }
         },
         methods: {
+          //点击tab
             tabClick(value){
                 if(!value.isActive){
-                    this.tabData.forEach((item)=>{item.isActive = false});
-                    value.isActive = true;
-                    //  抛出组件名
-                    this.$emit('change-content', value.componentName);
+                  this.activeName = value.componentName;
+                  // this.tabData.forEach((item)=>{item.isActive = false});
+                  // value.isActive = true;
+                  //  抛出组件名
+                  this.$emit('change-content', value.componentName);
                 }
             }
         }

@@ -45,16 +45,16 @@
             </el-row>
             <el-row :gutter="20" style="margin-top: 16px">
               <el-col :span="6">
-                <app-overview-bar :sub-title="'页面白屏时间'" :remark="'FPT'" :bar-data="FPTData"></app-overview-bar>
+                <app-overview-bar @to-page-monitor="toPageMonitor" :sub-title="'页面白屏时间'" :remark="'FPT'" :bar-data="FPTData"></app-overview-bar>
               </el-col>
               <el-col :span="6">
-                <app-overview-bar :sub-title="'页面首屏时间'" :remark="'FMP'" :bar-data="FMPData"></app-overview-bar>
+                <app-overview-bar @to-page-monitor="toPageMonitor" :sub-title="'页面首屏时间'" :remark="'FMP'" :bar-data="FMPData"></app-overview-bar>
               </el-col>
               <el-col :span="6">
-                <app-overview-bar :sub-title="'Html加载时间 '" :remark="'DOM READY'" :bar-data="DomData"></app-overview-bar>
+                <app-overview-bar @to-page-monitor="toPageMonitor" :sub-title="'Html加载时间 '" :remark="'DOM READY'" :bar-data="DomData"></app-overview-bar>
               </el-col>
               <el-col :span="6">
-                <app-overview-bar :sub-title="'页面完全加载时间'" :remark="'LOAD'" :bar-data="LoadData"></app-overview-bar>
+                <app-overview-bar @to-page-monitor="toPageMonitor" :sub-title="'页面完全加载时间'" :remark="'LOAD'" :bar-data="LoadData"></app-overview-bar>
               </el-col>
 
             </el-row>
@@ -79,12 +79,6 @@ export default {
   components: {SubHeaderTitle, ServiceSelect,TimePicker,AppOverviewPv,AppOverviewError,AppOverviewPie,AppOverviewBar},
   data(){
     return{
-
-      xData: this.$store.getters.getXAxisData,
-
-
-
-
       loading: false,
       //应用访问量
       appInfo: {
@@ -133,6 +127,12 @@ export default {
   },
 
   methods: {
+    /*跳转到页面监控*/
+    toPageMonitor(param){
+      this.$store.commit('setMonitorParam', param)
+      this.$emit('change-component', 'PageMonitor')
+    },
+    /*当查询条件改变时*/
     changeCondition(){
       let that = this;
       this.loading = true
@@ -160,7 +160,6 @@ export default {
   },
   created() {
     this.$nextTick(()=>{
-      debugger;
       this.changeCondition();
     })
   },

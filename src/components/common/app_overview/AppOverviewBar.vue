@@ -1,7 +1,7 @@
 <template>
   <div class="ao-bar">
     <sub-header-title :sub-title="subTitle" :remark="remark"></sub-header-title>
-    <div class="ao-bar-item" v-for="(value,i) in barDataByCom.slice(0,5)" :key="i">
+    <div class="ao-bar-item" v-for="(value,i) in barDataByCom.slice(0,5)" :key="i" @click="toPageMonitor(value)">
       <div class="ao-bar-header flex-row">
         <span class="normal-text">{{value.name}}</span>
         <span class="normal-text">{{value.value}}</span>
@@ -15,6 +15,7 @@
 import SubHeaderTitle from "@/components/common/SubHeaderTitle";
 export default {
   name: "AppOverviewBar",
+  components: { SubHeaderTitle},
   props: ['subTitle','remark','barData'],
   data(){
     return {
@@ -66,7 +67,15 @@ export default {
       return sortArr;
     }
   },
-  components: { SubHeaderTitle }
+
+  methods: {
+    toPageMonitor(value){
+      let id = value.id;
+      let name = value.name;
+      this.$emit('to-page-monitor', {id,name})
+    },
+  }
+
 
 }
 </script>
@@ -78,6 +87,14 @@ export default {
     //color: #575777;
     margin: 18px 0 12px 0;
     justify-content: space-between;
+  }
+
+  &-item{
+    cursor: pointer;
+  }
+
+  &-item:hover span{
+    color: #00baff;
   }
 }
 
