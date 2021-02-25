@@ -1,5 +1,10 @@
 <template>
-    <div class="content-page-monitor">
+    <div class="content-page-monitor"
+         v-loading="loading"
+         element-loading-text="拼命加载中"
+         element-loading-spinner="el-icon-loading"
+         element-loading-background="rgba(0, 0, 0, 0.8)"
+    >
         <!--        选择区域-->
         <div class="select-area flex-row">
             <div class="select-area_item">
@@ -11,7 +16,7 @@
                 </div>
             </div>
         </div>
-        <div class="page-information hw100-oh">
+        <div class="page-information hw100-oh" v-if="!loading">
             <div class="page-information-container">
                 <!--                所有页面名称-->
                 <div class="page-information-container-left">
@@ -133,6 +138,8 @@
         },
         data() {
             return {
+                // 加载中标识
+                loading: true,
                 // 排序数据
                 orderData: 'browser_app_page_fpt_avg',
                 // 排序数据选项
@@ -165,56 +172,9 @@
                 // x轴时间刻度
                 xAxisData: ['18:00', '19:00', '20:00', '21:00', '22:00', '23:00', '24:00'],
                 // 页面性能数据
-                performanceData: [
-                    {
-                        name: '白屏时间',
-                        type: 'line',
-                        data: [120, 132, 101, 134, 90, 230, 210]
-                    },
-                    {
-                        name: '首屏时间',
-                        type: 'line',
-                        data: [220, 182, 191, 234, 290, 330, 310]
-                    },
-                    {
-                        name: 'Html加载时间',
-                        type: 'line',
-                        data: [150, 232, 201, 154, 190, 330, 410]
-                    },
-                    {
-                        name: '页面完全加载时间',
-                        type: 'line',
-                        data: [320, 332, 301, 334, 390, 330, 320]
-                    },
-                ],
+                performanceData: [],
                 // 页面延迟数据
-                lantencyData: [
-                    {
-                        name: 'P50',
-                        type: 'line',
-                        data: [120, 132, 101, 134, 90, 230, 210]
-                    },
-                    {
-                        name: 'P75',
-                        type: 'line',
-                        data: [220, 182, 191, 234, 290, 330, 310]
-                    },
-                    {
-                        name: 'P90',
-                        type: 'line',
-                        data: [150, 232, 201, 154, 190, 330, 410]
-                    },
-                    {
-                        name: 'P95',
-                        type: 'line',
-                        data: [320, 332, 301, 334, 390, 330, 320]
-                    },
-                    {
-                        name: 'P99',
-                        type: 'line',
-                        data: [300, 372, 309, 364, 320, 342, 311]
-                    },
-                ],
+                lantencyData: [],
                 // 页面加载数据
                 pageLoadData: [],
             }
@@ -227,6 +187,7 @@
             // 查询应用下所有页面
             getAllPage() {
                 let that = this;
+                that.loading = true;
                 // 应用ID
                 // let serviceId = this.$store.state.selectedServiceId;
                 // 测试
@@ -273,6 +234,7 @@
             },
             // 显示页面详情
             getPageDetail(id) {
+
                 let that = this;
                 // 查询页面详情数据、 页面名称、浏览量、各类错误率、页面加载瀑布图、关键性能指标、加载延时P50、错误量
                 // 应用ID
@@ -286,6 +248,7 @@
 
                 // graphql
                 return httpReq.getPageDetail(duration).then(data => {
+                    that.loading = false;
                     // 赋值给各项数据
                     console.info(data);
                     that.pagePv = data.pv;
@@ -297,10 +260,10 @@
                     that.unKnowErrorRate = (data.unknowErrorSum / totalErrorSum).toFixed(2) * 100;
                     // 页面瀑布图
                     that.pageLoadData = that.handlePageLoadData([data.dnsTime, data.tcpTime, data.sslTime, data.ttfbTime, data.transTime, data.domReadyTime, data.resTime]);
-
                     // 页面性能指数
-                    // that.performanceData =
-                    that.handlePagePerforData([data.fptTime.values.values, data.fmpTime.values.values, data.domReadyTimeDuration.values.values, data.loadTime.values.values,]);
+                    that.performanceData = that.handlePagePerforData([data.fptTime.values.values, data.fmpTime.values.values, data.domReadyTimeDuration.values.values, data.loadTime.values.values,]);
+                    // 页面加载延时
+                    that.lantencyData = that.handleLantenData(data.loadPerTime);
                 });
             },
             // 处理页面瀑布图数据
@@ -332,13 +295,71 @@
             },
             // 处理页面性能数据
             handlePagePerforData(data) {
-                let that = this;
                 // 页面性能数据
-                for (var i = 0; i < data.length; i++) {
-                    that.performanceData[i].data = data[i].map(function (item) {
+                let performanceData = [
+                    {
+                        name: '白屏时间',
+                        type: 'line',
+                        data: []
+                    },
+                    {
+                        name: '首屏时间',
+                        type: 'line',
+                        data: []
+                    },
+                    {
+                        name: 'Html加载时间',
+                        type: 'line',
+                        data: []
+                    },
+                    {
+                        name: '页面完全加载时间',
+                        type: 'line',
+                        data: []
+                    },
+                ];
+                for (var i = 0; i < performanceData.length; i++) {
+                   performanceData[i].data = data[i].map(function (item) {
                         return item.value;
                     });
                 }
+                return performanceData;
+            },
+            // 处理页面加载延时数据
+            handleLantenData(data){
+                let lantencyData = [
+                    {
+                        name: 'P50',
+                        type: 'line',
+                        data: []
+                    },
+                    {
+                        name: 'P75',
+                        type: 'line',
+                        data: []
+                    },
+                    {
+                        name: 'P90',
+                        type: 'line',
+                        data: []
+                    },
+                    {
+                        name: 'P95',
+                        type: 'line',
+                        data: []
+                    },
+                    {
+                        name: 'P99',
+                        type: 'line',
+                        data: []
+                    },
+                ];
+                for (var i = 0; i < lantencyData.length; i++) {
+                    lantencyData[i].data = data[i].values.values.map(function (item) {
+                        return item.value;
+                    });
+                }
+                return lantencyData;
             },
             // 跳转错误日志，根据错误类型
             goToErrorLog(type) {
