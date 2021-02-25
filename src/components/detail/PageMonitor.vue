@@ -18,7 +18,7 @@
                     <div class="page-select-area_item">
                         <span>排序:</span>
                         <el-select v-model="orderData" placeholder="请选择" :size="'small'" class="order-select"
-                                   @change="handleData">
+                                   @change="getPageTime">
                             <el-option
                                     v-for="item in orderDataOptions"
                                     :key="item.value"
@@ -38,17 +38,17 @@
                         </el-input>
                     </div>
                     <div class="page-name-bar">
-                        <progress-bar :data="pageNameList" @show-detail="showDetail"></progress-bar>
+                        <progress-bar :data="pageNameList" @show-detail="getPageDetail"></progress-bar>
                     </div>
                 </div>
                 <!--                页面详情-->
                 <div class="page-information-container-right">
-                    <div class="page-total-name">页面:index.hmtl</div>
+                    <div class="page-total-name">页面:{{selectedPage.name}}</div>
                     <div class="page-detail-left">
                         <div class="page-detail-pv">
                             <span class="font-pv">浏览量</span>
                             <div class="number-pv">
-                                <number-block :data=20098></number-block>
+                                <number-block :data=pagePv></number-block>
                             </div>
                         </div>
                         <!--                        页面加载瀑布图-->
@@ -72,13 +72,13 @@
                     <div class="page-detail-right">
                         <!--                        错误类别-->
                         <div class="page-detail-error-rate">
-                            <error-rate-progress :error-type="'js错误'" :error-rate="100.00"
+                            <error-rate-progress :error-type="'js错误'" :error-rate="jsErrorRate"
                                                  @show-detail="goToErrorLog"></error-rate-progress>
-                            <error-rate-progress :error-type="'静态资源异常'" :error-rate="5.06"
+                            <error-rate-progress :error-type="'静态资源异常'" :error-rate="resErrorRate"
                                                  @show-detail="goToErrorLog"></error-rate-progress>
-                            <error-rate-progress :error-type="'Ajax错误'" :error-rate="7"
+                            <error-rate-progress :error-type="'Ajax错误'" :error-rate="ajaxErrorRate"
                                                  @show-detail="goToErrorLog"></error-rate-progress>
-                            <error-rate-progress :error-type="'未知错误'" :error-rate="88.88"
+                            <error-rate-progress :error-type="'未知错误'" :error-rate="unKnowErrorRate"
                                                  @show-detail="goToErrorLog"></error-rate-progress>
                         </div>
                         <!--                        关键性能指标-->
@@ -134,39 +134,34 @@
         data() {
             return {
                 // 排序数据
-                orderData: 'fpt',
+                orderData: 'browser_app_page_fpt_avg',
                 // 排序数据选项
                 orderDataOptions: [
-                    {value: 'fpt', label: '白屏时间(ms)'},
-                    {value: 'fmp', label: '首屏时间(ms)'},
-                    {value: 'domReady', label: 'Html加载时间(ms)'},
-                    {value: 'load', label: '页面完全加载时间(ms)'},
+                    {value: 'browser_app_page_fpt_avg', label: '白屏时间(ms)'},
+                    {value: 'browser_app_page_fmp_avg', label: '首屏时间(ms)'},
+                    {value: 'browser_app_page_dom_ready_avg', label: 'Html加载时间(ms)'},
+                    {value: 'browser_app_page_dom_ready_avg"', label: '页面完全加载时间(ms)'},
                 ],
+                // 应用下全部页面
+                pageData: [],
                 // 页面名称数据
-                pageNameData: [{id: 1, name: 'index.html', data: 88},
-                    {id: 2, name: 'egje/asfsfebg/gekeg/home.jsp', data: 220},
-                    {id: 3, name: 'home.jsp', data: 110},
-                    {id: 4, name: 'home.jsp', data: 100},
-                    {id: 5, name: 'home.jsp', data: 77},
-                    {id: 6, name: 'home.jsp', data: 30},
-                    {id: 7, name: '/abgeg/ge/sgeg/home.jsp', data: 23},
-                    {id: 8, name: 'egje/asfsfebg/gekeg/home.jsp', data: 220},
-                    {id: 9, name: 'home.jsp', data: 110},
-                    {id: 10, name: 'home.jsp', data: 100},
-                    {id: 11, name: 'home.jsp', data: 77},
-                    {id: 12, name: 'home.jsp', data: 30},
-                    {id: 13, name: '/abgeg/ge/sgeg/home.jsp', data: 23},
-                    {id: 14, name: 'home.jsp', data: 100},
-                    {id: 15, name: 'home.jsp', data: 77},
-                    {id: 16, name: 'home.jsp', data: 30},
-                    {id: 17, name: '/abgeg/ge/sgeg/home.jsp', data: 23},
-                ],
+                pageNameData: [],
                 // 页面名称显示列表
                 pageNameList: [],
                 // 选择的页面
-                selectedPage:'',
+                selectedPage: {},
                 // 搜索关键词
                 keywords: '',
+                // 页面浏览量
+                pagePv: 0,
+                // js错误率
+                jsErrorRate: 0,
+                // 静态资源错误率
+                resErrorRate: 0,
+                // ajax错误率
+                ajaxErrorRate: 0,
+                // 未知错误率
+                unKnowErrorRate: 0,
                 // x轴时间刻度
                 xAxisData: ['18:00', '19:00', '20:00', '21:00', '22:00', '23:00', '24:00'],
                 // 页面性能数据
@@ -221,15 +216,7 @@
                     },
                 ],
                 // 页面加载数据
-                pageLoadData: [
-                    {title: 'DNS查询 DNS Lookup', startTime: 0, consumeTime: 20},
-                    {title: 'TCP连接 TCP', startTime: 20, consumeTime: 30},
-                    {title: 'SSL建连 SSL', startTime: 40, consumeTime: 10},
-                    {title: '请求响应时间 TTFB ', startTime: 50, consumeTime: 20},
-                    {title: '内容传输 Trans', startTime: 70, consumeTime: 10},
-                    {title: 'DOM解析 Dom Ready', startTime: 80, consumeTime: 30},
-                    {title: '资源加载 Resource', startTime: 110, consumeTime: 120},
-                ],
+                pageLoadData: [],
             }
         },
         mounted() {
@@ -241,26 +228,37 @@
             getAllPage() {
                 let that = this;
                 // 应用ID
-                // const serviceId = this.$store.state.selectedServiceId;
+                // let serviceId = this.$store.state.selectedServiceId;
+                // 测试
                 let serviceId = "dGVzdC11aQ==.1";
+                // 查询应用下所有页面
                 return httpReq.getAllPageData(serviceId).then(data => {
-                    let pageData = data.getEndpoints;
-                    console.info(pageData);
-                    // 时间
-                    let time = that.$store.state.time;
-                    let duration = {start: "2021-02-23 0706", end: "2021-02-23 0721", step: "MINUTE"};
-                    return httpReq.getPageFptAvg(duration).then(data => {
-                        console.info(data);
-                    });
+                    that.pageData = data.getEndpoints;
+                    // 查询各页面时间
+                    that.getPageTime();
                 });
-
-                // graphql请求数据   1.查询应用下所有页面  2.查询页面所有白屏时间、首屏时间、html加载时间、load时间
-
-
-                // 处理数据
-                this.handleData();
             },
-            // 处理数据
+            // 查询应用下页面所有白屏时间/首屏时间/html加载时间/load时间
+            getPageTime() {
+                let that = this;
+                //  查询条件
+                let condition = {
+                    name: that.orderData,
+                    // 测试  应用名称
+                    service: "test-ui",
+                    topN: that.pageData.length,
+                }
+                // 时间
+                // let duration = util.formatStartAndEndTime(that.$store.state.time);
+                // 测试
+                let duration = {start: "2021-02-23 0706", end: "2021-02-23 0721", step: "MINUTE"};
+                return httpReq.getPageTimeAvgTop(condition, duration).then(data => {
+                    that.pageNameData = data.sortMetrics;
+                    // 处理数据
+                    this.handleData();
+                });
+            },
+            // 处理数据,关键词过滤，显示第一条数据详情
             handleData() {
                 let that = this;
                 // 根据搜索关键词过滤数据
@@ -268,42 +266,79 @@
                         return item.name.includes(that.keywords);
                     }
                 );
-                // 按照排序关键词降序排列
-                that.pageNameList.sort(function (a, b) {
-                    return b.data - a.data;
-                });
-                // 显示第一个页面的详情数据、查询数据
-                that.selectedPage = that.pageNameList[0].id;
-
-                // graphql
-
-
+                // 显示第一个页面的详情数据
+                that.selectedPage = that.pageNameList[0];
+                // 查询第一个页面详情数据
+                that.getPageDetail(that.selectedPage.id);
             },
             // 显示页面详情
-            showDetail(id) {
+            getPageDetail(id) {
                 let that = this;
                 // 查询页面详情数据、 页面名称、浏览量、各类错误率、页面加载瀑布图、关键性能指标、加载延时P50、错误量
                 // 应用ID
-                const serviceId = this.$store.state.selectedServiceId;
+                let serviceId = this.$store.state.selectedServiceId;
                 // 时间
-                const time = this.$store.state.time;
+                // let duration = util.formatStartAndEndTime(that.$store.state.time);
+                // 测试
+                let duration = {start: "2021-02-24 1052", end: "2021-02-24 1107", step: "MINUTE"};
                 // 页面ID
-                that.selectedPage = id;
+
 
                 // graphql
+                return httpReq.getPageDetail(duration).then(data => {
+                    // 赋值给各项数据
+                    console.info(data);
+                    that.pagePv = data.pv;
+                    // 错误数据
+                    const totalErrorSum = data.totalErrorSum;
+                    that.jsErrorRate = (data.jsErrorSum / totalErrorSum).toFixed(2) * 100;
+                    that.resErrorRate = (data.resErrorSum / totalErrorSum).toFixed(2) * 100;
+                    that.ajaxErrorRate = (data.ajaxErrorSum / totalErrorSum).toFixed(2) * 100;
+                    that.unKnowErrorRate = (data.unknowErrorSum / totalErrorSum).toFixed(2) * 100;
+                    // 页面瀑布图
+                    that.pageLoadData = that.handlePageLoadData([data.dnsTime, data.tcpTime, data.sslTime, data.ttfbTime, data.transTime, data.domReadyTime, data.resTime]);
 
-                // 赋值给各项数据
-
-                // 页面名称
-
-                // 浏览量
-
-                // 错误率
-
-                // 加载延时
-
-                // 错误量
-
+                    // 页面性能指数
+                    // that.performanceData =
+                    that.handlePagePerforData([data.fptTime.values.values, data.fmpTime.values.values, data.domReadyTimeDuration.values.values, data.loadTime.values.values,]);
+                });
+            },
+            // 处理页面瀑布图数据
+            handlePageLoadData(data) {
+                // 瀑布流进行的当前时间
+                let currentTime = 0;
+                // 页面瀑布图数据
+                let pageLoadData = [
+                    {title: 'DNS查询 DNS Lookup', startTime: 0, consumeTime: 0},
+                    {title: 'TCP连接 TCP', startTime: 0, consumeTime: 0},
+                    {title: 'SSL建连 SSL', startTime: 0, consumeTime: 0},
+                    {title: '请求响应时间 TTFB', startTime: 0, consumeTime: 0},
+                    {title: '内容传输 Trans', startTime: 0, consumeTime: 0},
+                    {title: 'DOM解析 Dom Ready', startTime: 0, consumeTime: 0},
+                    {title: '资源加载 Resource', startTime: 0, consumeTime: 0}
+                ];
+                // 设置数据的开始时间和消耗时间
+                for (var i = 0; i < data.length; i++) {
+                    // ssl建连时间的结束时间等于tcp结束时间
+                    if (i !== 2) {
+                        pageLoadData[i].startTime = currentTime;
+                        currentTime += data[i];
+                    } else {
+                        pageLoadData[i].startTime = currentTime - data[i];
+                    }
+                    pageLoadData[i].consumeTime = data[i];
+                }
+                return pageLoadData;
+            },
+            // 处理页面性能数据
+            handlePagePerforData(data) {
+                let that = this;
+                // 页面性能数据
+                for (var i = 0; i < data.length; i++) {
+                    that.performanceData[i].data = data[i].map(function (item) {
+                        return item.value;
+                    });
+                }
             },
             // 跳转错误日志，根据错误类型
             goToErrorLog(type) {
