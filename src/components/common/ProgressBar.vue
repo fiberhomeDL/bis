@@ -4,8 +4,8 @@
             <div class="top-bar" v-show="index<5" :style="{background:color[index]}"></div>
             <div v-if="item.name.length>18" class="title">...{{item.name.substring(item.name.length-18)}}</div>
             <div v-else class="title">{{item.name}}</div>
-            <div class="number">{{item.data}}</div>
-            <div class="bar-inner" :style="{width:item.data/max*100+'%'}"></div>
+            <div class="number">{{item.value}}</div>
+            <div class="bar-inner" :style="{width:item.value/max*100+'%'}"></div>
         </div>
     </div>
 </template>
@@ -30,7 +30,7 @@
         computed: {
             // 最大时间
             max: function () {
-                return Math.max.apply(Math,this.data.map(item => { return item.data }));
+                return Math.max.apply(Math,this.data.map(item => { return item.value }));
             }
         }
     }
