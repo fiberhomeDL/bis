@@ -9,12 +9,12 @@
 import SubHeaderTitle from "@/components/common/SubHeaderTitle";
 export default {
   name: "AppOverviewError",
+  props: ['errorInfo'],
   components: {SubHeaderTitle},
   mounted() {
+    let that = this;
     let myChart = this.$echarts.init(this.$refs.aoErrorCharts);
-    this.$http.get('https://cdn.jsdelivr.net/gh/apache/echarts-website@asf-site/examples/data/asset/data/aqi-beijing.json').then(data=>{
-      data = data.slice(0,400);
-      myChart.setOption({
+    myChart.setOption({
         grid: {
           top: 40,
           bottom: 20,
@@ -26,9 +26,7 @@ export default {
           trigger: 'axis'
         },
         xAxis: {
-          data: data.map(function (item) {
-            return item[0];
-          }),
+          data: that.errorInfo.xData,
           axisTick: {
             lineStyle: {
               color: '#c1c5ca41',
@@ -93,14 +91,11 @@ export default {
         },
         series: {
           smooth: true,
-          name: 'Beijing AQI',
+          name: '错误数',
           type: 'line',
-          data: data.map(function (item) {
-            return item[1];
-          })
+          data: that.errorInfo.errorValue
         }
       })
-    })
   }
 }
 </script>

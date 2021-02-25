@@ -8,10 +8,10 @@
 import SubHeaderTitle from "@/components/common/SubHeaderTitle";
 export default {
   name: "AppOverviewPv",
-
-  
+  props: ['appInfo'],
   components: { SubHeaderTitle },
   mounted() {
+    let that = this;
     let myChart = this.$echarts.init(this.$refs.aoPvCharts);
     myChart.setOption({
       grid: {
@@ -40,7 +40,8 @@ export default {
       xAxis: [
         {
           type: 'category',
-          data: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24"],
+          //data: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24"],
+          data: that.appInfo.xData,
           offset: 10,
           axisTick: {
             lineStyle: {
@@ -80,7 +81,8 @@ export default {
         {
           name: '浏览量',
           type: 'bar',
-          data: [100,200,300,400,500,600,700,800,300,100,200,100,100,200,300,400,500,600,700,800,300,100,200,100],
+          //data: [100,200,300,400,500,600,700,800,300,100,200,100,100,200,300,400,500,600,700,800,300,100,200,100],
+          data: that.appInfo.pvValue,
           itemStyle: {
             //柱形图圆角，鼠标移上去效果，如果只是一个数字则说明四个参数全部设置为那么多
             normal: {
@@ -93,7 +95,8 @@ export default {
         {
           name: '用户量',
           type: 'bar',
-          data: [100, 200, 100, 300, 800, 700, 600, 500, 400, 300, 200, 100,100, 200, 100, 300, 800, 700, 600, 500, 400, 300, 200, 100],
+          //data: [100, 200, 100, 300, 800, 700, 600, 500, 400, 300, 200, 100,100, 200, 100, 300, 800, 700, 600, 500, 400, 300, 200, 100],
+          data: that.appInfo.uvValue,
           itemStyle: {
             //柱形图圆角，鼠标移上去效果，如果只是一个数字则说明四个参数全部设置为那么多
             normal: {
@@ -105,7 +108,6 @@ export default {
         },
       ]
     })
-
   }
 }
 </script>

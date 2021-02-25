@@ -1,21 +1,32 @@
 <template>
-    <div class="app-overview flex-column">
+    <div class="app-overview flex-column"
+         v-loading="loading"
+         element-loading-text="拼命加载中"
+         element-loading-spinner="el-icon-loading"
+         element-loading-background="rgba(0, 0, 0, 0.8)"
+    >
       <div class="app-overview-header flex-row">
-        <service-select @onSelectChange="onSelectChange"></service-select>
-        <time-picker></time-picker>
+        <service-select @onSelectChange="changeCondition"></service-select>
+        <time-picker
+            @changeTime="changeCondition"
+        ></time-picker>
       </div>
-      <div class="app-overview-wrapper">
+      <div class="app-overview-wrapper" v-if="!loading">
         <div class="app-overview-body">
 <!--          <div class="app-overview-body-content">-->
             <el-row :gutter="20">
               <el-col :span="12">
                 <!--    应用访问量      -->
                 <sub-header-title :sub-title="'应用访问量'"></sub-header-title>
-                <app-overview-pv style="margin-top: 14px"></app-overview-pv>
+                <app-overview-pv
+                    :app-info="appInfo"
+                    style="margin-top: 14px"></app-overview-pv>
               </el-col>
               <el-col :span="12">
                 <!--    错误量      -->
-                <app-overview-error></app-overview-error>
+                <app-overview-error
+                  :error-info="errorInfo"
+                ></app-overview-error>
               </el-col>
             </el-row>
             <el-row :gutter="20">
@@ -34,16 +45,16 @@
             </el-row>
             <el-row :gutter="20" style="margin-top: 16px">
               <el-col :span="6">
-                <app-overview-bar :sub-title="'页面白屏时间'" :remark="'FPT'"></app-overview-bar>
+                <app-overview-bar :sub-title="'页面白屏时间'" :remark="'FPT'" :bar-data="FPTData"></app-overview-bar>
               </el-col>
               <el-col :span="6">
-                <app-overview-bar :sub-title="'页面首屏时间'" :remark="'FMP'"></app-overview-bar>
+                <app-overview-bar :sub-title="'页面首屏时间'" :remark="'FMP'" :bar-data="FMPData"></app-overview-bar>
               </el-col>
               <el-col :span="6">
-                <app-overview-bar :sub-title="'Html加载时间 '" :remark="'DOM READY'"></app-overview-bar>
+                <app-overview-bar :sub-title="'Html加载时间 '" :remark="'DOM READY'" :bar-data="DomData"></app-overview-bar>
               </el-col>
               <el-col :span="6">
-                <app-overview-bar :sub-title="'页面完全加载时间'" :remark="'LOAD'"></app-overview-bar>
+                <app-overview-bar :sub-title="'页面完全加载时间'" :remark="'LOAD'" :bar-data="LoadData"></app-overview-bar>
               </el-col>
 
             </el-row>
@@ -61,12 +72,39 @@ import AppOverviewError from "@/components/common/app_overview/AppOverviewError"
 import AppOverviewPie from "@/components/common/app_overview/AppOverviewPie";
 import AppOverviewBar from "@/components/common/app_overview/AppOverviewBar";
 import SubHeaderTitle from "@/components/common/SubHeaderTitle";
+import httpReq from "@js/appOverview";
 
 export default {
   name: "AppOverview",
   components: {SubHeaderTitle, ServiceSelect,TimePicker,AppOverviewPv,AppOverviewError,AppOverviewPie,AppOverviewBar},
   data(){
     return{
+
+      xData: this.$store.getters.getXAxisData,
+
+
+
+
+      loading: false,
+      //应用访问量
+      appInfo: {
+        xData: [],
+        pvValue: [],
+        uvValue: [],
+      },
+      errorInfo: {
+        xData: [],
+        errorValue: [],
+      },
+
+      FPTData: [],
+      FMPData: [],
+      DomData: [],
+      LoadData: [],
+
+
+
+      //暂无数据
       browserUseData: [
         {value: 40, name: '谷歌87.0'},
         {value: 20, name: 'safari1.0'},
@@ -93,10 +131,40 @@ export default {
       ],
     }
   },
+
   methods: {
-    onSelectChange(selectId){
-      alert(selectId);
-    }
+    changeCondition(){
+      let that = this;
+      this.loading = true
+      // let serviceName = this.$store.getters.getSelectServiceName;
+      let serviceName = 'test-ui';
+      let duration = this.$store.state.time;
+      let xData = this.$store.getters.getXAxisData;
+      httpReq.getPageData(serviceName,duration).then(data=>{
+        /*赋值*/
+        that.appInfo.xData = xData;
+        that.appInfo.pvValue = data.pv;
+        that.appInfo.uvValue = data.uv;
+        that.errorInfo.xData = xData;
+        that.errorInfo.errorValue = data.error;
+        that.FPTData = data.fpt;
+        that.FMPData = data.fmp;
+        that.DomData = data.domReady;
+        that.LoadData = data.load
+
+        that.loading =  false;
+
+
+      })
+    },
+  },
+  created() {
+    this.$nextTick(()=>{
+      debugger;
+      this.changeCondition();
+    })
+  },
+  mounted() {
   }
 }
 </script>

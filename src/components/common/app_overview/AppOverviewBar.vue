@@ -15,32 +15,32 @@
 import SubHeaderTitle from "@/components/common/SubHeaderTitle";
 export default {
   name: "AppOverviewBar",
-  props: ['subTitle','remark'],
+  props: ['subTitle','remark','barData'],
   data(){
     return {
       color: ['#ffc7b9','#fee5ac','#86ebdc'],
-      barData: [
-        {
-          name: 'index.html',
-          value: 850,
-        },
-        {
-          name: 'action.jsp',
-          value: 1100,
-        },
-        {
-          name: 'detail.html',
-          value: 460,
-        },
-        {
-          name: 'view.html',
-          value: 230,
-        },
-        {
-          name: 'home.html',
-          value: 120,
-        },
-      ]
+      // barData: [
+      //   {
+      //     name: 'index.html',
+      //     value: 850,
+      //   },
+      //   {
+      //     name: 'action.jsp',
+      //     value: 1100,
+      //   },
+      //   {
+      //     name: 'detail.html',
+      //     value: 460,
+      //   },
+      //   {
+      //     name: 'view.html',
+      //     value: 230,
+      //   },
+      //   {
+      //     name: 'home.html',
+      //     value: 120,
+      //   },
+      // ]
     }
   },
   computed: {

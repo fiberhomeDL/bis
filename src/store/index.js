@@ -17,6 +17,18 @@ export default new Vuex.Store({
     // 用户行为追踪-行为列表-跳转ID
     behaviorTraceId:''
   },
+  getters: {
+    //获取选中的服务名称
+    getSelectServiceName: state=>{
+      return state.services.find(item => {
+        return item.id == state.selectedServiceId
+      }).name
+    },
+    //获取echarts图x轴数据
+    getXAxisData: state => {
+      return util.initXAxisData(state.time);
+    }
+  },
   mutations: {
     //为应用列表赋值
     setServices(state,payload){

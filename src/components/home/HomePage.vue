@@ -8,7 +8,7 @@
 <!--    顶栏-->
     <div class="home-page-head">
 <!--      应用名称搜索框-->
-      <div class="home-page-head-input">  
+      <div class="home-page-head-input">
         <el-input
             placeholder="请输入应用名称"
             suffix-icon="el-icon-search"
