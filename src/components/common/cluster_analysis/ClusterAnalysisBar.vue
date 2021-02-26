@@ -13,7 +13,7 @@ export default {
       color: '#ffdfb9',
       grid: {
         containLabel: true,
-        top: 40,
+        top: 20,
         bottom: 0,
         right: 10,
         left: 10,

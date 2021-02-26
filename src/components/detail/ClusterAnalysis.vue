@@ -40,7 +40,7 @@
             <el-col :span="14" style="height: 100%">
               <div class="flex-column hw100-oh">
                 <sub-header-title sub-title="错误统计"></sub-header-title>
-                <div class="cluster-analysis-body-top-content hw100-oh p-b-10">
+                <div class="cluster-analysis-body-top-content hw100-oh p-b-10" style="padding-top: 10px;">
                   <cluster-analysis-bar
                     :bar-data="{
                       xData: $store.getters.getXAxisData,
