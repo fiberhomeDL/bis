@@ -13,7 +13,7 @@
 
 <script>
 import CommonHeader from "@/components/common/CommonHeader";
-import httpRequest from '@js/home';
+// import httpRequest from '@js/home';
 export default {
   name: 'Home',
   data(){
