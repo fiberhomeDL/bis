@@ -8,17 +8,18 @@
       </div>
       <el-progress :percentage="value.percentage" :stroke-width="8" :show-text="false" :color="value.color"></el-progress>
     </div>
-    <div class="empty" v-if="barDataByCom.length == 0" >
-
+    <div style="height: 300px;" class="empty" v-if="barDataByCom.length == 0" >
+      <no-data></no-data>
     </div>
   </div>
 </template>
 
 <script>
 import SubHeaderTitle from "@/components/common/SubHeaderTitle";
+import NoData from "@/components/common/NoData";
 export default {
   name: "AppOverviewBar",
-  components: { SubHeaderTitle},
+  components: {NoData, SubHeaderTitle},
   props: ['subTitle','remark','barData'],
   data(){
     return {

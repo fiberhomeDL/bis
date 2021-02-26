@@ -59,6 +59,8 @@ export default {
       },
       series: [{
         data: this.barData.barValue,
+        barMinWidth: 1,
+        barMaxWidth: 6,
         // data: [120, 200, 150, 80, 70, 110, 130, 500,100,800,600,150,300,500,180],
         type: 'bar',
         itemStyle: {

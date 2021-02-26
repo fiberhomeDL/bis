@@ -81,6 +81,8 @@ export default {
         {
           name: '浏览量',
           type: 'bar',
+          barMinWidth: 1,
+          barMaxWidth: 6,
           //data: [100,200,300,400,500,600,700,800,300,100,200,100,100,200,300,400,500,600,700,800,300,100,200,100],
           data: that.appInfo.pvValue,
           itemStyle: {
@@ -95,6 +97,8 @@ export default {
         {
           name: '用户量',
           type: 'bar',
+          barMinWidth: 1,
+          barMaxWidth: 6,
           //data: [100, 200, 100, 300, 800, 700, 600, 500, 400, 300, 200, 100,100, 200, 100, 300, 800, 700, 600, 500, 400, 300, 200, 100],
           data: that.appInfo.uvValue,
           itemStyle: {

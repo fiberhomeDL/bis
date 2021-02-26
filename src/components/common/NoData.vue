@@ -1,13 +1,25 @@
 <template>
   <div class="no-data">
-    <img class="no-data-img" :src="require('@img/common_icon/nodata.png')">
-    <span>暂无数据</span>
+    <span :style="{width: imgWidth + 'px',height: imgWidth + 'px'}" class="no-data-img"></span>
+    <span :style="{fontSize: fontSize + 'px'}" class="no-data-text">暂无数据</span>
   </div>
 </template>
 
 <script>
 export default {
-  name: "NoData"
+  name: "NoData",
+  props: {
+    imgWidth:{
+      type: Number,
+      default: 100,
+      required: false
+    },
+    fontSize:{
+      type: Number,
+      default: 14,
+      required: false
+    }
+  }
 }
 </script>
 
@@ -21,32 +33,21 @@ export default {
   justify-content: center;
   align-items: center;
 
-
-
   &-img{
-
+    width: 100px;
+    height: 100px;
+    background-image: url("~@img/common_icon/nodata.png");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center center;
   }
+
+  &-text{
+    text-align: center;
+    color: #C2D4E4;
+    font-size: 14px;
+  }
+
 }
-
-
-//
-//.nodata{
-//  height: 100%;
-//  width: 100%;
-//  background-image: url("~@img/common_icon/nodata.png");
-//  background-position: center center;
-//  background-size: 250px 250px ;
-//  background-repeat: no-repeat;
-//}
-//
-//.nodata:after{
-//  content: "暂无数据";
-//  font-size: 20px;
-//  color: #C2D4E4;
-//  position: absolute;
-//  top: 50%;
-//  left: 50%;
-//  transform: translate(-50%, 168px);
-//}
 
 </style>
