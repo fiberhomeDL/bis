@@ -1,5 +1,5 @@
 <template>
-  <div class="view-item">
+  <div class="view-item flex-column">
     <div class="view-item-top" :style="{borderColor: viewItemData.borderColor || viewItemData.mainColor}">
         <img :width="viewItemData.imgSize || 49" :src="viewItemData.imgUrl" alt="" :style="viewItemData.shadowStyle">
     </div>
@@ -16,11 +16,15 @@ export default {
   name: "ViewItem",
   props: ['viewItemData'],
   filters: {
+    //将数字转化成 100,000,000格式 如果为特殊值 则输入 --
     numLocalString(value){
       if(!value){
         return 0
-      };
-      return Number(value).toLocaleString();
+      }else if(Number.isNaN(Number(value))){
+        return '--'
+      }else{
+        return Number(value).toLocaleString();
+      }
     }
   }
 }
@@ -30,6 +34,7 @@ export default {
 @import '@css/style.scss';
 
 .view-item{
+  align-items: center;
 &-top{
    height: 94px;
    width: 94px;
@@ -48,6 +53,7 @@ export default {
  }
 
 &-bottom{
+  text-align: center;
   &-num{
      font-size: 30px;
    }

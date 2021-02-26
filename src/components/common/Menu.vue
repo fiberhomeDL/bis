@@ -45,14 +45,15 @@
               {
                 title: '聚合分析',
                 name:'cluster',
-                componentName: 'clusterAnalysis',
-                isActive: this.activeName === 'clusterAnalysis'
+                componentName: 'ClusterAnalysis',
+                //聚合分析包含两个组件页面
+                isActive: this.activeName === 'ClusterAnalysis' || this.activeName === 'ClusterAnalysisDetail'
               },
               {
                 title: '终端分析',
                 name:'terminal',
                 componentName: 'TerminalAnalysis',
-                isActive: this.activeName === 'TerminalAnalysis'
+                isActive: this.activeName === 'TerminalAnalysis' || this.activeName === 'BehaviorTrack'
               },
               {
                 title: '用户行为追踪',
@@ -72,7 +73,8 @@
         methods: {
           //点击tab
             tabClick(value){
-                if(!value.isActive){
+                if(this.activeName != value.componentName){
+                //if(!value.isActive){
                   this.activeName = value.componentName;
                   // this.tabData.forEach((item)=>{item.isActive = false});
                   // value.isActive = true;

@@ -8,6 +8,9 @@
       </div>
       <el-progress :percentage="value.percentage" :stroke-width="8" :show-text="false" :color="value.color"></el-progress>
     </div>
+    <div class="empty" v-if="barDataByCom.length == 0" >
+
+    </div>
   </div>
 </template>
 
@@ -45,6 +48,7 @@ export default {
     }
   },
   computed: {
+    //对数据进行排序 比例缩放 的操作
     barDataByCom(){
       let max = Math.max(...this.barData.map(item=>{
         return item.value

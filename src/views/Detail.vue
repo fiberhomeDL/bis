@@ -10,13 +10,13 @@
             </div>
 <!--          组件内部-->
             <div class="container-content">
-               <keep-alive>
+<!--               <keep-alive>-->
                   <component
                       :is="activeContent"
                       @change-content="toDeepPage"
                       @change-component="changeContent"
                   ></component>
-               </keep-alive>
+<!--               </keep-alive>-->
             </div>
         </div>
     </div>

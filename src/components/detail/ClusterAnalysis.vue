@@ -1,8 +1,14 @@
 <template>
-    <div class="cluster-analysis flex-column hw100-oh">
+    <div class="cluster-analysis flex-column hw100-oh"
+         v-loading="loading"
+         element-loading-text="拼命加载中"
+         element-loading-spinner="el-icon-loading"
+         element-loading-background="rgba(0, 0, 0, 0.8)"
+    >
+<!--      头部-->
       <div class="cluster-analysis-header flex-row">
         <div class="cluster-analysis-header-left flex-row">
-          <service-select @onSelectChange="onSelectChange"></service-select>
+          <service-select @onSelectChange="renderData"></service-select>
           <div class="flex-row" style="align-items: center;padding: 0 12px">
             <span class="sub-normal-text" style="white-space: nowrap">错误类目：</span>
             <el-select :size="'small'" v-model="errorSelect" placeholder="请选择">
@@ -16,10 +22,11 @@
           </div>
         </div>
         <div class="cluster-analysis-header-right">
-          <time-picker @changeTime="onChangeTime"></time-picker>
+          <time-picker @changeTime="renderData"></time-picker>
         </div>
       </div>
-      <div class="cluster-analysis-wrapper">
+<!--      内容-->
+      <div class="cluster-analysis-wrapper" v-if="!loading">
         <div class="cluster-analysis-body">
           <el-row :gutter="20" class="cluster-analysis-body-top">
             <el-col :span="10" style="height: 100%">
@@ -33,15 +40,22 @@
             <el-col :span="14" style="height: 100%">
               <div class="flex-column hw100-oh">
                 <sub-header-title sub-title="错误统计"></sub-header-title>
-                <div class="cluster-analysis-body-top-content hw100-oh">
-                  <cluster-analysis-bar></cluster-analysis-bar>
+                <div class="cluster-analysis-body-top-content hw100-oh p-b-10">
+                  <cluster-analysis-bar
+                    :bar-data="{
+                      xData: $store.getters.getXAxisData,
+                      barValue: errorValues
+                    }"
+                  >
+
+                  </cluster-analysis-bar>
                 </div>
               </div>
             </el-col>
           </el-row>
           <el-row class="cluster-analysis-body-bottom">
             <sub-header-title :sub-title="'错误列表'" style="margin-bottom: 18px"></sub-header-title>
-            <div v-show="errorSelect == 1">
+            <div v-show="errorSelect == 1 || errorSelect == 0">
               <div class="js-error-item flex-row" v-for="n in 10" @click="onErrorItemClick">
                 <span style="color: #505b73">https://jingyan.baidu.com/article/08b6a59191b95f14a80922b8.html.js.</span>
                 <span style="color: #919dbd">【总共：1230次 | 发生页面：168个】</span>
@@ -49,7 +63,7 @@
                 <span style="color: #505b73">（98）</span>
               </div>
             </div>
-            <div v-show="errorSelect == 2">
+            <div v-show="errorSelect == 2 || errorSelect == 0">
               <div class="source-error-item flex-row" v-for="n in 10" @click="onErrorItemClick">
                 <span class="source-error-item-tip"></span>
                 <span class="source-error-item-title">Script error.</span>
@@ -71,15 +85,19 @@ import TimePicker from "@/components/common/TimePicker";
 import SubHeaderTitle from "@/components/common/SubHeaderTitle";
 import ViewItem from "@/components/common/cluster_analysis/ViewItem";
 import ClusterAnalysisBar from "@/components/common/cluster_analysis/ClusterAnalysisBar";
+import httpReq from "@js/clusterAnalysis.js";
 export default {
   name: "ClusterAnalysis",
   components: {ServiceSelect, TimePicker, SubHeaderTitle, ViewItem, ClusterAnalysisBar},
   data(){
     return {
+      //是否加载
+      loading: false,
+      //概况数据
       viewItemArr: [
         {
           name: '总发生',
-          value: '5002',
+          value: '--',
           imgUrl: require('@img/common_icon/error_big.svg'),
           mainColor: '#fe9289',
           shadowStyle: {
@@ -107,8 +125,16 @@ export default {
           },
         }
       ],
-      errorSelect: '1',
+
+      //错误统计
+      errorValues: [],
+
+      errorSelect: '0',
       errorTypeData: [
+        {
+          value: '0',
+          label: '全部错误',
+        },
         {
           value: '1',
           label: 'js错误',
@@ -121,20 +147,32 @@ export default {
     }
   },
   methods:{
+
+    renderData(){
+      this.loading = true;
+      let serviceName = this.$store.getters.getSelectServiceName;
+      let time = this.$store.state.time;
+      httpReq.getAllData(serviceName, time).then(appInfo => {
+      //  赋值操作
+        this.viewItemArr[0].value = appInfo.errorCount;
+        this.errorValues = appInfo.errorValues
+
+        this.loading = false;
+      })
+    },
+
     onErrorItemClick(id){
-      //todo 从数据中接收点击的错误id
-      id = "CA00001"; // =id
-      this.$store.commit('changeSelectedServiceId', id);
+      //todo 从数据中接收点击的错误id 跳转高亮问题
+      // id = "CA00001"; // =id
+      // this.$store.commit('changeSelectedServiceId', id);
       this.$emit('change-content',{from: 'ClusterAnalysis',to: 'ClusterAnalysisDetail'})
     },
-    onSelectChange(selectId){
-      //todo
-      // alert(selectId);
-    },
-    onChangeTime(time){
-      //todo
-      // alert(time);
-    }
+
+  },
+  created() {
+    this.$nextTick(()=> {
+      this.renderData();
+    })
   }
 }
 </script>
@@ -226,6 +264,10 @@ export default {
     }
   }
 
+}
+
+.p-b-10{
+  padding-bottom: 10px;
 }
 
 

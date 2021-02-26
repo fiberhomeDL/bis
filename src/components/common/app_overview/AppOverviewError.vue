@@ -17,7 +17,7 @@ export default {
     myChart.setOption({
         grid: {
           top: 40,
-          bottom: 20,
+          bottom: 10,
           right: 10,
           left: 10,
           containLabel: true,
