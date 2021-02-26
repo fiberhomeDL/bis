@@ -23,173 +23,7 @@ const loadTimeCondition = '$loadTimeConditionVar:MetricsCondition!';
 const loadPerCondition = '$loadPerConditionVar:MetricsCondition!';
 const labels = '$labels: [String!] !';
 
-
-const TopNCondition = {
-    name: "browser_app_page_fpt_avg",
-    normal: true,
-    order: "DES",
-    parentService: "test-ui",
-    scope: "Endpoint",
-    topN: 10
-}
-const pvConditionVar = {
-    entity: {
-        endpointName: "index.html",
-        normal: true,
-        scope: "Endpoint",
-        serviceName: "test-ui",
-    },
-    name: "browser_app_page_pv"
-}
-
-const errorSumConditionVar = {
-    entity: {
-        endpointName: "index.html",
-        normal: true,
-        scope: "Endpoint",
-        serviceName: "test-ui",
-    },
-    name: "browser_app_page_error_sum"
-}
-
-const jsSumConditionVar = {
-    entity: {
-        endpointName: "index.html",
-        normal: true,
-        scope: "Endpoint",
-        serviceName: "test-ui",
-    },
-    name: "browser_app_page_js_error_sum"
-}
-
-const resSumConditionVar = {
-    entity: {
-        endpointName: "index.html",
-        normal: true,
-        scope: "Endpoint",
-        serviceName: "test-ui",
-    },
-    name: "browser_app_page_resource_error_sum"
-}
-const ajaxSumConditionVar = {
-    entity: {
-        endpointName: "index.html",
-        normal: true,
-        scope: "Endpoint",
-        serviceName: "test-ui",
-    },
-    name: "browser_app_page_ajax_error_sum"
-}
-const unknowSumConditionVar = {
-    entity: {
-        endpointName: "index.html",
-        normal: true,
-        scope: "Endpoint",
-        serviceName: "test-ui",
-    },
-    name: "browser_app_page_unknown_error_sum"
-}
-const dnsTimeConditionVar = {
-    entity: {
-        endpointName: "index.html",
-        normal: true,
-        scope: "Endpoint",
-        serviceName: "test-ui",
-    },
-    name: "browser_app_page_dns_avg"
-}
-const tcpTimeConditionVar = {
-    entity: {
-        endpointName: "index.html",
-        normal: true,
-        scope: "Endpoint",
-        serviceName: "test-ui",
-    },
-    name: "browser_app_page_tcp_avg"
-}
-const sslTimeConditionVar = {
-    entity: {
-        endpointName: "index.html",
-        normal: true,
-        scope: "Endpoint",
-        serviceName: "test-ui",
-    },
-    name: "browser_app_page_ssl_avg"
-}
-const ttfbTimeConditionVar = {
-    entity: {
-        endpointName: "index.html",
-        normal: true,
-        scope: "Endpoint",
-        serviceName: "test-ui",
-    },
-    name: "browser_app_page_ttfb_avg"
-}
-const transTimeConditionVar = {
-    entity: {
-        endpointName: "index.html",
-        normal: true,
-        scope: "Endpoint",
-        serviceName: "test-ui",
-    },
-    name: "browser_app_page_trans_avg"
-}
-const domReadyTimeConditionVar = {
-    entity: {
-        endpointName: "index.html",
-        normal: true,
-        scope: "Endpoint",
-        serviceName: "test-ui",
-    },
-    name: "browser_app_page_dom_ready_avg"
-}
-const resTimeConditionVar = {
-    entity: {
-        endpointName: "index.html",
-        normal: true,
-        scope: "Endpoint",
-        serviceName: "test-ui",
-    },
-    name: "browser_app_page_res_avg"
-}
-const fptTimeConditionVar = {
-    entity: {
-        scope: "Endpoint",
-        serviceName: "test-ui",
-        endpointName: "index.html",
-        normal: true
-    },
-    name: "browser_app_page_fpt_avg"
-}
-const fmpTimeConditionVar = {
-    entity: {
-        scope: "Endpoint",
-        serviceName: "test-ui",
-        endpointName: "index.html",
-        normal: true
-    },
-    name: "browser_app_page_fmp_avg"
-}
-const loadTimeConditionVar = {
-    entity: {
-        scope: "Endpoint",
-        serviceName: "test-ui",
-        endpointName: "index.html",
-        normal: true
-    },
-    name: "browser_app_page_load_page_avg"
-}
-const loadPerConditionVar = {
-    entity: {
-        scope: "Endpoint",
-        serviceName: "test-ui",
-        endpointName: "index.html",
-        normal: true
-    },
-    name: "browser_app_page_load_page_percentile"
-}
 const labelsVar = ["0", "1", "2", "3", "4"];
-
 
 // 应用下的页面
 const queryPageData = {
@@ -378,40 +212,11 @@ const queryPageDetail = `query queryData(
        ${queryPageErrorSumDuration.fragment},
        }`;
 
+// graphql
 let graphqlPageData = {
     query: queryPage,
     variables: {keyword: "", serviceId: ""}
 }
-let graphqlPageTimeAvgTop = {
-    query: queryPageTimeTop,
-    variables: {condition: TopNCondition}
-}
-let graphqlGetPageDetail = {
-    query: queryPageDetail,
-    variables: {
-        pvConditionVar: pvConditionVar,
-        errorSumConditionVar: errorSumConditionVar,
-        jsSumConditionVar: jsSumConditionVar,
-        resSumConditionVar: resSumConditionVar,
-        ajaxSumConditionVar: ajaxSumConditionVar,
-        unknowSumConditionVar: unknowSumConditionVar,
-        dnsTimeConditionVar: dnsTimeConditionVar,
-        tcpTimeConditionVar: tcpTimeConditionVar,
-        sslTimeConditionVar: sslTimeConditionVar,
-        ttfbTimeConditionVar: ttfbTimeConditionVar,
-        transTimeConditionVar: transTimeConditionVar,
-        domReadyTimeConditionVar: domReadyTimeConditionVar,
-        resTimeConditionVar: resTimeConditionVar,
-        fptTimeConditionVar: fptTimeConditionVar,
-        fmpTimeConditionVar: fmpTimeConditionVar,
-        loadTimeConditionVar: loadTimeConditionVar,
-
-        loadPerConditionVar: loadPerConditionVar,
-        labels: labelsVar,
-
-    }
-}
-
 
 let httpReq = {
     // 获取应用下所有页面数据
@@ -419,25 +224,61 @@ let httpReq = {
         graphqlPageData.variables.serviceId = serviceId;
         return axios.post('/graphql', graphqlPageData);
     },
-    // 获取页面白屏时间等
+    // 获取页面白屏时间、首屏时间等
     getPageTimeAvgTop: function (condition, duration) {
-        graphqlPageTimeAvgTop.variables.condition = {
-            name: condition.name,
-            normal: true,
-            order: "DES",
-            parentService: condition.service,
-            scope: "Endpoint",
-            topN: condition.topN
-        };
-        graphqlPageTimeAvgTop.variables.duration = duration;
+        // graphql
+        let graphqlPageTimeAvgTop = {
+            query: queryPageTimeTop,
+            variables: {
+                condition: {
+                    name: condition.name,
+                    normal: true,
+                    order: "DES",
+                    parentService: condition.service,
+                    scope: "Endpoint",
+                    topN: condition.topN
+                },
+                duration: duration
+            }
+        }
         return axios.post('/graphql', graphqlPageTimeAvgTop);
     },
     // 获取页面详情数据
-    getPageDetail: function (duration) {
-        graphqlGetPageDetail.variables.duration = duration;
+    getPageDetail: function (serviceName, pageName, duration) {
+        // 参数实体
+        let entity = {
+            serviceName: serviceName,
+            endpointName: pageName,
+            scope: "Endpoint",
+            normal: true
+        };
+        // graphql
+        let graphqlGetPageDetail = {
+            query: queryPageDetail,
+            variables: {
+                duration: duration,
+                pvConditionVar: {entity: entity, name: 'browser_app_page_pv'},
+                errorSumConditionVar: {entity: entity, name: 'browser_app_page_error_sum'},
+                jsSumConditionVar: {entity: entity, name: 'browser_app_page_js_error_sum'},
+                resSumConditionVar: {entity: entity, name: 'browser_app_page_resource_error_sum'},
+                ajaxSumConditionVar: {entity: entity, name: 'browser_app_page_ajax_error_sum'},
+                unknowSumConditionVar: {entity: entity, name: 'browser_app_page_unknown_error_sum'},
+                dnsTimeConditionVar: {entity: entity, name: 'browser_app_page_dns_avg'},
+                tcpTimeConditionVar: {entity: entity, name: 'browser_app_page_tcp_avg'},
+                sslTimeConditionVar: {entity: entity, name: 'browser_app_page_ssl_avg'},
+                ttfbTimeConditionVar: {entity: entity, name: 'browser_app_page_ttfb_avg'},
+                transTimeConditionVar: {entity: entity, name: 'browser_app_page_trans_avg'},
+                domReadyTimeConditionVar: {entity: entity, name: 'browser_app_page_dom_ready_avg'},
+                resTimeConditionVar: {entity: entity, name: 'browser_app_page_res_avg'},
+                fptTimeConditionVar: {entity: entity, name: 'browser_app_page_fpt_avg'},
+                fmpTimeConditionVar: {entity: entity, name: 'browser_app_page_fmp_avg'},
+                loadTimeConditionVar: {entity: entity, name: 'browser_app_page_load_page_avg'},
+                loadPerConditionVar: {entity: entity, name: 'browser_app_page_load_page_percentile'},
+                labels: labelsVar,
+            }
+        }
         return axios.post('/graphql', graphqlGetPageDetail);
     }
-
 }
 
 export default httpReq;
