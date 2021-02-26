@@ -1,19 +1,24 @@
 <template>
-    <div class="content-page-monitor">
+    <div class="content-page-monitor"
+         v-loading="loading"
+         element-loading-text="拼命加载中"
+         element-loading-spinner="el-icon-loading"
+         element-loading-background="rgba(0, 0, 0, 0.8)"
+    >
         <!--        选择区域-->
         <div class="select-area flex-row">
             <div class="select-area_item">
-                <service-select></service-select>
+                <service-select @onSelectChange="getAllPage"></service-select>
             </div>
             <div class="right">
                 <div class="select-area_item">
-                    <time-picker></time-picker>
+                    <time-picker @changeTime="getAllPage"></time-picker>
                 </div>
             </div>
         </div>
-        <div class="page-information hw100-oh">
+        <div class="page-information hw100-oh" v-if="!loading">
             <div class="page-information-container">
-                <!--                所有页面名称-->
+                <!--页面列表-->
                 <div class="page-information-container-left">
                     <div class="page-select-area_item">
                         <span>排序:</span>
@@ -38,10 +43,10 @@
                         </el-input>
                     </div>
                     <div class="page-name-bar">
-                        <progress-bar :data="pageNameList" @show-detail="getPageDetail"></progress-bar>
+                        <progress-bar :data="pageNameList" @selectItem="changePage"></progress-bar>
                     </div>
                 </div>
-                <!--                页面详情-->
+                <!--右侧页面详情-->
                 <div class="page-information-container-right">
                     <div class="page-total-name">页面:{{selectedPage.name}}</div>
                     <div class="page-detail-left">
@@ -51,14 +56,14 @@
                                 <number-block :data=pagePv></number-block>
                             </div>
                         </div>
-                        <!--                        页面加载瀑布图-->
+                        <!--页面加载瀑布图-->
                         <div>
                             <sub-header-title :sub-title="'页面加载瀑布图'" class="page-detail-title"></sub-header-title>
                             <div class="falls-chart">
                                 <page-load-falls :data="pageLoadData"></page-load-falls>
                             </div>
                         </div>
-                        <!--                        页面加载延时-->
+                        <!--页面加载延时-->
                         <div class="detail-item">
                             <sub-header-title :sub-title="'页面加载延时'" class="page-detail-title"></sub-header-title>
                             <div class="latency-chart">
@@ -70,7 +75,7 @@
                         </div>
                     </div>
                     <div class="page-detail-right">
-                        <!--                        错误类别-->
+                        <!--错误类别百分比-->
                         <div class="page-detail-error-rate">
                             <error-rate-progress :error-type="'js错误'" :error-rate="jsErrorRate"
                                                  @show-detail="goToErrorLog"></error-rate-progress>
@@ -81,7 +86,7 @@
                             <error-rate-progress :error-type="'未知错误'" :error-rate="unKnowErrorRate"
                                                  @show-detail="goToErrorLog"></error-rate-progress>
                         </div>
-                        <!--                        关键性能指标-->
+                        <!--关键性能指标-->
                         <div>
                             <sub-header-title :sub-title="'关键性能指标'" class="page-detail-title"></sub-header-title>
                             <div class="page-pref">
@@ -92,11 +97,11 @@
                                 </lines-chart>
                             </div>
                         </div>
-                        <!--                        错误量-->
+                        <!--错误量-->
                         <div class="detail-item">
                             <sub-header-title :sub-title="'页面错误量'" class="page-detail-title"></sub-header-title>
                             <div class="error-statistics">
-                                <cluster-analysis-bar></cluster-analysis-bar>
+                                <cluster-analysis-bar :barData="errorDurationData"></cluster-analysis-bar>
                             </div>
                         </div>
                     </div>
@@ -117,6 +122,7 @@
     import ClusterAnalysisBar from "@/components/common/cluster_analysis/ClusterAnalysisBar";
     import NumberBlock from "@/components/common/page_monitor/NumberBlock";
     import httpReq from "@js/page_monitor";
+    import util from "@js/common"
 
     export default {
         name: "PageMonitor",
@@ -133,6 +139,8 @@
         },
         data() {
             return {
+                // 加载中标识
+                loading: true,
                 // 排序数据
                 orderData: 'browser_app_page_fpt_avg',
                 // 排序数据选项
@@ -163,60 +171,15 @@
                 // 未知错误率
                 unKnowErrorRate: 0,
                 // x轴时间刻度
-                xAxisData: ['18:00', '19:00', '20:00', '21:00', '22:00', '23:00', '24:00'],
+                xAxisData: [],
                 // 页面性能数据
-                performanceData: [
-                    {
-                        name: '白屏时间',
-                        type: 'line',
-                        data: [120, 132, 101, 134, 90, 230, 210]
-                    },
-                    {
-                        name: '首屏时间',
-                        type: 'line',
-                        data: [220, 182, 191, 234, 290, 330, 310]
-                    },
-                    {
-                        name: 'Html加载时间',
-                        type: 'line',
-                        data: [150, 232, 201, 154, 190, 330, 410]
-                    },
-                    {
-                        name: '页面完全加载时间',
-                        type: 'line',
-                        data: [320, 332, 301, 334, 390, 330, 320]
-                    },
-                ],
+                performanceData: [],
                 // 页面延迟数据
-                lantencyData: [
-                    {
-                        name: 'P50',
-                        type: 'line',
-                        data: [120, 132, 101, 134, 90, 230, 210]
-                    },
-                    {
-                        name: 'P75',
-                        type: 'line',
-                        data: [220, 182, 191, 234, 290, 330, 310]
-                    },
-                    {
-                        name: 'P90',
-                        type: 'line',
-                        data: [150, 232, 201, 154, 190, 330, 410]
-                    },
-                    {
-                        name: 'P95',
-                        type: 'line',
-                        data: [320, 332, 301, 334, 390, 330, 320]
-                    },
-                    {
-                        name: 'P99',
-                        type: 'line',
-                        data: [300, 372, 309, 364, 320, 342, 311]
-                    },
-                ],
+                lantencyData: [],
                 // 页面加载数据
                 pageLoadData: [],
+                // 错误数量（时间段）
+                errorDurationData: {xData: [], barValue: []},
             }
         },
         mounted() {
@@ -227,10 +190,9 @@
             // 查询应用下所有页面
             getAllPage() {
                 let that = this;
+                that.loading = true;
                 // 应用ID
-                // let serviceId = this.$store.state.selectedServiceId;
-                // 测试
-                let serviceId = "dGVzdC11aQ==.1";
+                let serviceId = this.$store.state.selectedServiceId;
                 // 查询应用下所有页面
                 return httpReq.getAllPageData(serviceId).then(data => {
                     that.pageData = data.getEndpoints;
@@ -245,17 +207,21 @@
                 let condition = {
                     name: that.orderData,
                     // 测试  应用名称
-                    service: "test-ui",
+                    service: that.$store.getters.getSelectServiceName,
                     topN: that.pageData.length,
                 }
                 // 时间
-                // let duration = util.formatStartAndEndTime(that.$store.state.time);
-                // 测试
-                let duration = {start: "2021-02-23 0706", end: "2021-02-23 0721", step: "MINUTE"};
+                let duration = util.formatStartAndEndTime(that.$store.state.time);
+                // 发送请求
                 return httpReq.getPageTimeAvgTop(condition, duration).then(data => {
                     that.pageNameData = data.sortMetrics;
-                    // 处理数据
-                    this.handleData();
+                    if (0 !== that.pageNameData.length) {
+                        // 处理数据
+                        that.handleData();
+                    } else {
+                        // 停止loading
+                        that.loading = false;
+                    }
                 });
             },
             // 处理数据,关键词过滤，显示第一条数据详情
@@ -269,38 +235,41 @@
                 // 显示第一个页面的详情数据
                 that.selectedPage = that.pageNameList[0];
                 // 查询第一个页面详情数据
-                that.getPageDetail(that.selectedPage.id);
+                that.getPageDetail();
             },
             // 显示页面详情
-            getPageDetail(id) {
+            getPageDetail() {
                 let that = this;
+                // 改变x轴刻度
+                that.xAxisData = that.$store.getters.getXAxisData;
                 // 查询页面详情数据、 页面名称、浏览量、各类错误率、页面加载瀑布图、关键性能指标、加载延时P50、错误量
-                // 应用ID
-                let serviceId = this.$store.state.selectedServiceId;
+                // 应用名称
+                let serviceName = that.$store.getters.getSelectServiceName;
+                // 页面名称  修改
+                let pageName = that.selectedPage.name;
                 // 时间
-                // let duration = util.formatStartAndEndTime(that.$store.state.time);
-                // 测试
-                let duration = {start: "2021-02-24 1052", end: "2021-02-24 1107", step: "MINUTE"};
-                // 页面ID
-
-
+                let duration = util.formatStartAndEndTime(that.$store.state.time);
                 // graphql
-                return httpReq.getPageDetail(duration).then(data => {
+                return httpReq.getPageDetail(serviceName, pageName, duration).then(data => {
+                    that.loading = false;
                     // 赋值给各项数据
-                    console.info(data);
                     that.pagePv = data.pv;
                     // 错误数据
                     const totalErrorSum = data.totalErrorSum;
-                    that.jsErrorRate = (data.jsErrorSum / totalErrorSum).toFixed(2) * 100;
-                    that.resErrorRate = (data.resErrorSum / totalErrorSum).toFixed(2) * 100;
-                    that.ajaxErrorRate = (data.ajaxErrorSum / totalErrorSum).toFixed(2) * 100;
-                    that.unKnowErrorRate = (data.unknowErrorSum / totalErrorSum).toFixed(2) * 100;
+                    if (totalErrorSum !== 0) {
+                        that.jsErrorRate = (data.jsErrorSum / totalErrorSum).toFixed(2) * 100;
+                        that.resErrorRate = (data.resErrorSum / totalErrorSum).toFixed(2) * 100;
+                        that.ajaxErrorRate = (data.ajaxErrorSum / totalErrorSum).toFixed(2) * 100;
+                        that.unKnowErrorRate = (data.unknowErrorSum / totalErrorSum).toFixed(2) * 100;
+                    }
                     // 页面瀑布图
                     that.pageLoadData = that.handlePageLoadData([data.dnsTime, data.tcpTime, data.sslTime, data.ttfbTime, data.transTime, data.domReadyTime, data.resTime]);
-
                     // 页面性能指数
-                    // that.performanceData =
-                    that.handlePagePerforData([data.fptTime.values.values, data.fmpTime.values.values, data.domReadyTimeDuration.values.values, data.loadTime.values.values,]);
+                    that.performanceData = that.handlePagePerforData([data.fptTime.values.values, data.fmpTime.values.values, data.domReadyTimeDuration.values.values, data.loadTime.values.values,]);
+                    // 页面加载延时
+                    that.lantencyData = that.handleLantenData(data.loadPerTime);
+                    // 页面错误数量（时间段）
+                    that.errorDurationData = that.handleErrorDurationData(data.totalErrorSumDuration);
                 });
             },
             // 处理页面瀑布图数据
@@ -332,13 +301,92 @@
             },
             // 处理页面性能数据
             handlePagePerforData(data) {
-                let that = this;
                 // 页面性能数据
-                for (var i = 0; i < data.length; i++) {
-                    that.performanceData[i].data = data[i].map(function (item) {
+                let performanceData = [
+                    {
+                        name: '白屏时间',
+                        type: 'line',
+                        data: []
+                    },
+                    {
+                        name: '首屏时间',
+                        type: 'line',
+                        data: []
+                    },
+                    {
+                        name: 'Html加载时间',
+                        type: 'line',
+                        data: []
+                    },
+                    {
+                        name: '页面完全加载时间',
+                        type: 'line',
+                        data: []
+                    },
+                ];
+                // 赋值
+                for (var i = 0; i < performanceData.length; i++) {
+                    performanceData[i].data = data[i].map(function (item) {
                         return item.value;
                     });
                 }
+                return performanceData;
+            },
+            // 处理页面加载延时数据
+            handleLantenData(data) {
+                let lantencyData = [
+                    {
+                        name: 'P50',
+                        type: 'line',
+                        data: []
+                    },
+                    {
+                        name: 'P75',
+                        type: 'line',
+                        data: []
+                    },
+                    {
+                        name: 'P90',
+                        type: 'line',
+                        data: []
+                    },
+                    {
+                        name: 'P95',
+                        type: 'line',
+                        data: []
+                    },
+                    {
+                        name: 'P99',
+                        type: 'line',
+                        data: []
+                    },
+                ];
+                // 赋值
+                for (var i = 0; i < lantencyData.length; i++) {
+                    lantencyData[i].data = data[i].values.values.map(function (item) {
+                        return item.value;
+                    });
+                }
+                return lantencyData;
+            },
+            // 处理页面加载延时数据
+            handleErrorDurationData(data) {
+                let that = this;
+                // 柱状图传入数据格式
+                let errorDurationData = {xData: that.xAxisData, barValue: []};
+                let errorData = data.values.values;
+                // 赋值
+                for (var i = 0; i < errorData.length; i++) {
+                    errorDurationData.barValue[i] = errorData[i].value;
+                }
+                return errorDurationData;
+            },
+            // 改变选中页面
+            changePage(item) {
+                let that = this;
+                that.selectedPage = item;
+                // 查询页面详情
+                that.getPageDetail();
             },
             // 跳转错误日志，根据错误类型
             goToErrorLog(type) {

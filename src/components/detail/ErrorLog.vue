@@ -1,5 +1,10 @@
 <template>
-    <div class="content-errorlog">
+    <div class="content-errorlog"
+         v-loading="loading"
+         element-loading-text="拼命加载中"
+         element-loading-spinner="el-icon-loading"
+         element-loading-background="rgba(0, 0, 0, 0.8)"
+    >
         <!--        选择区域-->
         <div class="select-area">
             <div class="select-area_item">
@@ -107,8 +112,11 @@
         components: {DownloadButton, ServiceSelect, TimePicker},
         data() {
             return {
+                // 加载中标识
+                loading: true,
                 // 错误数据，一页13个
                 errorData: [],
+                // 全部错误数据
                 totalErrorData: 0,
                 // 应用
                 service: '',
@@ -172,7 +180,13 @@
                     pageSize: 13,
                     needTotal: true
                 }
+                // 加载中
+                that.loading = true;
+                // 发送请求
                 return httpReq.getErrorLogData(serviceId, pagePathId, category, paging, duration).then(data => {
+                    // 取消加载中
+                    that.loading = false;
+                    // 赋值
                     that.errorData = data.queryBrowserErrorLogs.logs;
                     that.totalErrorData = data.queryBrowserErrorLogs.total;
                 });
