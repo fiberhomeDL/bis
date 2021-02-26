@@ -33,7 +33,7 @@ export default new Vuex.Store({
     //获取echarts图x轴数据
     getXAxisData: state => {
       return util.initXAxisData(state.time);
-    }
+    },
   },
   mutations: {
     //clear toPageMonitorParam

@@ -153,8 +153,7 @@
             getAllPage() {
                 let that = this;
                 // 应用ID
-                // const serviceId = this.$store.state.selectedServiceId;
-                let serviceId = "dGVzdC11aQ==.1";
+                let serviceId = this.$store.state.selectedServiceId;
                 return httpReq.getAllPageData(serviceId).then(data => {
                     that.pageOptions = data.getEndpoints;
                     // 添加全部选项
@@ -165,11 +164,10 @@
             getErrorLog() {
                 let that = this;
                 // 应用ID
-                // let serviceId = that.$store.state.selectedServiceId;
-                let serviceId = '';
+                let serviceId = that.$store.state.selectedServiceId;
+                // let serviceId = '';
                 // 时间
-                let time = that.$store.state.time;
-                let duration = {start: "2021-02-23 0706", end: "2021-02-23 0721", step: "MINUTE"};
+                let duration = util.formatStartAndEndTime(that.$store.state.time);
                 // 页面ID
                 let pagePathId = that.page === 'All' ? '' : that.page;
                 // 错误类别
