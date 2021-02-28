@@ -104,8 +104,11 @@
     import TimePicker from "@/components/common/TimePicker";
     import DownloadButton from "@/components/common/DownloadButton";
     import httpReq from "@js/error_log";
-    import util from "@js/common"
-    import XLSX from 'xlsx'
+    import util from "@js/common";
+    import XLSX from 'xlsx';
+
+    // 一页数量
+    const pageSize = 13;
 
     export default {
         name: "ErrorLog",
@@ -165,17 +168,34 @@
                 let that = this;
                 // 应用ID
                 let serviceId = that.$store.state.selectedServiceId;
-                // let serviceId = '';
                 // 时间
                 let duration = util.formatStartAndEndTime(that.$store.state.time);
-                // 页面ID
-                let pagePathId = that.page === 'All' ? '' : that.page;
-                // 错误类别
-                let category = that.errorType;
+                // 页面监控-错误日志跳转参数
+                let monitorToLogParam = that.$store.state.monitorToLogParam;
+                // 清空页面监控跳转错误日志参数
+                that.$store.commit('clearMonitorToLogParam');
+                // 页面ID   如果是跳转过来，显示跳转页面
+                let pagePathId;
+                if (undefined !== monitorToLogParam.page) {
+                    // 设置选中页面
+                    that.page = monitorToLogParam.page.id;
+                    pagePathId = monitorToLogParam.page;
+                } else {
+                    pagePathId = that.page === 'All' ? '' : that.page;
+                }
+                // 错误类别   如果是跳转过来，显示跳转错误类别
+                let category;
+                if (undefined !== monitorToLogParam.category) {
+                    // 设置选中错误类别
+                    that.errorType = monitorToLogParam.category;
+                    category = monitorToLogParam.category;
+                } else {
+                    category = that.errorType;
+                }
                 // 页面对象,当前页号、一页数量、是否需要全部数量
                 let paging = {
                     pageNum: that.currentPage,
-                    pageSize: 13,
+                    pageSize: pageSize,
                     needTotal: true
                 }
                 // 加载中
@@ -188,7 +208,6 @@
                     that.errorData = data.queryBrowserErrorLogs.logs;
                     that.totalErrorData = data.queryBrowserErrorLogs.total;
                 });
-
             },
             // 格式化时间 返回yyyy-MM-dd hh:mm:ss
             formatterTime(cellValue) {
@@ -227,9 +246,12 @@
                 //创建book
                 let wb = XLSX.utils.book_new();
                 //json转sheet
-                let ws = XLSX.utils.json_to_sheet(errorData, {header:['A','B','C','D','E','F'], skipHeader:true});
+                let ws = XLSX.utils.json_to_sheet(errorData, {
+                    header: ['A', 'B', 'C', 'D', 'E', 'F'],
+                    skipHeader: true
+                });
                 //设置列宽
-                ws['!cols']= [
+                ws['!cols'] = [
                     {width: 15},
                     {width: 20},
                     {width: 100},
@@ -241,7 +263,7 @@
                 //sheet写入book
                 XLSX.utils.book_append_sheet(wb, ws, '错误日志');
                 //输出
-                XLSX.writeFile(wb,'错误日志'+timestamp+'.xlsx');
+                XLSX.writeFile(wb, '错误日志' + timestamp + '.xlsx');
             },
             // 处理分页
             handleCurrentChange(val) {

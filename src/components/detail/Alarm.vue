@@ -1,17 +1,18 @@
 <template>
-    <div class="content-alarm">
-<!--        选项区域-->
+    <div class="content-alarm"
+         v-loading="loading"
+         element-loading-text="拼命加载中"
+         element-loading-spinner="el-icon-loading"
+         element-loading-background="rgba(0, 0, 0, 0.8)">
+        <!--选项区域-->
         <div class="select-area">
-            <div class="select-area_item">
-                <service-select @onSelectChange="getAlarmData"></service-select>
-            </div>
             <div class="select-area_item">
                 <el-input
                         placeholder="关键词搜索"
                         suffix-icon="el-icon-search"
                         size="small"
                         clearable
-                        v-model="keywords"
+                        v-model="keyword"
                         @keydown.enter.native="getAlarmData">
                 </el-input>
             </div>
@@ -20,22 +21,22 @@
             </div>
         </div>
         <div class="hw100-oh" style="padding: 22px;">
-<!--            分页-->
-            <div class="hw100-oh alarm-info">
-                <div class="pagination-area">
+            <!--分页-->
+            <div class="hw100-oh alarm-info" :class="{'nodata': alarmList.length === 0}">
+                <div v-if="alarmList.length !== 0" class="pagination-area" >
                     <span class="el-icon-arrow-left icon-page" @click="reducePage"></span>
                     <el-input v-model="pageInputNumber" size="mini" class="pagination-input"
                               @change="getAlarmData"></el-input>
                     <span style="color:rgb(80,91,115);">/{{totalPage}}</span>
                     <span class="el-icon-arrow-right icon-add-page icon-page" @click="addPage"></span>
                 </div>
-<!--                告警列表-->
+                <!--告警列表-->
                 <div class="list-area">
                     <div v-for="(item,index) in alarmList">
                         <div class="time-group">
                             <div class="time-item-area">
                                 <span class="circle-style"></span>
-                                <span class="time-text">{{item.startTime}}</span>
+                                <span class="time-text">{{new Date(item.startTime).toLocaleString()}}</span>
                             </div>
                             <div class="time-item-content">{{item.message}}</div>
                         </div>
@@ -49,29 +50,23 @@
 <script>
     import ServiceSelect from "@/components/common/ServiceSelect";
     import TimePicker from "@/components/common/TimePicker";
-
+    import httpReq from "@js/alarm";
+    import util from "@js/common";
     // 一页显示告警数量
     const pageSize = 9;
-
     export default {
         name: "Alarm",
         components: {ServiceSelect, TimePicker},
         data() {
             return {
+                // 加载中标识
+                loading: true,
                 // 关键词
-                keywords: '',
+                keyword: '',
                 // 告警列表
-                alarmList: [
-                    {startTime: '2020-03-23 12:00:00', message: '在最近十分钟，应用test-index.htmlTCP连接时间大于2s'},
-                    {startTime: '2020-03-23 12:00:00', message: '在最近十分钟，应用test-index.htmlTCP连接时间大于2s'},
-                    {startTime: '2020-03-23 12:00:00', message: '在最近十分钟，应用test-index.htmlTCP连接时间大于2s'},
-                    {startTime: '2020-03-23 12:00:00', message: '在最近十分钟，应用test-index.htmlTCP连接时间大于2s'},
-                    {startTime: '2020-03-23 12:00:00', message: '在最近十分钟，应用test-index.htmlTCP连接时间大于2s'},
-                    {startTime: '2020-03-23 12:00:00', message: '在最近十分钟，应用test-index.htmlTCP连接时间大于2s'},
-                    {startTime: '2020-03-23 12:00:00', message: '在最近十分钟，应用test-index.htmlTCP连接时间大于2s'},
-                    {startTime: '2020-03-23 12:00:00', message: '在最近十分钟，应用test-index.htmlTCP连接时间大于2s'},
-                    {startTime: '2020-03-23 12:00:00', message: '在最近十分钟，应用test-index.htmlTCP连接时间大于2s'},
-                ],
+                alarmList: [],
+                // 告警总量页数
+                totalPage: 0,
                 // 输入的页码
                 pageInputNumber: 1,
             }
@@ -81,19 +76,25 @@
             this.getAlarmData();
         },
         methods: {
-           // 查询告警数据
-            getAlarmData(){
-                // 页号置为1
-                this.pageInputNumber = 1;
-                // 应用ID
-                const serviceId = this.$store.state.selectedServiceId;
+            // 查询告警数据
+            getAlarmData() {
+                let that = this;
+                // 加载中
+                that.loading = true;
                 // 时间
-                const time = this.$store.state.time;
+                let duration = util.formatStartAndEndTime(that.$store.state.time);
                 // 关键词
-
+                let keyword = that.keyword;
                 // 页码
-
-
+                let paging = {pageNum: that.pageInputNumber, pageSize: pageSize, needTotal: true};
+                // 查询告警数据
+                return httpReq.getAlarmData(duration, keyword, paging).then(data => {
+                    // 取消加载中
+                    that.loading = false;
+                    // 赋值
+                    that.alarmList = data.getAlarm.items;
+                    that.totalPage = Math.ceil(data.getAlarm.total / pageSize);
+                });
             },
             // 减少页面
             reducePage() {
@@ -111,14 +112,7 @@
                     this.getAlarmData();
                 }
             },
-        },
-        computed: {
-            // 告警数量
-            totalPage: function () {
-                return Math.ceil(this.alarmList.length/pageSize);
-            }
-        },
-
+        }
     }
 </script>
 

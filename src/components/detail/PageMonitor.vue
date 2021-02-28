@@ -43,7 +43,9 @@
                         </el-input>
                     </div>
                     <div class="page-name-bar">
-                        <progress-bar :data="pageNameList" @selectItem="changePage"></progress-bar>
+                        <progress-bar v-if="pageNameList.length!==0" :data="pageNameList"
+                                      @selectItem="changePage"></progress-bar>
+                        <no-data v-else></no-data>
                     </div>
                 </div>
                 <!--右侧页面详情-->
@@ -60,30 +62,35 @@
                         <div>
                             <sub-header-title :sub-title="'页面加载瀑布图'" class="page-detail-title"></sub-header-title>
                             <div class="falls-chart">
-                                <page-load-falls :data="pageLoadData"></page-load-falls>
+                                <page-load-falls v-if="pageLoadData.length!==0" :data="pageLoadData"></page-load-falls>
+                                <no-data v-else></no-data>
                             </div>
                         </div>
                         <!--页面加载延时-->
                         <div class="detail-item">
                             <sub-header-title :sub-title="'页面加载延时'" class="page-detail-title"></sub-header-title>
                             <div class="latency-chart">
-                                <lines-chart :lengend="['P50', 'P75', 'P90', 'P95','P99']"
+                                <lines-chart v-if="lantencyData.length!==0"
+                                             :lengend="['P50', 'P75', 'P90', 'P95','P99']"
                                              :xAxisData="xAxisData"
                                              :data="lantencyData">
                                 </lines-chart>
+                                <no-data v-else></no-data>
                             </div>
                         </div>
                     </div>
                     <div class="page-detail-right">
                         <!--错误类别百分比-->
                         <div class="page-detail-error-rate">
-                            <error-rate-progress :error-type="'js错误'" :error-rate="jsErrorRate"
+                            <error-rate-progress :error-type="'js错误'" :category="'JS'" :error-rate="jsErrorRate"
                                                  @show-detail="goToErrorLog"></error-rate-progress>
-                            <error-rate-progress :error-type="'静态资源异常'" :error-rate="resErrorRate"
+                            <error-rate-progress :error-type="'静态资源异常'" :category="'RESOURCE'"
+                                                 :error-rate="resErrorRate"
                                                  @show-detail="goToErrorLog"></error-rate-progress>
-                            <error-rate-progress :error-type="'Ajax错误'" :error-rate="ajaxErrorRate"
+                            <error-rate-progress :error-type="'Ajax错误'" :category="'AJAX'" :error-rate="ajaxErrorRate"
                                                  @show-detail="goToErrorLog"></error-rate-progress>
-                            <error-rate-progress :error-type="'未知错误'" :error-rate="unKnowErrorRate"
+                            <error-rate-progress :error-type="'未知错误'" :category="'UNKNOWN'"
+                                                 :error-rate="unKnowErrorRate"
                                                  @show-detail="goToErrorLog"></error-rate-progress>
                         </div>
                         <!--关键性能指标-->
@@ -91,17 +98,22 @@
                             <sub-header-title :sub-title="'关键性能指标'" class="page-detail-title"></sub-header-title>
                             <div class="page-pref">
                                 <lines-chart
+                                        v-if="performanceData.length!==0"
                                         :lengend="['白屏时间', '首屏时间', 'Html加载时间', '页面完全加载时间']"
                                         :xAxisData="xAxisData"
                                         :data="performanceData">
                                 </lines-chart>
+                                <no-data v-else></no-data>
                             </div>
                         </div>
                         <!--错误量-->
                         <div class="detail-item">
                             <sub-header-title :sub-title="'页面错误量'" class="page-detail-title"></sub-header-title>
                             <div class="error-statistics">
-                                <cluster-analysis-bar :barData="errorDurationData"></cluster-analysis-bar>
+                                <cluster-analysis-bar
+                                        v-if="errorDurationData.barValue.length!==0"
+                                        :barData="errorDurationData"></cluster-analysis-bar>
+                                <no-data v-else></no-data>
                             </div>
                         </div>
                     </div>
@@ -121,8 +133,9 @@
     import ProgressBar from "@/components/common/ProgressBar";
     import ClusterAnalysisBar from "@/components/common/cluster_analysis/ClusterAnalysisBar";
     import NumberBlock from "@/components/common/page_monitor/NumberBlock";
+    import NoData from "@/components/common/NoData";
     import httpReq from "@js/page_monitor";
-    import util from "@js/common"
+    import util from "@js/common";
 
     export default {
         name: "PageMonitor",
@@ -135,7 +148,8 @@
             PageLoadFalls,
             ProgressBar,
             ClusterAnalysisBar,
-            NumberBlock
+            NumberBlock,
+            NoData
         },
         data() {
             return {
@@ -232,9 +246,13 @@
                         return item.name.includes(that.keywords);
                     }
                 );
-                // 显示第一个页面的详情数据
-                that.selectedPage = that.pageNameList[0];
-                // 查询第一个页面详情数据
+                // 跳转页面参数
+                let toPageParam = that.$store.state.toPageMonitorParam;
+                // 清空跳转页面参数
+                that.$store.commit('clearMonitorParam');
+                // 默认显示第一个页面的详情数据，否则显示跳转的页面详情
+                that.selectedPage = undefined === toPageParam.name ? that.pageNameList[0] : toPageParam;
+                // 查询页面详情数据
                 that.getPageDetail();
             },
             // 显示页面详情
@@ -388,18 +406,13 @@
                 // 查询页面详情
                 that.getPageDetail();
             },
-            // 跳转错误日志，根据错误类型
-            goToErrorLog(type) {
-                // 应用ID
-                const serviceId = this.$store.state.selectedServiceId;
-                // 时间
-                const time = this.$store.state.time;
-
-                // 页面id
-
-                // 错误类型 type
-
-
+            // 跳转错误日志，根据页面、错误类型
+            goToErrorLog(category) {
+                let that = this;
+                // 保存跳转参数、选中页面和错误类型
+                this.$store.commit('setMonitorToLogParam', {page: that.selectedPage, category: category});
+                // 跳转至错误日志
+                this.$emit('change-component', 'ErrorLog');
             },
         },
         watch: {
@@ -478,7 +491,7 @@
                     }
 
                     .page-name-bar {
-                        height: calc(100% - 64px);
+                        height: calc(100% - 107px);
                         overflow-y: auto;
 
                         .progress-bar {

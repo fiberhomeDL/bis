@@ -53,13 +53,13 @@
                 title: '终端分析',
                 name:'terminal',
                 componentName: 'TerminalAnalysis',
-                isActive: this.activeName === 'TerminalAnalysis' || this.activeName === 'BehaviorTrack'
+                isActive: this.activeName === 'TerminalAnalysis'
               },
               {
                 title: '用户行为追踪',
                 name:'track',
                 componentName: 'BehaviorTrack',
-                isActive: this.activeName === 'BehaviorTrack'
+                isActive: this.activeName === 'BehaviorTrack' || this.activeName === 'BehaviorTrackDetail'
               },
               {
                 title: '告警',

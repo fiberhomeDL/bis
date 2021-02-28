@@ -274,7 +274,7 @@ let httpReq = {
                 fmpTimeConditionVar: {entity: entity, name: 'browser_app_page_fmp_avg'},
                 loadTimeConditionVar: {entity: entity, name: 'browser_app_page_load_page_avg'},
                 loadPerConditionVar: {entity: entity, name: 'browser_app_page_load_page_percentile'},
-                labels: labelsVar,
+                labels: labelsVar
             }
         }
         return axios.post('/graphql', graphqlGetPageDetail);
