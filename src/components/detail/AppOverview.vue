@@ -136,8 +136,8 @@ export default {
     changeCondition(){
       let that = this;
       this.loading = true
-      // let serviceName = this.$store.getters.getSelectServiceName;
-      let serviceName = 'test-ui';
+      let serviceName = this.$store.getters.getSelectServiceName;
+      // let serviceName = 'test-ui';
       let duration = this.$store.state.time;
       let xData = this.$store.getters.getXAxisData;
       httpReq.getPageData(serviceName,duration).then(data=>{
@@ -151,10 +151,7 @@ export default {
         that.FMPData = data.fmp;
         that.DomData = data.domReady;
         that.LoadData = data.load
-
         that.loading =  false;
-
-
       })
     },
   },

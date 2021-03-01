@@ -29,7 +29,7 @@ let httpReq = {
                         "name":"browser_app_error_sum",
                         "entity":{
                             "scope":"Service",
-                            "serviceName":"test-ui",
+                            "serviceName": serviceName,
                             "normal":true
                         }
                     }

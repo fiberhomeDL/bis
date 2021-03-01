@@ -147,7 +147,7 @@ export default {
     }
   },
   methods:{
-
+    //渲染数据
     renderData(){
       this.loading = true;
       let serviceName = this.$store.getters.getSelectServiceName;

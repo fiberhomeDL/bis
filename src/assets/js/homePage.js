@@ -104,7 +104,7 @@ let httpReq = {
                     "name": "browser_app_pv",
                     "entity": {
                         "scope": "Service",
-                        "serviceName": "test-ui",
+                        "serviceName": serviceName,
                         "normal": true
                     }
                 },
@@ -112,7 +112,7 @@ let httpReq = {
                     "name": "browser_app_error_sum",
                     "entity": {
                         "scope": "Service",
-                        "serviceName": "test-ui",
+                        "serviceName": serviceName,
                         "normal": true
                     }
                 }
