@@ -552,11 +552,13 @@
                         display: flex;
                         margin-right: 4%;
                         margin-left: auto;
+                        line-height: 1.5em;
 
                         .item-icon_terminal {
                             width: 22px;
                             height: 22px;
                             margin: 0 12px;
+                            vertical-align: middle;
                         }
 
                         .item-icon_terminal:first-child {
@@ -566,7 +568,7 @@
                         .icon-title {
                             width: 14px;
                             height: 14px;
-                            margin-right: 8px;
+                            margin: 6px 8px 0 0;
                         }
 
                         .item-service-title {
