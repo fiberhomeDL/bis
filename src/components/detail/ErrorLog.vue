@@ -117,7 +117,7 @@
             return {
                 // 加载中标识
                 loading: true,
-                // 错误数据，一页13个
+                // 错误数据
                 errorData: [],
                 // 全部错误数据
                 totalErrorData: 0,
