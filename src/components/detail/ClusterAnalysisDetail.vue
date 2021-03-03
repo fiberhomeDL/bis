@@ -32,8 +32,8 @@
                 :width="item.width"
                 >
               <template slot-scope="scope">
-                <img v-if="item.prop == 'browserType'" width="24" :src="require(`@img/browser_icon/${scope.row[item.prop]}.svg`)" alt="">
-                <img v-else-if="item.prop == 'os'" width="24" :src="require(`@img/os_icon/${scope.row[item.prop]}.svg`)" alt="">
+                <img v-if="item.prop == 'browserType'" width="24" :src="require(`@img/terminal_icon/${scope.row[item.prop]}.svg`)" alt="">
+                <img v-else-if="item.prop == 'os'" width="24" :src="require(`@img/terminal_icon/${scope.row[item.prop]}.svg`)" alt="">
 
 
                 <span v-else>
@@ -81,7 +81,7 @@ export default {
         {
           name: '出现次数最多',
           value: '2483',
-          imgUrl: require('@img/terminal_icon/Google.svg'),
+          imgUrl: require('@img/terminal_icon/chrome.svg'),
           mainColor: '#72b5fa',
           borderColor: 'white',
           imgSize: 66,
@@ -89,7 +89,7 @@ export default {
         {
           name: '出现次数最多',
           value: '2483',
-          imgUrl: require('@img/terminal_icon/Windows.svg'),
+          imgUrl: require('@img/terminal_icon/windows.svg'),
           mainColor: '#37dcff',
           borderColor: 'white',
           imgSize: 60,
