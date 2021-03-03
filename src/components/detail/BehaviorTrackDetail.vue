@@ -400,7 +400,7 @@
                     // 页面性能数据
                     that.pagePerformance = that.handlePagePerforData(selectedRecordPerf.pagePerformance);
                     // 页面资源  函数处理
-                    that.pageLoadRes = selectedRecordPerf.pageLoadRes;
+                    that.pageLoadRes = selectedRecordPerf.pageReource;
                 } else {
                     // 页面错误详情
                     that.errorRecordDetail = that.selectedRecord;
