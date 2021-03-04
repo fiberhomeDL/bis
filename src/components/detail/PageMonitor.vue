@@ -252,8 +252,10 @@
                 that.$store.commit('clearMonitorParam');
                 // 默认显示第一个页面的详情数据，否则显示跳转的页面详情
                 that.selectedPage = undefined === toPageParam.name ? that.pageNameList[0] : toPageParam;
-                // 查询页面详情数据
-                that.getPageDetail();
+                if(undefined !== that.selectedPage){
+                    // 查询页面详情数据
+                    that.getPageDetail();
+                }
             },
             // 显示页面详情
             getPageDetail() {
