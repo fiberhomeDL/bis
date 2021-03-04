@@ -143,7 +143,7 @@ export default {
             errorInfo: 'UncaughtInPromiseError: r[t] is not a function',
             page:'index.html',
             ip: '10.0.23.78',
-            browserType: 'google',
+            browserType: 'chrome',
             browserVersion: '73.0',
             os: 'windows',
             osVersion: 'win10',

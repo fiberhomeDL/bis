@@ -54,16 +54,12 @@
             </el-col>
           </el-row>
           <el-row class="cluster-analysis-body-bottom">
-            <sub-header-title :sub-title="'错误列表'" style="margin-bottom: 18px"></sub-header-title>
+            <sub-header-title :sub-title="'错误列表'" style="margin-bottom: 18px">
+              <template v-slot:option>
+                <download-button @click="doDownLoad"></download-button>
+              </template>
+            </sub-header-title>
             <div v-show="errorSelect == 1 || errorSelect == 0">
-              <div class="js-error-item flex-row" v-for="n in 10" @click="onErrorItemClick">
-                <span style="color: #505b73">https://jingyan.baidu.com/article/08b6a59191b95f14a80922b8.html.js.</span>
-                <span style="color: #919dbd">【总共：1230次 | 发生页面：168个】</span>
-                <img class="js-error-item-img" :src="require('@img/common_icon/subscribers.svg')" alt="">
-                <span style="color: #505b73">（98）</span>
-              </div>
-            </div>
-            <div v-show="errorSelect == 2 || errorSelect == 0">
               <div class="source-error-item flex-row" v-for="n in 10" @click="onErrorItemClick">
                 <span class="source-error-item-tip"></span>
                 <span class="source-error-item-title">Script error.</span>
@@ -72,6 +68,15 @@
                 <img class="source-error-item-img" :src="require('@img/common_icon/subscribers.svg')" alt="">
                 <span style="color: #505b73">（18）</span>
               </div>
+            </div>
+            <div v-show="errorSelect == 2 || errorSelect == 0">
+              <div class="js-error-item flex-row" v-for="n in 10">
+                <span style="color: #505b73">https://jingyan.baidu.com/article/08b6a59191b95f14a80922b8.html.js.</span>
+                <span style="color: #919dbd">【总共：1230次 | 发生页面：168个】</span>
+                <img class="js-error-item-img" :src="require('@img/common_icon/subscribers.svg')" alt="">
+                <span style="color: #505b73">（98）</span>
+              </div>
+
             </div>
           </el-row>
         </div>
@@ -86,9 +91,11 @@ import SubHeaderTitle from "@/components/common/SubHeaderTitle";
 import ViewItem from "@/components/common/cluster_analysis/ViewItem";
 import ClusterAnalysisBar from "@/components/common/cluster_analysis/ClusterAnalysisBar";
 import httpReq from "@js/clusterAnalysis.js";
+import DownloadButton from "@/components/common/DownloadButton";
+import XLSX from 'xlsx';
 export default {
   name: "ClusterAnalysis",
-  components: {ServiceSelect, TimePicker, SubHeaderTitle, ViewItem, ClusterAnalysisBar},
+  components: {ServiceSelect, TimePicker, SubHeaderTitle, ViewItem, ClusterAnalysisBar,DownloadButton},
   data(){
     return {
       //是否加载
@@ -133,7 +140,7 @@ export default {
       errorTypeData: [
         {
           value: '0',
-          label: '全部错误',
+          label: '全部',
         },
         {
           value: '1',
@@ -168,6 +175,10 @@ export default {
       this.$emit('change-content',{from: 'ClusterAnalysis',to: 'ClusterAnalysisDetail'})
     },
 
+    doDownLoad(){
+      alert('down load');
+    }
+
   },
   created() {
     this.$nextTick(()=> {
@@ -188,7 +199,7 @@ export default {
   align-items: center;
   padding: 0 30px;
   margin-bottom: 22px;
-  cursor: pointer;
+
   &-img{
     padding: 0 8px 0 12px;
     height: 18px;
@@ -211,9 +222,10 @@ export default {
   }
 }
 
-.js-error-item:hover,.source-error-item:hover{
+.source-error-item:hover{
   border: solid 1px #00baff;
   background: #f2fbff;
+  cursor: pointer;
 }
 
 
