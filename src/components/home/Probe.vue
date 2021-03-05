@@ -79,7 +79,7 @@
     const codeFrag1 = '<script type="text/javascript" src="http://localhost:13800/index.js"></' + 'script>\n';
     // 探针部署代码片段2
     const codeFrag2 = '<script>\n' +
-        '    ClientMonitor.register({\n' +
+        '    ClientMonitor.setPerformance({\n' +
         '        collector: \'http://localhost:13800\',\n' +
         '        useFmp: true,\n' +
         '        serviceVersion: \'default\',\n' +
@@ -88,7 +88,7 @@
     const codeFrag3 = '    });\n</' + 'script>';
     // 多页面应用探针部署代码片段
     const mpaCodeFrag = '<script>\n' +
-        '    ClientMonitor.register({\n' +
+        '    ClientMonitor.setPerformance({\n' +
         '        collector: \'http://localhost:13800\',\n' +
         '        service: \'serviceName\',\n' +
         '        serviceVersion: \'default\',\n' +
