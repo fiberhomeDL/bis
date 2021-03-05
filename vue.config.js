@@ -1,6 +1,17 @@
 const path = require('path');
 
 module.exports = {
+    devServer: {
+        publicPath: process.env.NODE_ENV === 'development' ? '/' : './',
+        proxy: {
+            '/graphql': {
+                target: 'http://demo.skywalking.apache.org',
+                pathRewrite: {
+                    '^/graphql' : '/graphql'
+                }
+            }
+        }
+    },
     configureWebpack: config => {
         return {
             resolve: {
