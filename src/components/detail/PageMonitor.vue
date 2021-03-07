@@ -480,11 +480,11 @@
                     width: 320px;
                     display: inline-block;
                     border-right: solid 1px #dfe8f7;
-                    padding-right: 32px;
                     overflow: hidden;
 
                     .page-select-area_item {
                         margin-bottom: 22px;
+                        margin-right:32px;
 
                         span {
                             @extend .sub-normal-text;
@@ -500,6 +500,7 @@
                     .page-name-bar {
                         height: calc(100% - 107px);
                         overflow-y: auto;
+                        margin-right: 24px;
 
                         .progress-bar {
                             width: calc(100% - 8px);
