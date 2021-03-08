@@ -1,34 +1,39 @@
 import axios from 'axios';
 
-const id = '$id: ID!';
+const id = '$id:String!';
 
 // 用户行为记录列表
 const queryBehaviorDetailData = {
     variable: `${id}`,
-    fragment: `queryUserBehaviorDetail: queryUserBehaviorDetail(id: $Id) {
+    fragment: `queryUserBehaviorDetail: queryUserBehaviorDetail(id: $id) {
      id
      userIp
-     pcNumber
+     policeId
      browserType
      browserVersion
      operatingSystem
      operatingSystemVersion
-     resolution
+     screenHeight
+     screenWidth
      pagePath
      startTime
-     errorNum
-     browserPerfDataStr
+     pagePerfDataStr
     }`
 };
 const queryBehaviorErrorData = {
-    fragment: `queryUserBehaviorErrorLog: queryUserBehaviorErrorLog(id: $Id) {
+    fragment: `queryUserBehaviorErrorLog: queryUserBehaviorErrorLog(id: $id) {
     logs { 
           errorType
           startTime
           pagePath
-          errorCategory
-          errorContent
-}
+          category
+          grade
+          message
+          line
+          col
+          stack
+          errorUrl
+        }
     }`
 };
 

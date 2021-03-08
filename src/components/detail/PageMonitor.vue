@@ -204,6 +204,7 @@
             // 查询应用下所有页面
             getAllPage() {
                 let that = this;
+                // 设置加载中
                 that.loading = true;
                 // 应用ID
                 let serviceId = this.$store.state.selectedServiceId;
@@ -359,6 +360,7 @@
             },
             // 处理页面加载延时数据
             handleLantenData(data) {
+                // 延时数据
                 let lantencyData = [
                     {
                         name: 'P50',

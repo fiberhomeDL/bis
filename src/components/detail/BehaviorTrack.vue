@@ -39,11 +39,13 @@
                     <div class="trace-container-item_col item-user-info">
                         <div class="item-user-info_col">
                             <span> 用户IP:</span>
-                            <span>{{item.userIp}}</span>
+                            <span v-if="item.userIp===''">未知</span>
+                            <span v-else>{{item.userIp}}</span>
                         </div>
                         <div class="item-user-info_col">
                             <span> 警员ID:</span>
-                            <span>{{item.policeId}}</span>
+                            <span v-if="item.policeId===''">未知</span>
+                            <span v-else>{{item.policeId}}</span>
                         </div>
                         <div class="item-user-info_terminal">
                             <el-tooltip effect="light" :visible-arrow=false placement="top">
@@ -57,7 +59,7 @@
                                      :src="require('@img/terminal_icon/'+item.OperateType+'.svg')"/>
                             </el-tooltip>
                             <el-tooltip effect="light" :visible-arrow=false placement="top">
-                                <div slot="content">{{item.resolution}}</div>
+                                <div slot="content">{{item.screenWidth}}&times{{item.screenHeight}}</div>
                                 <img class="item-icon_terminal"
                                      :src="require('@img/terminal_icon/pc.svg')"/>
                             </el-tooltip>
@@ -66,18 +68,18 @@
                     <div class="trace-container-item_col item-page">
                         <img class="item-icon" :src="require('@img/common_icon/page.svg')"/>
                         <span class="item-title">页面:</span>
-                        <span v-if="item.pageName.length>48" class="normal-text">...{{item.pageName.substring(item.pageName.length-48)}}</span>
+                        <span v-if="item.pageName.length>40" class="normal-text">...{{item.pageName.substring(item.pageName.length-40)}}</span>
                         <span v-else class="normal-text">{{item.pageName}}</span>
                     </div>
                     <div class="trace-container-item_col item-time">
                         <img class="item-icon" :src="require('@img/common_icon/time.svg')"/>
                         <span class="item-title">访问时间:</span>
-                        <span class="normal-text">{{item.startTime}}</span>
+                        <span class="normal-text">{{new Date(item.startTime).toLocaleString()}}</span>
                     </div>
                     <div class="trace-container-item_col item-exist-error">
                         <img class="item-icon" :src="require('@img/common_icon/error.svg')"/>
                         <span class="item-title">有无错误:</span>
-                        <span v-if="item.errorNum>0" class="item-content_error">有<span
+                        <span v-if="item.errorCount>0" class="item-content_error">有<span
                                 class="red-circle"></span></span>
                         <span v-else>无</span>
                     </div>
@@ -115,126 +117,8 @@
                 loading: true,
                 // 搜索关键词
                 keyword: '',
-                // 追踪数据
-                traceData: [
-                    {
-                        id: 1,
-                        userIp: '10.0.23.78',
-                        policeId: 'ME_002',
-                        browserType: 'chrome',
-                        browserVersion: '87.1',
-                        OperateType: 'windows',
-                        OperateVersion: 'Win10',
-                        pageName: 'index.html',
-                        resolution: '1920*1080',
-                        startTime: '2020-02-01 12:00:00',
-                        errorNum: 3
-                    },
-                    {
-                        id: 2,
-                        userIp: '10.0.23.88',
-                        policeId: 'ME_03221',
-                        browserType: 'chrome',
-                        browserVersion: '83.22',
-                        OperateType: 'windows',
-                        OperateVersion: 'Win8',
-                        pageName: '/sdfe/seajskejgsakjsgae/fe/sfefeg/safae/sfe/index.html',
-                        resolution: '1366*768',
-                        startTime: '2020-02-01 12:00:00',
-                        errorNum: 3
-                    },
-                    {
-                        id: 3,
-                        userIp: '10.0.23.78',
-                        policeId: 'ME_002',
-                        browserType: 'chrome',
-                        browserVersion: '87.1',
-                        OperateType: 'windows',
-                        OperateVersion: 'Win10',
-                        pageName: 'index.html',
-                        resolution: '1920*1080',
-                        startTime: '2020-02-01 12:00:00',
-                        errorNum: 0
-                    },
-                    {
-                        id: 4,
-                        userIp: '10.0.23.88',
-                        policeId: 'ME_03221',
-                        browserType: 'chrome',
-                        browserVersion: '83.22',
-                        OperateType: 'windows',
-                        OperateVersion: 'Win8',
-                        pageName: '/sdfe/sefe/sfefeg/safae/sfe/index.html',
-                        resolution: '1920*1080',
-                        startTime: '2020-02-01 12:00:00',
-                        errorNum: 3
-                    },
-                    {
-                        id: 5,
-                        userIp: '10.0.23.78',
-                        policeId: 'ME_002',
-                        browserType: 'chrome',
-                        browserVersion: '87.1',
-                        OperateType: 'windows',
-                        OperateVersion: 'Win10',
-                        pageName: 'index.html',
-                        resolution: '1920*1080',
-                        startTime: '2020-02-01 12:00:00',
-                        errorNum: 3
-                    },
-                    {
-                        id: 6,
-                        userIp: '10.0.23.88',
-                        policeId: 'ME_03221',
-                        browserType: 'chrome',
-                        browserVersion: '83.22',
-                        OperateType: 'windows',
-                        OperateVersion: 'Win8',
-                        pageName: '/sdfe/sefe/sfefeg/safae/sfe/index.html',
-                        resolution: '1920*1080',
-                        startTime: '2020-02-01 12:00:00',
-                        errorNum: 0
-                    },
-                    {
-                        id: 7,
-                        userIp: '10.0.23.78',
-                        policeId: 'ME_002',
-                        browserType: 'chrome',
-                        browserVersion: '87.1',
-                        OperateType: 'windows',
-                        OperateVersion: 'Win10',
-                        pageName: 'index.html',
-                        resolution: '1920*1080',
-                        startTime: '2020-02-01 12:00:00',
-                        errorNum: 0
-                    },
-                    {
-                        id: 8,
-                        userIp: '10.0.23.88',
-                        policeId: 'ME_03221',
-                        browserType: 'chrome',
-                        browserVersion: '83.22',
-                        OperateType: 'windows',
-                        OperateVersion: 'Win8',
-                        pageName: '/sdfe/sefe/sfefeg/safae/sfe/index.html',
-                        resolution: '1920*1080',
-                        startTime: '2020-02-01 12:00:00',
-                        errorNum: 0
-                    },
-                    {
-                        id: 9,
-                        userIp: '10.0.23.88',
-                        policeId: 'ME_03221',
-                        browserType: 'chrome',
-                        browserVersion: '83.22',
-                        OperateType: 'windows',
-                        OperateVersion: 'Win8',
-                        pageName: '/sdfe/sefe/sfefeg/safae/sfe/index.html',
-                        resolution: '1920*1080',
-                        startTime: '2020-02-01 12:00:00',
-                        errorNum: 6
-                    },
-                ],
+                // 用户追踪数据列表
+                traceData: [],
                 // 全部追踪数据数量
                 totalTraceData: 0,
                 // 选中追踪条目
@@ -258,7 +142,7 @@
                 // 时间
                 let duration = util.formatStartAndEndTime(that.$store.state.time);
                 // 查询条件
-                let condition = {
+                let queryCondition = {
                     serviceId: serviceId,
                     userInfoKeyword: that.keyword,
                     paging: {
@@ -268,15 +152,15 @@
                         pageSize: pageSize,
                         // 全部数据
                         needTotal: true
-                    }
+                    },
+                    queryDuration : duration
                 };
                 // 发送请求
-                return httpReq.getBehaviorData(condition, duration).then(data => {
+                return httpReq.init(queryCondition).then(data => {
+                    // 赋值
+                    that.traceData = data;
                     // 取消加载中
                     that.loading = false;
-                    // 赋值  测试
-                    // that.traceData = data.queryUserBehaviorRecord.logs;
-                    // that.totalTraceData = data.queryUserBehaviorRecord.total;
                 });
             },
             // 下载EXCEL
@@ -308,8 +192,8 @@
                         F: item.OperateVersion,
                         G: item.resolution,
                         H: item.pageName,
-                        I: new Date(item.time).toLocaleString(),
-                        J: item.errorNum
+                        I: new Date(item.startTime).toLocaleString(),
+                        J: item.errorCount
                     };
                     traceData.push(row);
                 });
