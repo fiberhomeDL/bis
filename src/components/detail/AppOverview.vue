@@ -100,28 +100,16 @@ export default {
 
       //暂无数据
       browserUseData: [
-        {value: 40, name: '谷歌87.0'},
-        {value: 20, name: 'safari1.0'},
-        {value: 10, name: '百度4.0'},
-        {value: 15, name: 'IE12'},
-        {value: 5, name: '火狐5.1'},
-        {value: 10, name: 'U2'}
+        // {value: 40, name: '谷歌87.0'},
+        // {value: 20, name: 'safari1.0'}
       ],
       osData: [
-        {value: 1000, name: 'Windows10'},
-        {value: 100, name: 'Windows8'},
-        {value: 800, name: 'Mac'},
-        {value: 400, name: 'Linux'},
-        {value: 500, name: 'IOS'},
-        {value: 200, name: 'Android'}
+        // {value: 1000, name: 'Windows10'},
+        // {value: 100, name: 'Windows8'}
       ],
       screenData: [
-        {value: 740, name: '1920x1080'},
-        {value: 260, name: '1768x992'},
-        {value: 210, name: '1600x1200'},
-        {value: 115, name: '1600x1024'},
-        {value: 15, name: '1600x900'},
-        {value: 410, name: '1366x768'}
+        // {value: 740, name: '1920x1080'},
+        // {value: 260, name: '1768x992'},
       ],
     }
   },
@@ -137,10 +125,11 @@ export default {
       let that = this;
       this.loading = true
       let serviceName = this.$store.getters.getSelectServiceName;
+      let serviceId = this.$store.state.selectedServiceId;
       // let serviceName = 'test-ui';
       let duration = this.$store.state.time;
       let xData = this.$store.getters.getXAxisData;
-      httpReq.getPageData(serviceName,duration).then(data=>{
+      httpReq.getPageData(serviceName,serviceId,duration).then(data=>{
         /*赋值*/
         that.appInfo.xData = xData;
         that.appInfo.pvValue = data.pv;
@@ -151,7 +140,11 @@ export default {
         that.FMPData = data.fmp;
         that.DomData = data.domReady;
         that.LoadData = data.load
+        that.browserUseData = data.browserUseData
+        that.osData = data.osData;
+        that.screenData = data.screenData;
         that.loading =  false;
+
       })
     },
   },
