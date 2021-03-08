@@ -60,18 +60,17 @@
               </template>
             </sub-header-title>
             <div v-show="errorSelect == 1 || errorSelect == 0">
-              <div class="source-error-item flex-row" v-for="n in 10" @click="onErrorItemClick">
+              <div class="source-error-item flex-row" :key="index" v-for="(item,index) in errorListForJsError" @click="onErrorItemClick">
                 <span class="source-error-item-tip"></span>
-                <span class="source-error-item-title">Script error.</span>
-                <span style="color: #505b73">Script error.</span>
-                <span style="color: #919dbd">【总共：11次 | 发生页面：1个】</span>
+                <span class="source-error-item-title">{{ item.errorType }}</span>
+                <span style="color: #919dbd">【总共：{{item.errorTotalNum}}次 | 发生页面：{{item.appearPageNum}}个】</span>
                 <img class="source-error-item-img" :src="require('@img/common_icon/subscribers.svg')" alt="">
-                <span style="color: #505b73">（18）</span>
+                <span style="color: #505b73">（{{ item.affectUserNum }}）</span>
               </div>
             </div>
             <div v-show="errorSelect == 2 || errorSelect == 0">
-              <div class="js-error-item flex-row" v-for="n in 10">
-                <span style="color: #505b73">https://jingyan.baidu.com/article/08b6a59191b95f14a80922b8.html.js.</span>
+              <div class="js-error-item flex-row" :key="index" v-for="(item,index) in errorListForResource">
+                <span style="color: #505b73">{{ item.errorType }}</span>
                 <span style="color: #919dbd">【总共：1230次 | 发生页面：168个】</span>
                 <img class="js-error-item-img" :src="require('@img/common_icon/subscribers.svg')" alt="">
                 <span style="color: #505b73">（98）</span>
@@ -114,7 +113,7 @@ export default {
         },
         {
           name: '影响页面',
-          value: '1005',
+          value: '--',
           imgUrl: require('@img/common_icon/page_big.svg'),
           mainColor: '#57d9f9',
           shadowStyle: {
@@ -123,7 +122,7 @@ export default {
         },
         {
           name: '影响用户',
-          value: '2483',
+          value: '--',
           imgUrl: require('@img/common_icon/mumber.svg'),
           mainColor: '#75e7d6',
           shadowStyle: {
@@ -150,19 +149,49 @@ export default {
           value: '2',
           label: '静态资源加载异常'
         }
+      ],
+
+
+      errorList: [
+        {
+          errorFlag: '1', // 1 => js错误 2 => 静态资源加载错误
+          errorTotalNum: 0, //错误数量
+          appearPageNum: 0, // 影响页面
+          affectUserNum: 0, // 影响用户
+          errorType: '//localhost'
+        }
       ]
+
+
+
+
     }
+  },
+  computed: {
+    errorListForJsError(){
+      return this.errorList.filter(item => item.errorFlag == "1")
+    },
+    errorListForResource(){
+      return this.errorList.filter(item => item.errorFlag == "2")
+    },
   },
   methods:{
     //渲染数据
     renderData(){
       this.loading = true;
       let serviceName = this.$store.getters.getSelectServiceName;
+      let serviceId = this.$store.state.selectedServiceId;
       let time = this.$store.state.time;
-      httpReq.getAllData(serviceName, time).then(appInfo => {
+      httpReq.getAllData(serviceName, serviceId, time).then(appInfo => {
       //  赋值操作
-        this.viewItemArr[0].value = appInfo.errorCount;
+        this.viewItemArr[0].value = appInfo.errorTotalNum;
+        this.viewItemArr[1].value = appInfo.appearPageNum;
+        this.viewItemArr[2].value = appInfo.affectUserNum;
+
+
         this.errorValues = appInfo.errorValues
+        this.errorList = appInfo.errorList;
+
 
         this.loading = false;
       })
