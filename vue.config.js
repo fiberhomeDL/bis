@@ -5,7 +5,7 @@ module.exports = {
         publicPath: process.env.NODE_ENV === 'development' ? '/' : './',
         proxy: {
             '/graphql': {
-                target: 'http://demo.skywalking.apache.org',
+                target: 'http://192.168.1.148:12800',
                 pathRewrite: {
                     '^/graphql' : '/graphql'
                 }
