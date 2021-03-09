@@ -60,7 +60,7 @@
               </template>
             </sub-header-title>
             <div v-show="errorSelect == 1 || errorSelect == 0">
-              <div class="source-error-item flex-row" :key="index" v-for="(item,index) in errorListForJsError" @click="onErrorItemClick">
+              <div class="source-error-item flex-row" :key="index" v-for="(item,index) in errorListForJsError" @click="onErrorItemClick(item.errorType)">
                 <span class="source-error-item-tip"></span>
                 <span class="source-error-item-title">{{ item.errorType }}</span>
                 <span style="color: #919dbd">【总共：{{item.errorTotalNum}}次 | 发生页面：{{item.appearPageNum}}个】</span>
@@ -153,13 +153,13 @@ export default {
 
 
       errorList: [
-        {
-          errorFlag: '1', // 1 => js错误 2 => 静态资源加载错误
-          errorTotalNum: 0, //错误数量
-          appearPageNum: 0, // 影响页面
-          affectUserNum: 0, // 影响用户
-          errorType: '//localhost'
-        }
+        // {
+        //   errorFlag: '1', // 1 => js错误 2 => 静态资源加载错误
+        //   errorTotalNum: 0, //错误数量
+        //   appearPageNum: 0, // 影响页面
+        //   affectUserNum: 0, // 影响用户
+        //   errorType: '//localhost'
+        // }
       ]
 
 
@@ -197,11 +197,9 @@ export default {
       })
     },
 
-    onErrorItemClick(id){
-      //todo 从数据中接收点击的错误id 跳转高亮问题
-      // id = "CA00001"; // =id
-      // this.$store.commit('changeSelectedServiceId', id);
-      this.$emit('change-content',{from: 'ClusterAnalysis',to: 'ClusterAnalysisDetail'})
+    onErrorItemClick(errorType){
+      this.$store.commit('setErrorItemClickType', errorType);
+      this.$emit('change-content',{from: 'ClusterAnalysis',to: 'ClusterAnalysisDetail'});
     },
 
     doDownLoad(){

@@ -1,7 +1,5 @@
 import axios from 'axios';
 import util from '@js/common'
-import de from "element-ui/src/locale/lang/de";
-
 function getPieData(data){
     return data.map(item => {
 
