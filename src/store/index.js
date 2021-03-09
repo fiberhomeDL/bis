@@ -26,7 +26,9 @@ export default new Vuex.Store({
         monitorToLogParam: {
             page: undefined,
             category: undefined
-        }
+        },
+
+        errorItemClickType: ''
     },
     getters: {
         //获取选中的服务名称
@@ -79,6 +81,9 @@ export default new Vuex.Store({
         },
         changeBehaviorTraceId(state, id) {
             state.behaviorTraceId = id;
+        },
+        setErrorItemClickType(state, payload){
+            state.errorItemClickType = payload;
         }
     },
     actions: {},
