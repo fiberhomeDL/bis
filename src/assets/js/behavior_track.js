@@ -1,5 +1,4 @@
 import axios from 'axios';
-import de from "element-ui/src/locale/lang/de";
 
 const condition = '$condition: BrowserUserBehaviorQueryCondition!';
 const id = '$id: String!';
@@ -21,6 +20,7 @@ const queryBehaviorData = {
          pageName:pagePath
          startTime
         }
+        total
     }`
 };
 // 记录错误数量
@@ -57,10 +57,10 @@ let httpReq = {
             // 获取用户行为记录列表
             that.getBehaviorData(condition).then(data => {
                 // 用户行为列表
-                let userBehaviorRecordList = data.queryUserBehaviorRecord.behaviors;
+                let userBehaviorRecordList = data.queryUserBehaviorRecord;
                 //
                 Promise.all(
-                    userBehaviorRecordList.map((item) => {
+                    userBehaviorRecordList.behaviors.map((item) => {
                         //每一项记录对应生成一个请求错误数据的promise
                         return new Promise((resolve, reject) => {
                             that.getRecordErrorData(item.id).then(data => {

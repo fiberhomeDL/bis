@@ -179,7 +179,7 @@
                 if (undefined !== monitorToLogParam.page) {
                     // 设置选中页面
                     that.page = monitorToLogParam.page.id;
-                    pagePathId = monitorToLogParam.page;
+                    pagePathId = monitorToLogParam.page.id;
                 } else {
                     pagePathId = that.page === 'All' ? '' : that.page;
                 }

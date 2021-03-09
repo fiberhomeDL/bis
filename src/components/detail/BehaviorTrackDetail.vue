@@ -79,7 +79,7 @@
                                 </div>
                             </div>
                             <!--列表项-->
-                            <div class="records-item-area">
+                            <div v-if="recordList.length!==0" class="records-item-area">
                                 <div v-for="(item,index) in recordList"
                                      :class="[{'active':(item.id===selectedRecord.id)}, 'record-item']"
                                      @click="selectRecord(item)">
@@ -92,6 +92,7 @@
                                     <div class="record-item_time">{{new Date(item.startTime).toLocaleString()}}</div>
                                 </div>
                             </div>
+                            <no-data v-else></no-data>
                         </div>
                         <!--事件详情信息-->
                         <div class="trace-info-page-record_detail">
@@ -224,13 +225,16 @@
     import ProcessBar from "@/components/common/terminal_analysis/ProcessBar";
     import httpReq from "@js/behavior_track_detail";
     import util from "@js/common";
+    import NoData from "@/components/common/NoData";
+
 
     export default {
         name: "BehaviorTrackDetail",
         components: {
             SubHeaderTitle,
             PageLoadFalls,
-            ProcessBar
+            ProcessBar,
+            NoData
         },
         data() {
             return {

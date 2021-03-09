@@ -162,7 +162,7 @@
                     {value: 'browser_app_page_fpt_avg', label: '白屏时间(ms)'},
                     {value: 'browser_app_page_fmp_avg', label: '首屏时间(ms)'},
                     {value: 'browser_app_page_dom_ready_avg', label: 'Html加载时间(ms)'},
-                    {value: 'browser_app_page_dom_ready_avg"', label: '页面完全加载时间(ms)'},
+                    {value: 'browser_app_page_load_page_avg', label: '页面完全加载时间(ms)'},
                 ],
                 // 应用下全部页面
                 pageData: [],
@@ -204,7 +204,7 @@
             // 查询应用下所有页面
             getAllPage() {
                 let that = this;
-                // 设置加载中
+                // 设置加载中遮罩
                 that.loading = true;
                 // 应用ID
                 let serviceId = this.$store.state.selectedServiceId;
@@ -221,7 +221,7 @@
                 //  查询条件
                 let condition = {
                     name: that.orderData,
-                    // 测试  应用名称
+                    // 应用名称
                     service: that.$store.getters.getSelectServiceName,
                     topN: that.pageData.length,
                 }
@@ -277,6 +277,7 @@
                 let duration = util.formatStartAndEndTime(that.$store.state.time);
                 // graphql
                 return httpReq.getPageDetail(serviceName, pageName, duration).then(data => {
+                    // 取消加载中遮罩
                     that.loading = false;
                     // 赋值给各项数据
                     that.pagePv = data.pv;

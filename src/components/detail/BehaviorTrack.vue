@@ -11,11 +11,21 @@
             </div>
             <div class="select-area_item">
                 <el-input
-                        placeholder="请输入用户IP地址或警员ID"
+                        placeholder="请输入用户IP地址"
                         suffix-icon="el-icon-search"
                         size="small"
                         clearable
-                        v-model="keyword"
+                        v-model="keywordUserIP"
+                        @keydown.enter.native="getUserTraceData">
+                </el-input>
+            </div>
+            <div class="select-area_item">
+                <el-input
+                        placeholder="请输入警员ID"
+                        suffix-icon="el-icon-search"
+                        size="small"
+                        clearable
+                        v-model="keywordPoliceId"
                         @keydown.enter.native="getUserTraceData">
                 </el-input>
             </div>
@@ -117,6 +127,10 @@
                 loading: true,
                 // 搜索关键词
                 keyword: '',
+                // 搜索关键词、用户ip
+                keywordUserIP:'',
+                // 搜索关键词、警员id
+                keywordPoliceId:'',
                 // 用户追踪数据列表
                 traceData: [],
                 // 全部追踪数据数量
@@ -144,7 +158,8 @@
                 // 查询条件
                 let queryCondition = {
                     serviceId: serviceId,
-                    userInfoKeyword: that.keyword,
+                    userIp: that.keywordUserIP,
+                    policeId:that.keywordPoliceId,
                     paging: {
                         // 当前页数
                         pageNum: that.currentPage,
@@ -157,8 +172,10 @@
                 };
                 // 发送请求
                 return httpReq.init(queryCondition).then(data => {
-                    // 赋值
-                    that.traceData = data;
+                    // 赋值、记录列表
+                    that.traceData = data.behaviors;
+                    // 赋值、全部数量
+                    that.totalTraceData = data.total;
                     // 取消加载中
                     that.loading = false;
                 });
@@ -238,6 +255,19 @@
                 // 查询错误日志数据
                 this.getUserTraceData();
             },
+        },
+        watch: {
+            // 搜索用户ip关键词改变时发送请求
+            keywordUserIP(){
+                this.debounceGetData();
+            },
+            // 搜索警员ID关键词改变时发送请求
+            keywordPoliceId(){
+                this.debounceGetData();
+            },
+        },
+        created() {
+            this.debounceGetData = this._.debounce(this.getUserTraceData, 1200);
         }
     }
 </script>

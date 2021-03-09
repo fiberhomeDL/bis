@@ -3,6 +3,8 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 
+import _ from 'lodash';
+
 
 import '@js/axios.config';
 
@@ -18,6 +20,7 @@ import '@js/common.js'
 
 import * as echarts from 'echarts'
 Vue.prototype.$echarts = echarts
+Vue.prototype._ = _;
 // Vue.prototype.$moment = moment;
 
 Vue.use(ElementUI);
