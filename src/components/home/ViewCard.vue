@@ -30,8 +30,8 @@ export default {
         {
           title: '用户量',
           icon: require('@img/common_icon/subscribers.svg'),
-          unit: '位',
-          value: this.serviceInfo.subscribersCount || '--',
+          unit: '',
+          value: this.serviceInfo.uvCount || '--',
         },
         {
           title: '错误数',
@@ -39,12 +39,12 @@ export default {
           unit: '个',
           value: this.serviceInfo.errorCount || '--',
         },
-        {
-          title: '警告数',
-          icon: require('@img/common_icon/warning.svg'),
-          unit: '个',
-          value: this.serviceInfo.warningCount || '--',
-        },
+        // {
+        //   title: '警告数',
+        //   icon: require('@img/common_icon/warning.svg'),
+        //   unit: '个',
+        //   value: this.serviceInfo.warningCount || '--',
+        // },
         {
           title: '性能指数',
           icon: require('@img/common_icon/performance.svg'),
