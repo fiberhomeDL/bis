@@ -38,9 +38,9 @@ export default {
       sortArr.forEach(item=>{
         let percentage = Math.floor(item.value / max * 100);
         item.percentage = percentage;
-        if(item.value > 500){
+        if(item.value > 600){
           item.color = this.color[0]
-        }else if(item.value > 200 && item.value <= 500){
+        }else if(item.value > 300 && item.value <= 600){
           item.color = this.color[1]
         }else{
           item.color = this.color[2]
