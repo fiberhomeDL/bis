@@ -117,7 +117,7 @@
             return {
                 // 加载中标识
                 loading: true,
-                // 错误数据，一页13个
+                // 错误数据
                 errorData: [],
                 // 全部错误数据
                 totalErrorData: 0,
@@ -179,7 +179,7 @@
                 if (undefined !== monitorToLogParam.page) {
                     // 设置选中页面
                     that.page = monitorToLogParam.page.id;
-                    pagePathId = monitorToLogParam.page;
+                    pagePathId = monitorToLogParam.page.id;
                 } else {
                     pagePathId = that.page === 'All' ? '' : that.page;
                 }

@@ -162,7 +162,7 @@
                     {value: 'browser_app_page_fpt_avg', label: '白屏时间(ms)'},
                     {value: 'browser_app_page_fmp_avg', label: '首屏时间(ms)'},
                     {value: 'browser_app_page_dom_ready_avg', label: 'Html加载时间(ms)'},
-                    {value: 'browser_app_page_dom_ready_avg"', label: '页面完全加载时间(ms)'},
+                    {value: 'browser_app_page_load_page_avg', label: '页面完全加载时间(ms)'},
                 ],
                 // 应用下全部页面
                 pageData: [],
@@ -204,6 +204,7 @@
             // 查询应用下所有页面
             getAllPage() {
                 let that = this;
+                // 设置加载中遮罩
                 that.loading = true;
                 // 应用ID
                 let serviceId = this.$store.state.selectedServiceId;
@@ -220,7 +221,7 @@
                 //  查询条件
                 let condition = {
                     name: that.orderData,
-                    // 测试  应用名称
+                    // 应用名称
                     service: that.$store.getters.getSelectServiceName,
                     topN: that.pageData.length,
                 }
@@ -251,9 +252,16 @@
                 // 清空跳转页面参数
                 that.$store.commit('clearMonitorParam');
                 // 默认显示第一个页面的详情数据，否则显示跳转的页面详情
-                that.selectedPage = undefined === toPageParam.name ? that.pageNameList[0] : toPageParam;
-                // 查询页面详情数据
-                that.getPageDetail();
+                if (undefined !== toPageParam.name) {
+                    that.selectedPage = toPageParam;
+                } else if (0 !== that.pageNameList.length) {
+                    that.selectedPage = that.pageNameList[0];
+                }
+                // that.selectedPage = undefined === toPageParam.name ? that.pageNameList[0] : toPageParam;
+                if (undefined !== that.selectedPage) {
+                    // 查询页面详情数据
+                    that.getPageDetail();
+                }
             },
             // 显示页面详情
             getPageDetail() {
@@ -269,6 +277,7 @@
                 let duration = util.formatStartAndEndTime(that.$store.state.time);
                 // graphql
                 return httpReq.getPageDetail(serviceName, pageName, duration).then(data => {
+                    // 取消加载中遮罩
                     that.loading = false;
                     // 赋值给各项数据
                     that.pagePv = data.pv;
@@ -352,6 +361,7 @@
             },
             // 处理页面加载延时数据
             handleLantenData(data) {
+                // 延时数据
                 let lantencyData = [
                     {
                         name: 'P50',
@@ -473,11 +483,11 @@
                     width: 320px;
                     display: inline-block;
                     border-right: solid 1px #dfe8f7;
-                    padding-right: 32px;
                     overflow: hidden;
 
                     .page-select-area_item {
                         margin-bottom: 22px;
+                        margin-right:32px;
 
                         span {
                             @extend .sub-normal-text;
@@ -493,6 +503,7 @@
                     .page-name-bar {
                         height: calc(100% - 107px);
                         overflow-y: auto;
+                        margin-right: 24px;
 
                         .progress-bar {
                             width: calc(100% - 8px);

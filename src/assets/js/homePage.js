@@ -2,8 +2,11 @@ import axios from 'axios';
 import de from "element-ui/src/locale/lang/de";
 
 let moment = require('moment');
+//当前时间
 let endTime = moment().format('YYYY-MM-DD HH');
+//24H前
 let startTime = moment(new Date().getTime() - 3600 * 24 * 1000).format('YYYY-MM-DD HH');
+//2个月前
 let twoMonthAgo = moment(new Date().getTime() - 3600 * 24 * 1000 * 60).format('YYYY-MM-DD HH');
 
 //echarts x时间轴
@@ -27,22 +30,38 @@ let httpReq = {
                     item.infoData = {};
                     item.chartsData = {};
                     //获取应用信息
-                    that.getAppInfo(item.name).then(data => {
+                    that.getAppInfo(item.name,item.id).then(data => {
                         //错误数量
                         item.infoData.errorCount = eval(data.errorCount.values.values.map(item => item.value).join("+"));
                         //pv总量
                         item.infoData.viewCount = eval(data.pvData.values.values.map(item => item.value).join("+"));
+                        //uv总量
+                        item.infoData.uvCount = eval(data.uvData.values.values.map(item => item.value).join("+"));
+
+                        item.infoData.performanceCount = ((10000 - data.errorRate) * data.lp) / 100;
+
+
                         //echarts pv
                         item.chartsData.pvData = data.pvData.values.values.map(item => item.value);
+                        //echarts uv
+                        item.chartsData.uvData = data.uvData.values.values.map(item => item.value);
+
+
                         //echarts x轴数据
                         item.chartsData.xData = xData;
 
-                        /*假数据*/
-                        item.satisfaction = '1';
-                        item.chartsData.uvData = [...item.chartsData.pvData].reverse();
+
+                        //满意度
+                        if(item.infoData.performanceCount < 30){
+                            item.satisfaction = '3';
+                        }else if(item.infoData.performanceCount >= 30 && item.infoData.performanceCount < 75){
+                            item.satisfaction = '2';
+                        }else{
+                            item.satisfaction = '1';
+                        }
 
 
-                        // debugger;
+
 
                         // item.infoData.
                     }).finally(()=>{
@@ -72,11 +91,18 @@ let httpReq = {
         })
     },
     //获取应用列表
-    getAppInfo(serviceName){
-        console.log(endTime);
+    getAppInfo(serviceName,serviceId){
         return axios.post('/graphql',{
             query: `
-                query ($d: Duration!,$mcPv: MetricsCondition!,$mcError: MetricsCondition!){
+                query (
+                        $d: Duration!,
+                        $mcPv: MetricsCondition!,
+                        $mcError: MetricsCondition!,
+                        $serviceId: String!,
+                        $serviceName: String!,
+                        $mcRate: MetricsCondition!
+                        $valueColumnName: String!
+                    ){
                     pvData: readMetricsValues(duration: $d, condition: $mcPv){
                         values{
                             values {
@@ -91,6 +117,23 @@ let httpReq = {
                             }
                         }
                     }
+                    uvData: readUVMetricsValues(serviceId: $serviceId, duration: $d){
+                        values {
+                            values {
+                                value
+                            }
+                        }
+                    },
+                    
+                    errorRate: readMetricsValue(condition: $mcRate, duration: $d)
+                    
+                    lp: readBrowserPageMetricsToApp(
+                        name: $serviceName, 
+                        serviceId: $serviceId, 
+                        valueColumnName: $valueColumnName, 
+                        duration: $d)
+                    
+                    
                 
                 }
             `,
@@ -104,7 +147,7 @@ let httpReq = {
                     "name": "browser_app_pv",
                     "entity": {
                         "scope": "Service",
-                        "serviceName": "test-ui",
+                        "serviceName": serviceName,
                         "normal": true
                     }
                 },
@@ -112,10 +155,22 @@ let httpReq = {
                     "name": "browser_app_error_sum",
                     "entity": {
                         "scope": "Service",
-                        "serviceName": "test-ui",
+                        "serviceName": serviceName,
                         "normal": true
                     }
-                }
+                },
+                "serviceId": serviceId,
+                "serviceName": serviceName,
+                "mcRate": {
+                    "name": "browser_app_error_rate",
+                    "entity": {
+                        "scope": "Service",
+                        "serviceName": serviceName,
+                        "normal": true
+                    }
+                },
+                "valueColumnName": "value",
+
             }
 
         })

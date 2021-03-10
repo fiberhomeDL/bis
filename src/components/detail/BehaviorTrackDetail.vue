@@ -1,5 +1,9 @@
 <template>
-    <div class="content-track-detail">
+    <div class="content-track-detail"
+         v-loading="loading"
+         element-loading-text="拼命加载中"
+         element-loading-spinner="el-icon-loading"
+         element-loading-background="rgba(0, 0, 0, 0.8)">
         <div class="select-area">
             <div class="left">
                 <i class="el-icon-arrow-left"></i>
@@ -13,36 +17,37 @@
                     <div class="trace-info-overview">
                         <div class="item user-info">
                             <span> 用户IP:</span>
-                            <span>10.23.78</span>
+                            <span>{{behaviorDetailData.userIp}}</span>
                         </div>
                         <div class="item user-info">
                             <span> 警员ID:</span>
-                            <span>MH__01</span>
+                            <span v-if="behaviorDetailData.policeId ===''">未知</span>
+                            <span v-else>{{behaviorDetailData.policeId}}</span>
                         </div>
                         <div class="item">
                             <img class="item-icon_terminal"
-                                 :src="require('@img/terminal_icon/Google.svg')"/>
-                            <span>87.0</span>
+                                 :src="require('@img/terminal_icon/'+behaviorDetailData.browserType+'.svg')"/>
+                            <span>{{behaviorDetailData.browserVersion}}</span>
                             <img class="item-icon_terminal"
-                                 :src="require('@img/terminal_icon/Windows.svg')"/>
-                            <span>Win10</span>
+                                 :src="require('@img/terminal_icon/'+behaviorDetailData.operatingSystem+'.svg')"/>
+                            <span>{{behaviorDetailData.operatingSystemVersion}}</span>
                             <img class="item-icon_terminal" :src="require('@img/terminal_icon/pc.svg')"/>
-                            <span>1920&times1680</span>
+                            <span>{{behaviorDetailData.screenWidth}}&times{{behaviorDetailData.screenHeight}}</span>
                         </div>
                         <div class="item">
                             <img class="icon-title" :src="require('@img/track/app.svg')"/>
                             <span class="item-service-title"> 应用:</span>
-                            <span>test</span>
+                            <span>{{$store.getters.getSelectServiceName}}</span>
                         </div>
                         <div class="item">
                             <img class="icon-title" :src="require('@img/common_icon/page.svg')"/>
                             <span class="item-service-title"> 页面:</span>
-                            <span>index.html</span>
+                            <span>{{behaviorDetailData.pagePath}}</span>
                         </div>
                         <div class="item">
                             <img class="icon-title" :src="require('@img/common_icon/time.svg')"/>
                             <span class="item-service-title"> 访问时间:</span>
-                            <span>2020-12-30 08:00:00</span>
+                            <span>{{new Date(behaviorDetailData.startTime).toLocaleString()}}</span>
                         </div>
                     </div>
                     <div class="trace-info-page">
@@ -74,7 +79,7 @@
                                 </div>
                             </div>
                             <!--列表项-->
-                            <div class="records-item-area">
+                            <div v-if="recordList.length!==0" class="records-item-area">
                                 <div v-for="(item,index) in recordList"
                                      :class="[{'active':(item.id===selectedRecord.id)}, 'record-item']"
                                      @click="selectRecord(item)">
@@ -84,9 +89,10 @@
                                         <span v-else>发生错误</span>
                                     </div>
                                     <div>{{item.message}}</div>
-                                    <div class="record-item_time">{{item.time}}</div>
+                                    <div class="record-item_time">{{new Date(item.startTime).toLocaleString()}}</div>
                                 </div>
                             </div>
+                            <no-data v-else></no-data>
                         </div>
                         <!--事件详情信息-->
                         <div class="trace-info-page-record_detail">
@@ -104,7 +110,7 @@
                                         <div class="event-detail-item">
                                             <img :src="require('@img/common_icon/time.svg')"/>
                                             <span class="event-detail-item_title sub-normal-text">发生时间:</span>
-                                            <span>{{ selectedRecord.time }}</span>
+                                            <span>{{ new Date(selectedRecord.startTime).toLocaleString() }}</span>
                                         </div>
                                         <div class="event-detail-item">
                                             <img :src="require('@img/track/event.svg')"/>
@@ -119,7 +125,7 @@
                                     </div>
                                     <!--页面浏览tab-->
                                     <div class="event-tab">
-                                        <el-tabs v-model="activeName" @tab-click="handleClick">
+                                        <el-tabs v-model="activeName">
                                             <el-tab-pane label="页面加载瀑布图" name="loadFall">
                                                 <page-load-falls :data="pageLoadData"></page-load-falls>
                                             </el-tab-pane>
@@ -149,7 +155,7 @@
                                                         </el-table-column>
                                                         <el-table-column
                                                                 prop="size"
-                                                                label="资源大小"
+                                                                label="资源大小(KB)"
                                                                 min-width="10%">
                                                         </el-table-column>
                                                         <el-table-column
@@ -175,32 +181,32 @@
                                         <div class="event-detail-item">
                                             <img :src="require('@img/common_icon/time.svg')"/>
                                             <span class="event-detail-item_title sub-normal-text">发生时间:</span>
-                                            <span>2020-12-23 23:23:23</span>
+                                            <span>{{new Date(errorRecordDetail.startTime).toLocaleString()}}</span>
                                         </div>
                                         <div class="event-detail-item">
                                             <img :src="require('@img/track/event.svg')"/>
                                             <span class="event-detail-item_title sub-normal-text">事件内容:</span>
-                                            <span>http://sengjga/index.html</span>
+                                            <span>{{errorRecordDetail.pagePath}}</span>
                                         </div>
                                         <div class="event-detail-item">
                                             <img :src="require('@img/common_icon/page.svg')"/>
                                             <span class="event-detail-item_title sub-normal-text">发生页面:</span>
-                                            <span>http://sengjga/index.html</span>
+                                            <span>{{errorRecordDetail.pagePath}}</span>
                                         </div>
                                         <div class="event-detail-item">
                                             <img :src="require('@img/track/error_type.svg')"/>
                                             <span class="event-detail-item_title sub-normal-text">错误类型:</span>
-                                            <span>AJAX</span>
+                                            <span>{{errorRecordDetail.category}}</span>
                                         </div>
                                         <div class="event-detail-item">
                                             <img :src="require('@img/track/error_grade.svg')"/>
                                             <span class="event-detail-item_title sub-normal-text">错误等级:</span>
-                                            <span>Warning</span>
+                                            <span>{{errorRecordDetail.grade}}</span>
                                         </div>
                                         <div class="event-detail-item">
                                             <img :src="require('@img/track/error_message.svg')"/>
                                             <span class="event-detail-item_title sub-normal-text">错误信息:</span>
-                                            <span class="error-message">Script Error:sjeigjskgsnsmnemgnsmngsemgnsmgnsjskjgrkgksngsnemgnsemngjskjgskgejmgnemgnsmngmsngsmgmsgsdj</span>
+                                            <span class="error-message">{{errorRecordDetail.errorContent}}</span>
                                         </div>
                                     </div>
                                 </div>
@@ -217,61 +223,25 @@
     import SubHeaderTitle from "@/components/common/SubHeaderTitle";
     import PageLoadFalls from "@/components/common/PageLoadFalls";
     import ProcessBar from "@/components/common/terminal_analysis/ProcessBar";
+    import httpReq from "@js/behavior_track_detail";
+    import util from "@js/common";
+    import NoData from "@/components/common/NoData";
+
 
     export default {
         name: "BehaviorTrackDetail",
         components: {
             SubHeaderTitle,
             PageLoadFalls,
-            ProcessBar
+            ProcessBar,
+            NoData
         },
         data() {
             return {
-                activeName: 'loadFall',
-                // 页面加载数据
-                pageLoadData: [
-                    {title: 'DNS查询 DNS Lookup', startTime: 0, consumeTime: 20},
-                    {title: 'TCP连接 TCP', startTime: 20, consumeTime: 30},
-                    {title: 'SSL建连 SSL', startTime: 40, consumeTime: 10},
-                    {title: '请求响应时间 TTFB ', startTime: 50, consumeTime: 20},
-                    {title: '内容传输 Trans', startTime: 70, consumeTime: 10},
-                    {title: 'DOM解析 Dom Ready', startTime: 80, consumeTime: 30},
-                    {title: '资源加载 Resource', startTime: 110, consumeTime: 120},
-                ],
-                // 页面加载资源
-                pageLoadRes: [
-                    {name: 'sgjeigj.svg', type: 'img', size: 49, time: 23},
-                    {name: 'sgjeigj.css', type: 'css', size: 49, time: 23},
-                    {name: 'sgjeigj.img', type: 'img', size: 49, time: 23},
-                    {name: 'sgjeigj.svg', type: 'img', size: 49, time: 23},
-                    {name: 'sgjeigj.css', type: 'css', size: 49, time: 23},
-                    {name: 'sgjeigj.img', type: 'img', size: 49, time: 23},
-                    {name: 'sgjeigj.svg', type: 'img', size: 49, time: 23},
-                    {name: 'sgjeigj.img', type: 'img', size: 49, time: 23},
-                    {name: 'sgjeigj.svg', type: 'img', size: 49, time: 23},
-                ],
-                pagePerformance: {
-                    mainColor: '#86ebdc',
-                    unit: 'ms',
-                    pbData: [
-                        {
-                            name: '白屏时间',
-                            value: 100
-                        },
-                        {
-                            name: '首屏时间',
-                            value: 80
-                        },
-                        {
-                            name: 'Html加载时间',
-                            value: 60
-                        },
-                        {
-                            name: '页面完全加载时间',
-                            value: 40
-                        },
-                    ],
-                },
+                // 加载中标识
+                loading: true,
+                // 用户记录详情数据
+                behaviorDetailData: {},
                 keywords: '',
                 // 记录类型
                 recordsType: 'all',
@@ -282,44 +252,62 @@
                     {value: 'error', label: '发生错误'},
                 ],
                 // 记录数据
-                recordData: [
-                    {id: '1232mamg1', type: 'pageView', message: 'index.html', time: '2020-12-22 12:00:00',},
-                    {id: 'ege32mamg2', type: 'error', message: 'Script Error', time: '2020-12-22 12:00:00'},
-                    {id: 'egeg232mamg3', type: 'error', message: 'Script Error', time: '2020-12-22 12:00:00'},
-                    {id: 'sgeg232mamg4', type: 'error', message: 'Script Error', time: '2020-12-22 12:00:00'},
-                    {id: 'geg232mamg5', type: 'error', message: 'Script Error', time: '2020-12-22 12:00:00'},
-                    {
-                        id: 'egsgs232mamg6',
-                        type: 'pageView',
-                        message: 'ajgkejg/agekgjka/index.html',
-                        time: '2020-12-23 13:03:03'
-                    },
-                    {id: 'ege32mamg7', type: 'error', message: 'Script Error', time: '2020-12-22 12:00:00'},
-                    {id: 'ege32mamg8', type: 'error', message: 'Script Error', time: '2020-12-22 12:00:00'},
-                    {id: 'ege32mamg9', type: 'error', message: 'Script Error', time: '2020-12-22 12:00:00'},
-                    {id: 'ege32mamg10', type: 'error', message: 'Script Error', time: '2020-12-22 12:00:00'},
-                ],
+                recordData: [],
                 // 记录列表
                 recordList: [],
                 // 选中记录数据
                 selectedRecord: {},
+                // tab
+                activeName: 'loadFall',
+                // 页面加载数据
+                pageLoadData: [],
+                // 页面性能数据
+                pagePerformance: {},
+                // 页面加载资源
+                pageLoadRes: [],
+                // 错误记录详细信息
+                errorRecordDetail: [
+                    {
+                        errorType: 'Script Error',
+                        startTime: 1600000000,
+                        pagePath: 'index.html',
+                        errorCategory: 'Ajax',
+                        errorContent: 'Script Error:sjeigjskgsnsmnemgnsmngsemgnsmgnsjskjgrkgksngsnemgnsemngjskjgskgejmgnemgnsmngmsngsmgmsgsdj'
+                    }
+                ]
             }
         },
         mounted() {
             // 查询行为追踪详情数据
             this.getBehaviorTraceDetail();
-
         },
         methods: {
-            // 查询行为追踪详情数据
+            // 查询行为追踪条目详情数据
             getBehaviorTraceDetail() {
+                let that = this;
+                // 显示加载中
+                that.loading = true;
                 // 用户行为追踪id
                 const behaviorTraceId = this.$store.state.behaviorTraceId;
-
-                // graphql查询详情数据
-
-                // 处理数据
-                this.handleData();
+                // 发送请求 测试
+                return httpReq.getBehaviorDetailData(behaviorTraceId).then(data => {
+                    // 赋值
+                    that.behaviorDetailData = data.queryUserBehaviorDetail;
+                    // 赋值、页面浏览数据
+                    that.recordData.push(data.queryUserBehaviorDetail);
+                    that.recordData[0].type = 'pageView';
+                    that.recordData[0].message = data.queryUserBehaviorDetail.pagePath;
+                    // 赋值、页面错误数据
+                    let errorData = data.queryUserBehaviorErrorLog.logs;
+                    for (let i = 0; i < errorData.length; i++) {
+                        errorData[i].type = 'error';
+                        errorData[i].errorContent=errorData[i].message;
+                        errorData[i].message = errorData[i].errorType;
+                        that.recordData.push(errorData[i]);
+                    }
+                    // 处理数据
+                    that.handleData();
+                });
 
             },
             // 处理数据
@@ -333,6 +321,100 @@
                 );
                 // 默认显示第一条数据详情
                 that.selectedRecord = JSON.parse(JSON.stringify(that.recordList[0]));
+                // 显示记录详情
+                that.showRecordDetail();
+            },
+            // 显示记录详情
+            showRecordDetail() {
+                let that = this;
+                // 根据记录类型赋值
+                if ('pageView' === that.selectedRecord.type) {
+                    let selectedRecordPerf = JSON.parse(that.selectedRecord.pagePerfDataStr);
+                    // 页面加载数据  函数处理
+                    that.pageLoadData = that.handlePageLoadData(selectedRecordPerf.pageLoadData);
+                    // 页面性能数据
+                    that.pagePerformance = that.handlePagePerforData(selectedRecordPerf.pagePerformance);
+                    // 页面资源  函数处理
+                    that.pageLoadRes = that.handleLoadRes(selectedRecordPerf.pageReource);
+                } else {
+                    // 页面错误详情
+                    that.errorRecordDetail = that.selectedRecord;
+                }
+                // 测试
+                that.loading = false;
+            },
+            // 处理页面瀑布图数据
+            handlePageLoadData(data) {
+                // 瀑布流进行的当前时间
+                let currentTime = 0;
+                // 页面瀑布图数据
+                let pageLoadData = [
+                    {title: 'DNS查询 DNS Lookup', startTime: 0, consumeTime: 0},
+                    {title: 'TCP连接 TCP', startTime: 0, consumeTime: 0},
+                    {title: 'SSL建连 SSL', startTime: 0, consumeTime: 0},
+                    {title: '请求响应时间 TTFB', startTime: 0, consumeTime: 0},
+                    {title: '内容传输 Trans', startTime: 0, consumeTime: 0},
+                    {title: 'DOM解析 Dom Ready', startTime: 0, consumeTime: 0},
+                    {title: '资源加载 Resource', startTime: 0, consumeTime: 0}
+                ];
+                // 设置数据的开始时间和消耗时间
+                for (var i = 0; i < data.length; i++) {
+                    // ssl建连时间的结束时间等于tcp结束时间
+                    if (i !== 2) {
+                        pageLoadData[i].startTime = currentTime;
+                        currentTime += data[i];
+                    } else {
+                        pageLoadData[i].startTime = currentTime - data[i];
+                    }
+                    pageLoadData[i].consumeTime = data[i];
+                }
+                return pageLoadData;
+            },
+            // 处理页面性能数据
+            handlePagePerforData(data) {
+                // 页面性能数据
+                let performanceData = {
+                    mainColor: '#86ebdc',
+                    unit: 'ms',
+                    pbData: [
+                        {
+                            name: '白屏时间',
+                            value: 0
+                        },
+                        {
+                            name: '首屏时间',
+                            value: 0
+                        },
+                        {
+                            name: 'Html加载时间',
+                            value: 0
+                        },
+                        {
+                            name: '页面完全加载时间',
+                            value: 0
+                        },
+                    ],
+                };
+                // 赋值
+                for (var i = 0; i < data.length; i++) {
+                    performanceData.pbData[i].value = data[i];
+                }
+                return performanceData;
+            },
+            // 处理页面资源数据
+            handleLoadRes(data){
+                let pageRes = [];
+                // 赋值
+                for (var i = 0; i < data.length; i++) {
+                    let item = {
+                        name: data[i].name,
+                        type:data[i].initiatorType,
+                        size: (data[i].encodedBodySize/1024).toFixed(2),
+                        time: data[i].duration.toFixed(2)
+                    };
+                    pageRes.push(item);
+                }
+                return pageRes;
             },
             // 返回
             goBack() {
@@ -340,9 +422,6 @@
                     from: 'BehaviorTrackDetail',
                     to: 'BehaviorTrack'
                 })
-            },
-            // tab切换
-            handleClick() {
             },
             // 设置表格header样式
             tableHeaderCellStyle() {
@@ -353,6 +432,8 @@
                 let that = this;
                 // 更换当前记录详情数据
                 that.selectedRecord = JSON.parse(JSON.stringify(item));
+                // 显示记录详情
+                that.showRecordDetail();
             },
         },
         watch: {
@@ -421,13 +502,15 @@
 
                     .item {
                         display: flex;
-                        margin-right: 4%;
+                        margin-right: 1%;
                         margin-left: auto;
+                        line-height: 1.5em;
 
                         .item-icon_terminal {
                             width: 22px;
                             height: 22px;
                             margin: 0 12px;
+                            vertical-align: middle;
                         }
 
                         .item-icon_terminal:first-child {
@@ -437,7 +520,7 @@
                         .icon-title {
                             width: 14px;
                             height: 14px;
-                            margin-right: 8px;
+                            margin: 6px 8px 0 0;
                         }
 
                         .item-service-title {

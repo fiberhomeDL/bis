@@ -78,7 +78,14 @@ export default {
     },
     created() {
       //如果用户在Detail页面下刷新，依旧保持选中应用的状态
-      this.$store.commit('changeSelectedServiceId',this.$route.query.id);
+      if(this.$route.query.id){
+        this.$store.commit('changeSelectedServiceId',this.$route.query.id);
+      }else{
+        this.$router.push({
+          name: 'Home'
+        })
+      }
+
     }
 }
 </script>

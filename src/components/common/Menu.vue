@@ -16,11 +16,16 @@
         name: "Menu",
         //传入展示应用名称
         props: ['activeComponentName'],
+        data(){
+            return {
+                activeName: this.activeComponentName,
+            }
+        },
         computed: {
           //展示应用
-          activeName(){
-            return this.activeComponentName;
-          },
+          // activeName(){
+          //   return this.activeComponentName;
+          // },
           //应用列表数据 isActive根据activeName为判断依据
           tabData(){
             return [
@@ -75,10 +80,11 @@
             tabClick(value){
                 if(this.activeName != value.componentName){
                 //if(!value.isActive){
+                    //更改active值（修改样式）
                   this.activeName = value.componentName;
                   // this.tabData.forEach((item)=>{item.isActive = false});
                   // value.isActive = true;
-                  //  抛出组件名
+                  //  更换组件文件
                   this.$emit('change-content', value.componentName);
                 }
             }

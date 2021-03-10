@@ -54,24 +54,28 @@
             </el-col>
           </el-row>
           <el-row class="cluster-analysis-body-bottom">
-            <sub-header-title :sub-title="'错误列表'" style="margin-bottom: 18px"></sub-header-title>
+            <sub-header-title :sub-title="'错误列表'" style="margin-bottom: 18px">
+              <template v-slot:option>
+                <download-button @click="doDownLoad"></download-button>
+              </template>
+            </sub-header-title>
             <div v-show="errorSelect == 1 || errorSelect == 0">
-              <div class="js-error-item flex-row" v-for="n in 10" @click="onErrorItemClick">
-                <span style="color: #505b73">https://jingyan.baidu.com/article/08b6a59191b95f14a80922b8.html.js.</span>
+              <div class="source-error-item flex-row" :key="index" v-for="(item,index) in errorListForJsError" @click="onErrorItemClick(item.errorType)">
+                <span class="source-error-item-tip"></span>
+                <span class="source-error-item-title">{{ item.errorType }}</span>
+                <span style="color: #919dbd">【总共：{{item.errorTotalNum}}次 | 发生页面：{{item.appearPageNum}}个】</span>
+                <img class="source-error-item-img" :src="require('@img/common_icon/subscribers.svg')" alt="">
+                <span style="color: #505b73">（{{ item.affectUserNum }}）</span>
+              </div>
+            </div>
+            <div v-show="errorSelect == 2 || errorSelect == 0">
+              <div class="js-error-item flex-row" :key="index" v-for="(item,index) in errorListForResource">
+                <span style="color: #505b73">{{ item.errorType }}</span>
                 <span style="color: #919dbd">【总共：1230次 | 发生页面：168个】</span>
                 <img class="js-error-item-img" :src="require('@img/common_icon/subscribers.svg')" alt="">
                 <span style="color: #505b73">（98）</span>
               </div>
-            </div>
-            <div v-show="errorSelect == 2 || errorSelect == 0">
-              <div class="source-error-item flex-row" v-for="n in 10" @click="onErrorItemClick">
-                <span class="source-error-item-tip"></span>
-                <span class="source-error-item-title">Script error.</span>
-                <span style="color: #505b73">Script error.</span>
-                <span style="color: #919dbd">【总共：11次 | 发生页面：1个】</span>
-                <img class="source-error-item-img" :src="require('@img/common_icon/subscribers.svg')" alt="">
-                <span style="color: #505b73">（18）</span>
-              </div>
+
             </div>
           </el-row>
         </div>
@@ -86,9 +90,11 @@ import SubHeaderTitle from "@/components/common/SubHeaderTitle";
 import ViewItem from "@/components/common/cluster_analysis/ViewItem";
 import ClusterAnalysisBar from "@/components/common/cluster_analysis/ClusterAnalysisBar";
 import httpReq from "@js/clusterAnalysis.js";
+import DownloadButton from "@/components/common/DownloadButton";
+import XLSX from 'xlsx';
 export default {
   name: "ClusterAnalysis",
-  components: {ServiceSelect, TimePicker, SubHeaderTitle, ViewItem, ClusterAnalysisBar},
+  components: {ServiceSelect, TimePicker, SubHeaderTitle, ViewItem, ClusterAnalysisBar,DownloadButton},
   data(){
     return {
       //是否加载
@@ -107,7 +113,7 @@ export default {
         },
         {
           name: '影响页面',
-          value: '1005',
+          value: '--',
           imgUrl: require('@img/common_icon/page_big.svg'),
           mainColor: '#57d9f9',
           shadowStyle: {
@@ -116,7 +122,7 @@ export default {
         },
         {
           name: '影响用户',
-          value: '2483',
+          value: '--',
           imgUrl: require('@img/common_icon/mumber.svg'),
           mainColor: '#75e7d6',
           shadowStyle: {
@@ -133,7 +139,7 @@ export default {
       errorTypeData: [
         {
           value: '0',
-          label: '全部错误',
+          label: '全部',
         },
         {
           value: '1',
@@ -143,30 +149,105 @@ export default {
           value: '2',
           label: '静态资源加载异常'
         }
+      ],
+
+
+      errorList: [
+        // {
+        //   errorFlag: '1', // 1 => js错误 2 => 静态资源加载错误
+        //   errorTotalNum: 0, //错误数量
+        //   appearPageNum: 0, // 影响页面
+        //   affectUserNum: 0, // 影响用户
+        //   errorType: '//localhost'
+        // }
       ]
+
+
+
+
     }
   },
+  computed: {
+    errorListForJsError(){
+      return this.errorList.filter(item => item.errorFlag == "1")
+    },
+    errorListForResource(){
+      return this.errorList.filter(item => item.errorFlag == "2")
+    },
+  },
   methods:{
-
+    //渲染数据
     renderData(){
       this.loading = true;
       let serviceName = this.$store.getters.getSelectServiceName;
+      let serviceId = this.$store.state.selectedServiceId;
       let time = this.$store.state.time;
-      httpReq.getAllData(serviceName, time).then(appInfo => {
+      httpReq.getAllData(serviceName, serviceId, time).then(appInfo => {
       //  赋值操作
-        this.viewItemArr[0].value = appInfo.errorCount;
+        this.viewItemArr[0].value = appInfo.errorTotalNum;
+        this.viewItemArr[1].value = appInfo.appearPageNum;
+        this.viewItemArr[2].value = appInfo.affectUserNum;
+
+
         this.errorValues = appInfo.errorValues
+        this.errorList = appInfo.errorList;
+
 
         this.loading = false;
       })
     },
 
-    onErrorItemClick(id){
-      //todo 从数据中接收点击的错误id 跳转高亮问题
-      // id = "CA00001"; // =id
-      // this.$store.commit('changeSelectedServiceId', id);
-      this.$emit('change-content',{from: 'ClusterAnalysis',to: 'ClusterAnalysisDetail'})
+    onErrorItemClick(errorType){
+      this.$store.commit('setErrorItemClickType', errorType);
+      this.$emit('change-content',{from: 'ClusterAnalysis',to: 'ClusterAnalysisDetail'});
     },
+
+    doDownLoad(){
+      // 表格数据
+      let errorData = [];
+      // 设置表头
+      errorData.push({A: '错误信息', B: '发生次数', C: '影响页面数', D: '影响用户数',});
+
+      /*errorList: [
+        // {
+        //   errorFlag: '1', // 1 => js错误 2 => 静态资源加载错误
+        //   errorTotalNum: 0, //错误数量
+        //   appearPageNum: 0, // 影响页面
+        //   affectUserNum: 0, // 影响用户
+        //   errorType: '//localhost'
+        // }
+      ]*/
+      // 写入每行数据
+      this.errorList.forEach(function (item, index) {
+        let row = {
+          A: item.errorType,
+          B: item.errorTotalNum,
+          C: item.appearPageNum,
+          D: item.affectUserNum
+        };
+        errorData.push(row);
+      });
+
+      //创建book
+      let wb = XLSX.utils.book_new();
+      //json转sheet
+      let ws = XLSX.utils.json_to_sheet(errorData, {
+        header: ['A', 'B', 'C', 'D', 'E', 'F'],
+        skipHeader: true
+      });
+      //设置列宽
+      ws['!cols'] = [
+        {width: 100},
+        {width: 20},
+        {width: 20},
+        {width: 20}
+      ];
+      let timestamp = (new Date()).getTime();
+      //sheet写入book
+      XLSX.utils.book_append_sheet(wb, ws, '错误列表');
+      //输出
+      XLSX.writeFile(wb, '错误列表' + timestamp + '.xlsx');
+    }
 
   },
   created() {
@@ -188,7 +269,7 @@ export default {
   align-items: center;
   padding: 0 30px;
   margin-bottom: 22px;
-  cursor: pointer;
+
   &-img{
     padding: 0 8px 0 12px;
     height: 18px;
@@ -211,9 +292,10 @@ export default {
   }
 }
 
-.js-error-item:hover,.source-error-item:hover{
+.source-error-item:hover{
   border: solid 1px #00baff;
   background: #f2fbff;
+  cursor: pointer;
 }
 
 

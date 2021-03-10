@@ -3,6 +3,11 @@
     <div class="sub-header-title-border"></div>
     <span class="sub-header-title-sub">{{subTitle}}</span>
     <span class="sub-header-title-remark">{{remark}}</span>
+    <div class="sub-header-title-option">
+      <slot name="option">
+      </slot>
+    </div>
+
   </div>
 </template>
 
@@ -45,6 +50,13 @@ props: ['subTitle','remark'],
     position: relative;
     top: 1px;
     padding-left: 6px;
+  }
+
+  &-option{
+    flex-grow: 1;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
   }
 }
 

@@ -1,6 +1,10 @@
 <template>
-  <div id="app">
-    <router-view/>
+  <div id="app"
+       v-loading="loading"
+       element-loading-text="拼命加载中"
+       element-loading-spinner="el-icon-loading"
+       element-loading-background="rgba(0, 0, 0, 0.8)">
+    <router-view v-if="!loading"/>
   </div>
 </template>
 <script>
@@ -8,10 +12,17 @@ import httpRequest from '@js/home';
 export default {
   created() {
     //进入应用获取所有应用列表（默认获取近两个月）
+    this.loading = true;
     httpRequest.getAllService().then(data => {
       //提交vuex
       this.$store.commit('setServices', data.services);
+      this.loading = false;
     });
+  },
+  data(){
+    return {
+      loading: false,
+    }
   }
 }
 

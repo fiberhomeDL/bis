@@ -4,7 +4,7 @@
     <div class="ao-bar-item" v-for="(value,i) in barDataByCom.slice(0,5)" :key="i" @click="toPageMonitor(value)">
       <div class="ao-bar-header flex-row">
         <span class="normal-text">{{value.name}}</span>
-        <span class="normal-text">{{value.value}}</span>
+        <span class="normal-text">{{value.value}}ms</span>
       </div>
       <el-progress :percentage="value.percentage" :stroke-width="8" :show-text="false" :color="value.color"></el-progress>
     </div>

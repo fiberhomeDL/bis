@@ -1,6 +1,18 @@
 import axios from 'axios';
 import util from '@js/common'
+function getPieData(data){
+    return data.map(item => {
 
+        if(!item.version){
+            item.version = "";
+        }
+
+        return {
+            value:  item.value,
+            name:  (item.category + item.version).split(".").slice(0,2).join(".")
+        }
+    })
+}
 
 //echarts x时间轴
 
@@ -15,7 +27,7 @@ let httpReq = {
         load: undefined
     },
     //初始化
-    getPageData(serviceName,time){
+    getPageData(serviceName,serviceId,time){
         let that = this;
         let duration = util.formatStartAndEndTime(time);
         return new Promise(function (resolve, reject){
@@ -30,6 +42,10 @@ let httpReq = {
                         $cd4: TopNCondition!,
                         $cd5: TopNCondition!,
                         $cd6: TopNCondition!,
+                        $cd7: BrowserAppNumDistributionQueryCondition!
+                        $cd8: BrowserAppNumDistributionQueryCondition!
+                        $cd9: BrowserAppNumDistributionQueryCondition!
+                        $serviceId: String!
                     ) {
                         pv: readMetricsValues(condition: $cd1, duration: $d) {
                             values {
@@ -65,6 +81,32 @@ let httpReq = {
                              id
                              value
                         }
+                        browserData: queryAppNumByCategory(condition: $cd7, duration: $d){
+                            category
+                            version
+                            value
+                        }
+                        
+                        osData: queryAppNumByCategory(condition: $cd8, duration: $d){
+                            category
+                            version
+                            value
+                        }
+                        
+                        screenData: queryAppNumByCategory(condition: $cd9, duration: $d){
+                            category
+                            value
+                        }
+                        
+                        uv: readUVMetricsValues(serviceId: $serviceId, duration: $d){
+                            values {
+                                values {
+                                    value
+                                }
+                            }
+                        },
+                        
+                        
                     }
 `,
                 variables: {
@@ -116,11 +158,28 @@ let httpReq = {
                         "scope":"Endpoint",
                         "topN":4,
                         "order":"DES"
-                    }
+                    },
+                    "cd7": {
+                        "name": "browser_type",
+                        "serviceId": serviceId,
+                        "serviceName": serviceName
+                    },
+                    "cd8": {
+                        "name": "browser_system",
+                        "serviceId": serviceId,
+                        "serviceName": serviceName
+                    },
+                    "cd9": {
+                        "name": "browser_resolution",
+                        "serviceId": serviceId,
+                        "serviceName": serviceName
+                    },
+                    "serviceId": serviceId
                 }
             }).then(data => {
                 //赋值pv
                 that.appInfo.pv = data.pv.values.values.map(item=>{return item.value});
+                that.appInfo.uv = data.uv.values.values.map(item=>{return item.value});
                 //错误数
                 that.appInfo.error = data.error.values.values.map(item=>{return item.value});
                 that.appInfo.fpt = data.fpt;
@@ -128,8 +187,10 @@ let httpReq = {
                 that.appInfo.domReady = data.domReady
                 that.appInfo.load = data.load;
 
-                /*假数据*/
-                that.appInfo.uv = [...that.appInfo.pv].reverse();
+                /*饼图数据*/
+                that.appInfo.browserUseData = getPieData(data.browserData);
+                that.appInfo.osData = getPieData(data.osData);
+                that.appInfo.screenData = getPieData(data.screenData);
 
                 resolve(that.appInfo);
             })

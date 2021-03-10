@@ -1,17 +1,22 @@
 <template>
-  <div class="ca-detail flex-column hw100-oh">
+  <div class="ca-detail flex-column hw100-oh"
+       v-loading="loading"
+       element-loading-text="拼命加载中"
+       element-loading-spinner="el-icon-loading"
+       element-loading-background="rgba(0, 0, 0, 0.8)"
+  >
     <div class="ca-detail-header flex-row">
       <div class="ca-detail-header-left flex-row">
         <i class="el-icon-arrow-left"></i>
         <span class="back" @click="doBackClick">返回</span>
         <el-divider class="ca-detail-header-left-divider" direction="vertical"></el-divider>
-        <span class="normal-text">Script error.</span>
+        <span class="normal-text">{{ $store.state.errorItemClickType }}.</span>
       </div>
-      <div class="">
-        <time-picker></time-picker>
-      </div>
+<!--      <div class="">-->
+<!--        <time-picker></time-picker>-->
+<!--      </div>-->
     </div>
-    <div class="ca-detail-wrapper hw100-oh">
+    <div class="ca-detail-wrapper hw100-oh" v-if="!loading">
       <div class="ca-detail-body hw100-oh">
         <div class="flex-row ca-detail-body-header">
           <el-divider class="ca-detail-body-header-divider"></el-divider>
@@ -22,7 +27,7 @@
         </div>
         <div ca-detail-body-bottom>
           <el-table
-              :data="new Array(10).fill(errorTableData.tableData[0],0,10)"
+              :data="errorList"
               style="width: 100%">
             <el-table-column
                 v-for="(item,index) in errorTableData.tableHead"
@@ -32,10 +37,11 @@
                 :width="item.width"
                 >
               <template slot-scope="scope">
-                <img v-if="item.prop == 'browserType'" width="24" :src="require(`@img/browser_icon/${scope.row[item.prop]}.svg`)" alt="">
-                <img v-else-if="item.prop == 'os'" width="24" :src="require(`@img/os_icon/${scope.row[item.prop]}.svg`)" alt="">
-
-
+                <img v-if="item.prop == 'browserType'" width="24" :src="require(`@img/terminal_icon/${scope.row[item.prop]}.svg`)" alt="">
+                <img v-else-if="item.prop == 'operatingSystem'" width="24" :src="require(`@img/terminal_icon/${scope.row[item.prop]}.svg`)" alt="">
+                <span v-else-if="item.prop == 'startTime'">
+                  {{new Date(scope.row[item.prop]).toLocaleString()}}
+                </span>
                 <span v-else>
                   {{scope.row[item.prop]}}
                 </span>
@@ -52,6 +58,7 @@
 import TimePicker from "@/components/common/TimePicker";
 import SubHeaderTitle from "@/components/common/SubHeaderTitle";
 import ViewItemForDetail from "@/components/common/cluster_analysis/ViewItemForDetail";
+import util from '@js/common'
 export default {
   name: "ClusterAnalysisDetail.vue",
   components: {
@@ -61,54 +68,21 @@ export default {
   },
   data(){
     return {
-      viewItemArr: [
-        {
-          name: '总发生',
-          value: '5002',
-          imgUrl: require('@img/common_icon/error_big.svg'),
-          mainColor: '#fe9289',
-          shadowStyle: {
-            boxShadow: '0px 4px 10px 4px #fdcabf',
-            borderRadius: '25px'
-          },
-        },
-        {
-          name: '影响用户',
-          value: '2483',
-          imgUrl: require('@img/common_icon/mumber.svg'),
-          mainColor: '#75e7d6',
-        },
-        {
-          name: '出现次数最多',
-          value: '2483',
-          imgUrl: require('@img/terminal_icon/Google.svg'),
-          mainColor: '#72b5fa',
-          borderColor: 'white',
-          imgSize: 66,
-        },
-        {
-          name: '出现次数最多',
-          value: '2483',
-          imgUrl: require('@img/terminal_icon/Windows.svg'),
-          mainColor: '#37dcff',
-          borderColor: 'white',
-          imgSize: 60,
-
-        }
-      ],
+      loading: false,
+      errorList: [],
       errorTableData: {
         tableHead: [
           {
-            prop: 'errorInfo',
+            prop: 'message',
             label: '错误信息',
             // width: '300'
           },
           {
-            prop: 'page',
+            prop: 'pagePath',
             label: '页面'
           },
           {
-            prop: 'ip',
+            prop: 'userIp',
             label: '用户IP地址',
             width: '160'
           },
@@ -123,33 +97,22 @@ export default {
             width: '160'
           },
           {
-            prop: 'os',
+            prop: 'operatingSystem',
             label: '操作系统',
             width: '120'
           },
           {
-            prop: 'osVersion',
+            prop: 'operatingSystemVersion',
             label: '操作系统版本',
             width: '160'
           },
           {
-            prop: 'time',
+            prop: 'startTime',
             label: '发生时间',
             width: '160'
-          },
-        ],
-        tableData: [
-          {
-            errorInfo: 'UncaughtInPromiseError: r[t] is not a function',
-            page:'index.html',
-            ip: '10.0.23.78',
-            browserType: 'google',
-            browserVersion: '73.0',
-            os: 'windows',
-            osVersion: 'win10',
-            time: '2021-01-07 13:51:37'
           }
-        ]
+        ],
+        tableData: []
       }
     }
   },
@@ -160,6 +123,134 @@ export default {
         to: 'ClusterAnalysis'
       })
     }
+  },
+  computed: {
+    viewItemArr(){
+      if(this.errorList.length == 0){
+        return [];
+      }
+
+      //获取所有错误的浏览器数组
+      let browserArr = this.errorList.map(item => item.browserType);
+      let osArr = this.errorList.map(item => item.operatingSystem);
+      let userCount = new Set(this.errorList.map(item => item.userIp)).size;
+
+      /*内部方法用于获取name在arr中的数量*/
+      function getCount(name,arr){
+        return arr.filter(item => item == name).length
+      }
+
+      /*['a','a','b'] => {key: 'a', count: 2}*/
+      function getCountObj(arr){
+        let dba = Array.from(new Set(arr));
+        return dba.map(item => {
+          return {
+            key: item,
+            count: getCount(item, arr)
+          }
+        }).sort(function(x,y){
+          return y.count- x.count
+        })[0];
+      }
+
+
+      return [
+        {
+          name: '总发生',
+          value: this.errorList.length,
+          imgUrl: require('@img/common_icon/error_big.svg'),
+          mainColor: '#fe9289',
+          shadowStyle: {
+            boxShadow: '0px 4px 10px 4px #fdcabf',
+            borderRadius: '25px'
+          },
+        },
+        {
+          name: '影响用户',
+          value: userCount,
+          imgUrl: require('@img/common_icon/mumber.svg'),
+          mainColor: '#75e7d6',
+        },
+        {
+          name: '出现次数最多',
+          value: getCountObj(browserArr).count,
+          imgUrl: require(`@img/terminal_icon/${getCountObj(browserArr).key}.svg`),
+          mainColor: '#72b5fa',
+          borderColor: 'white',
+          imgSize: 66,
+        },
+        {
+          name: '出现次数最多',
+          value: getCountObj(osArr).count,
+          imgUrl: require(`@img/terminal_icon/${getCountObj(osArr).key}.svg`),
+          mainColor: '#37dcff',
+          borderColor: 'white',
+          imgSize: 60,
+        }
+      ]
+
+
+    }
+  },
+  filter: {
+
+  },
+  created() {
+    this.$nextTick(()=>{
+      this.loading = true;
+      let errorType  = this.$store.state.errorItemClickType;
+      let serviceId = this.$store.state.selectedServiceId;
+      let duration = util.formatStartAndEndTime(this.$store.state.time);
+
+      this.$http.post('/graphql', {
+        query: `
+          query
+          ($condition: BrowserAggregateAnalyzerQueryCondition!) {
+            errorList: queryAggregateAnalyzerLogDetail(condition: $condition){
+              logs {
+                errorType
+                pagePath
+                userIp
+                policeId
+                browserType
+                browserVersion
+                operatingSystem
+                operatingSystemVersion
+                screenHeight
+                screenWidth
+                startTime
+                grade
+                message
+                line
+                col
+                stack
+                errorUrl
+                firstReportedError
+              }
+            }
+          }
+
+        `,
+        variables: {
+          "condition": {
+            "serviceId": serviceId,
+            "errorType": errorType,
+            "duration": duration
+          }
+        }
+      }).then(data => {
+
+        if(data && data.errorList){
+          this.errorList = data.errorList.logs;
+          this.loading = false;
+        }
+
+      })
+
+
+
+      console.log(errorType,serviceId)
+    })
   }
 }
 </script>

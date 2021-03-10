@@ -31,6 +31,7 @@
                                 <span>Vue对象：</span>
                                 <el-input v-model.trim="vueObject" placeholder="请输入vue对象" size="small"
                                           clearable></el-input>
+                                <span class="select-vue-input_error" v-show="isVueObjectError">请输入英文名称</span>
                             </div>
                         </div>
                     </div>
@@ -128,7 +129,9 @@
                 // 是否为vue项目
                 isVue: 'false',
                 // vue对象
-                vueObject: null,
+                vueObject: '',
+                // vue对象是否输入错误
+                isVueObjectError: false,
                 // 探针部署代码片段1
                 codeFrag1: codeFrag1,
                 // 动态代码部分
@@ -156,10 +159,14 @@
         methods: {
             // 复制探针部署代码
             copyProbeCode() {
+                // 创建input对象
                 let inputEle = document.createElement('input');
+                // 将input对象加入body中
                 document.body.appendChild(inputEle);
+                // 将探针代码设置到input对象value中
                 inputEle.setAttribute('value', this.probeCode);
                 inputEle.select();
+                // 执行复制操作
                 if (document.execCommand('copy')) {
                     this.$message({
                         type: 'success',
@@ -171,6 +178,7 @@
                         message: '复制失败，请手动复制！'
                     });
                 }
+                // 移除对象
                 document.body.removeChild(inputEle);
             },
         },
@@ -212,6 +220,10 @@
             },
             // 修改代码vue对象名称
             vueObject: function (val) {
+                // 校验是否为英文/数字
+                let reg = new RegExp("^[0-9a-zA-Z]+$");
+                this.isVueObjectError = !reg.test(val) ? true : false;
+                // 探针部署代码更换
                 this.probeCodeVue = '        vue:\' ' + val + '\',\n';
             }
         }
@@ -287,6 +299,10 @@
         .select-input_error {
             color: #f8897c;
             margin: 6px 0 6px 88px;
+        }
+        .select-vue-input_error{
+            color: #f8897c;
+            margin-left:20px;
         }
     }
 
