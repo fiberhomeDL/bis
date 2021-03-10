@@ -4,14 +4,14 @@
          element-loading-text="拼命加载中"
          element-loading-spinner="el-icon-loading"
          element-loading-background="rgba(0, 0, 0, 0.8)">
-        <!--        选择区域-->
+        <!-- 选择区域-->
         <div class="select-area">
             <div class="select-area_item">
                 <service-select @onSelectChange="getUserTraceData"></service-select>
             </div>
             <div class="select-area_item">
                 <el-input
-                        placeholder="请输入用户IP地址"
+                        placeholder="请输入用户IP"
                         suffix-icon="el-icon-search"
                         size="small"
                         clearable
@@ -39,8 +39,8 @@
             </div>
         </div>
         <div class="trace-information">
-            <!--            用户行为记录列表-->
-            <div class="trace-container" :class="{'nodata': traceData.length === 0}">
+            <!--用户行为记录列表-->
+            <div v-if="traceData.length>0" class="trace-container">
                 <div v-for="(item,index) in traceData"
                      class="trace-container-item"
                      :key="index"
@@ -49,13 +49,11 @@
                     <div class="trace-container-item_col item-user-info">
                         <div class="item-user-info_col">
                             <span> 用户IP:</span>
-                            <span v-if="item.userIp===''">未知</span>
-                            <span v-else>{{item.userIp}}</span>
+                            <span>{{item.userIp===''?'未知':item.userIp}}</span>
                         </div>
                         <div class="item-user-info_col">
                             <span> 警员ID:</span>
-                            <span v-if="item.policeId===''">未知</span>
-                            <span v-else>{{item.policeId}}</span>
+                            <span>{{item.policeId===''?'未知':item.policeId}}</span>
                         </div>
                         <div class="item-user-info_terminal">
                             <el-tooltip effect="light" :visible-arrow=false placement="top">
@@ -95,6 +93,7 @@
                     </div>
                 </div>
             </div>
+            <no-data v-else :imgWidth="200" :fontSize="16"></no-data>
             <!--分页-->
             <div class="page-area">
                 <el-pagination
@@ -112,15 +111,15 @@
     import ServiceSelect from "@/components/common/ServiceSelect";
     import TimePicker from "@/components/common/TimePicker";
     import DownloadButton from "@/components/common/DownloadButton";
+    import NoData from "@/components/common/NoData";
     import httpReq from "@js/behavior_track";
     import util from "@js/common";
     import XLSX from 'xlsx';
-
+    // 一页展示数量
     const pageSize = 9;
-
     export default {
         name: "BehaviorTrack",
-        components: {DownloadButton, ServiceSelect, TimePicker},
+        components: {DownloadButton, ServiceSelect, TimePicker,NoData},
         data() {
             return {
                 // 加载中标识
@@ -128,9 +127,9 @@
                 // 搜索关键词
                 keyword: '',
                 // 搜索关键词、用户ip
-                keywordUserIP:'',
+                keywordUserIP: '',
                 // 搜索关键词、警员id
-                keywordPoliceId:'',
+                keywordPoliceId: '',
                 // 用户追踪数据列表
                 traceData: [],
                 // 全部追踪数据数量
@@ -140,6 +139,10 @@
                 // 当前页数
                 currentPage: 1,
             }
+        },
+        created() {
+            // 防抖，延时执行方法
+            this.debounceGetData = this._.debounce(this.getUserTraceData, 1200);
         },
         mounted() {
             // 查询用户行为记录数据
@@ -159,7 +162,7 @@
                 let queryCondition = {
                     serviceId: serviceId,
                     userIp: that.keywordUserIP,
-                    policeId:that.keywordPoliceId,
+                    policeId: that.keywordPoliceId,
                     paging: {
                         // 当前页数
                         pageNum: that.currentPage,
@@ -168,7 +171,7 @@
                         // 全部数据
                         needTotal: true
                     },
-                    queryDuration : duration
+                    queryDuration: duration
                 };
                 // 发送请求
                 return httpReq.init(queryCondition).then(data => {
@@ -258,16 +261,13 @@
         },
         watch: {
             // 搜索用户ip关键词改变时发送请求
-            keywordUserIP(){
+            keywordUserIP() {
                 this.debounceGetData();
             },
             // 搜索警员ID关键词改变时发送请求
-            keywordPoliceId(){
+            keywordPoliceId() {
                 this.debounceGetData();
             },
-        },
-        created() {
-            this.debounceGetData = this._.debounce(this.getUserTraceData, 1200);
         }
     }
 </script>

@@ -5,7 +5,7 @@
          element-loading-spinner="el-icon-loading"
          element-loading-background="rgba(0, 0, 0, 0.8)"
     >
-        <!--        选择区域-->
+        <!--选择区域-->
         <div class="select-area flex-row">
             <div class="select-area_item">
                 <service-select @onSelectChange="getAllPage"></service-select>
@@ -196,6 +196,10 @@
                 errorDurationData: {xData: [], barValue: []},
             }
         },
+        created() {
+            // 防抖，延时执行方法
+            this.debounceGetData = this._.debounce(this.handleData, 1000);
+        },
         mounted() {
             // 查询应用下所有页面
             this.getAllPage();
@@ -218,6 +222,8 @@
             // 查询应用下页面所有白屏时间/首屏时间/html加载时间/load时间
             getPageTime() {
                 let that = this;
+                // 设置加载中遮罩
+                that.loading = true;
                 //  查询条件
                 let condition = {
                     name: that.orderData,
@@ -428,7 +434,7 @@
         watch: {
             // 关键词搜索，过滤数据
             keywords: function () {
-                this.handleData();
+                this.debounceGetData();
             }
         }
     }

@@ -17,12 +17,11 @@
                     <div class="trace-info-overview">
                         <div class="item user-info">
                             <span> 用户IP:</span>
-                            <span>{{behaviorDetailData.userIp}}</span>
+                            <span>{{behaviorDetailData.userIp===''?'未知':behaviorDetailData.userIp}}</span>
                         </div>
                         <div class="item user-info">
                             <span> 警员ID:</span>
-                            <span v-if="behaviorDetailData.policeId ===''">未知</span>
-                            <span v-else>{{behaviorDetailData.policeId}}</span>
+                            <span>{{behaviorDetailData.policeId===''?'未知':behaviorDetailData.policeId}}</span>
                         </div>
                         <div class="item">
                             <img class="item-icon_terminal"
@@ -156,12 +155,12 @@
                                                         <el-table-column
                                                                 prop="size"
                                                                 label="资源大小(KB)"
-                                                                min-width="10%">
+                                                                min-width="15%">
                                                         </el-table-column>
                                                         <el-table-column
                                                                 prop="time"
                                                                 label="请求时间(ms)"
-                                                                min-width="20%">
+                                                                min-width="15%">
                                                         </el-table-column>
                                                     </el-table>
                                                 </div>
@@ -227,7 +226,6 @@
     import util from "@js/common";
     import NoData from "@/components/common/NoData";
 
-
     export default {
         name: "BehaviorTrackDetail",
         components: {
@@ -242,6 +240,7 @@
                 loading: true,
                 // 用户记录详情数据
                 behaviorDetailData: {},
+                // 关键词搜索
                 keywords: '',
                 // 记录类型
                 recordsType: 'all',
@@ -266,16 +265,12 @@
                 // 页面加载资源
                 pageLoadRes: [],
                 // 错误记录详细信息
-                errorRecordDetail: [
-                    {
-                        errorType: 'Script Error',
-                        startTime: 1600000000,
-                        pagePath: 'index.html',
-                        errorCategory: 'Ajax',
-                        errorContent: 'Script Error:sjeigjskgsnsmnemgnsmngsemgnsmgnsjskjgrkgksngsnemgnsemngjskjgskgejmgnemgnsmngmsngsmgmsgsdj'
-                    }
-                ]
+                errorRecordDetail: []
             }
+        },
+        created() {
+            // 防抖，延时执行方法
+            this.debounceGetData = this._.debounce(this.handleData, 1000);
         },
         mounted() {
             // 查询行为追踪详情数据
@@ -308,7 +303,6 @@
                     // 处理数据
                     that.handleData();
                 });
-
             },
             // 处理数据
             handleData() {
@@ -439,7 +433,7 @@
         watch: {
             // 关键词搜索，过滤数据
             keywords: function () {
-                this.handleData();
+                this.debounceGetData();
             }
         },
     }
