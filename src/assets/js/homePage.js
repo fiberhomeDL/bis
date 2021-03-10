@@ -95,9 +95,9 @@ let httpReq = {
                         $mcPv: MetricsCondition!,
                         $mcError: MetricsCondition!,
                         $serviceId: String!,
-                        $serviceName: String!,
                         $mcRate: MetricsCondition!
                         $valueColumnName: String!
+                        $lpName: String!
                     ){
                     pvData: readMetricsValues(duration: $d, condition: $mcPv){
                         values{
@@ -124,7 +124,7 @@ let httpReq = {
                     errorRate: readMetricsValue(condition: $mcRate, duration: $d)
                     
                     lp: readBrowserPageMetricsToApp(
-                        name: $serviceName, 
+                        name: $lpName, 
                         serviceId: $serviceId, 
                         valueColumnName: $valueColumnName, 
                         duration: $d)
@@ -134,6 +134,7 @@ let httpReq = {
                 }
             `,
             variables: {
+                "lpName": "browser_app_page_load_page_avg",
                 "d": {
                     "start": startTime,
                     "end": endTime,
