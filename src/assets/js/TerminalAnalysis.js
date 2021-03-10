@@ -110,7 +110,7 @@ let httpReq = {
                     {
                         name: "页面完全加载时间",
                         value: data.speed[3]
-                    },
+                    }
                 ];
                 resolve(data);
 
@@ -198,7 +198,6 @@ let httpReq = {
                 }
 
             }).then(data => {
-                debugger;
                 resolve(data);
             })
         })

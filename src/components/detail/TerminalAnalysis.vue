@@ -33,6 +33,7 @@
                           :pb-obj="speedData" :name-width="120"
                       ></process-bar>
                     </div>
+
                   </div>
                 </el-col>
               </el-row>
@@ -141,10 +142,12 @@ import AppOverviewPie from "@/components/common/app_overview/AppOverviewPie";
 import ProcessBar from "@/components/common/terminal_analysis/ProcessBar";
 import httpReq from "@/assets/js/TerminalAnalysis";
 import util from "@/assets/js/common";
+import NoData from "@/components/common/NoData";
 
 export default {
   name: "TerminalAnalysis",
   components: {
+    NoData,
     ProcessBar,
     AppOverviewPie, TabSelect, ClusterAnalysisBar, ServiceSelect, TimePicker, ProcessSelect, SubHeaderTitle, LinesChart},
   data(){
@@ -163,34 +166,6 @@ export default {
         barValue: []
       },
       usePieData: [],
-
-
-
-      // xAxisData: [],
-      // 页面性能数据
-      // performanceData: [
-      //   {
-      //     name: '白屏时间',
-      //     type: 'line',
-      //     data: [120, 132, 101, 134, 90, 230, 210]
-      //   },
-      //   {
-      //     name: '首屏时间',
-      //     type: 'line',
-      //     data: [220, 182, 191, 234, 290, 330, 310]
-      //   },
-      //   {
-      //     name: 'Html加载时间',
-      //     type: 'line',
-      //     data: [150, 232, 201, 154, 190, 330, 410]
-      //   },
-      //   {
-      //     name: '页面完全加载时间',
-      //     type: 'line',
-      //     data: [320, 332, 301, 334, 390, 330, 320]
-      //   },
-      // ],
-
       //访问速度数据
       speedData: {
         mainColor: '#5ed2fc',
@@ -239,6 +214,9 @@ export default {
     },
     /*获取二次渲染时的数据*/
     renderItemData(item){
+      if(!item){
+        return;
+      }
       this.chartsLoading = true;
       let serviceId = this.$store.state.selectedServiceId;
       let time = this.$store.state.time;

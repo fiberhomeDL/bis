@@ -23,54 +23,50 @@ let httpReq = {
         this.appInfo = [];
         let that = this;
         //获取所有应用 -- 近2月（数据只存近两个月）
-        return new Promise(function(resolve, reject){
+        return new Promise(function(resolve){
             that.getAllService().then(data=>{
                 that.appInfo.push(...data.services);
-                that.appInfo.forEach(item => {
-                    item.infoData = {};
-                    item.chartsData = {};
-                    //获取应用信息
-                    that.getAppInfo(item.name,item.id).then(data => {
-                        //错误数量
-                        item.infoData.errorCount = eval(data.errorCount.values.values.map(item => item.value).join("+"));
-                        //pv总量
-                        item.infoData.viewCount = eval(data.pvData.values.values.map(item => item.value).join("+"));
-                        //uv总量
-                        item.infoData.uvCount = eval(data.uvData.values.values.map(item => item.value).join("+"));
+                Promise.all(that.appInfo.map(function (item){
+                    return new Promise((resolve) => {
+                        item.infoData = {};
+                        item.chartsData = {};
+                        that.getAppInfo(item.name,item.id).then(data => {
+                            //错误数量
+                            item.infoData.errorCount = eval(data.errorCount.values.values.map(item => item.value).join("+"));
+                            //pv总量
+                            item.infoData.viewCount = eval(data.pvData.values.values.map(item => item.value).join("+"));
+                            //uv总量
+                            item.infoData.uvCount = eval(data.uvData.values.values.map(item => item.value).join("+"));
 
-                        item.infoData.performanceCount = ((10000 - data.errorRate) * data.lp) / 100;
-
-
-                        //echarts pv
-                        item.chartsData.pvData = data.pvData.values.values.map(item => item.value);
-                        //echarts uv
-                        item.chartsData.uvData = data.uvData.values.values.map(item => item.value);
+                            item.infoData.performanceCount = ((10000 - data.errorRate) * data.lp) / 100;
 
 
-                        //echarts x轴数据
-                        item.chartsData.xData = xData;
+                            //echarts pv
+                            item.chartsData.pvData = data.pvData.values.values.map(item => item.value);
+                            //echarts uv
+                            item.chartsData.uvData = data.uvData.values.values.map(item => item.value);
 
 
-                        //满意度
-                        if(item.infoData.performanceCount < 30){
-                            item.satisfaction = '3';
-                        }else if(item.infoData.performanceCount >= 30 && item.infoData.performanceCount < 75){
-                            item.satisfaction = '2';
-                        }else{
-                            item.satisfaction = '1';
-                        }
+                            //echarts x轴数据
+                            item.chartsData.xData = xData;
 
 
-
-
-                        // item.infoData.
-                    }).finally(()=>{
-                        resolve(that.appInfo);
+                            //满意度
+                            if(item.infoData.performanceCount < 30){
+                                item.satisfaction = '3';
+                            }else if(item.infoData.performanceCount >= 30 && item.infoData.performanceCount < 75){
+                                item.satisfaction = '2';
+                            }else{
+                                item.satisfaction = '1';
+                            }
+                            resolve();
+                        })
                     })
-                });
-            })
+                })).then(()=>{
+                    resolve(that.appInfo);
+                })
+            });
         })
-
     },
     //获取应用列表
     getAllService(){

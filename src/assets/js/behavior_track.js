@@ -58,7 +58,6 @@ let httpReq = {
             that.getBehaviorData(condition).then(data => {
                 // 用户行为列表
                 let userBehaviorRecordList = data.queryUserBehaviorRecord;
-                //
                 Promise.all(
                     userBehaviorRecordList.behaviors.map((item) => {
                         //每一项记录对应生成一个请求错误数据的promise
@@ -71,10 +70,10 @@ let httpReq = {
                         });
                     }),
                 )
-                    //只有当每一项记录的请求对应的promise都执行完成并且resolve后，才会执行then里面的代码
-                    .then(() => {
-                        resolve(userBehaviorRecordList)
-                    });
+                //只有当每一项记录的请求对应的promise都执行完成并且resolve后，才会执行then里面的代码
+                .then(() => {
+                    resolve(userBehaviorRecordList)
+                });
             })
         })
     },
