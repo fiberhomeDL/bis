@@ -203,7 +203,50 @@ export default {
     },
 
     doDownLoad(){
-      alert('down load');
+      // 表格数据
+      let errorData = [];
+      // 设置表头
+      errorData.push({A: '错误信息', B: '发生次数', C: '影响页面数', D: '影响用户数',});
+
+      /*errorList: [
+        // {
+        //   errorFlag: '1', // 1 => js错误 2 => 静态资源加载错误
+        //   errorTotalNum: 0, //错误数量
+        //   appearPageNum: 0, // 影响页面
+        //   affectUserNum: 0, // 影响用户
+        //   errorType: '//localhost'
+        // }
+      ]*/
+      // 写入每行数据
+      this.errorList.forEach(function (item, index) {
+        let row = {
+          A: item.errorType,
+          B: item.errorTotalNum,
+          C: item.appearPageNum,
+          D: item.affectUserNum
+        };
+        errorData.push(row);
+      });
+
+      //创建book
+      let wb = XLSX.utils.book_new();
+      //json转sheet
+      let ws = XLSX.utils.json_to_sheet(errorData, {
+        header: ['A', 'B', 'C', 'D', 'E', 'F'],
+        skipHeader: true
+      });
+      //设置列宽
+      ws['!cols'] = [
+        {width: 100},
+        {width: 20},
+        {width: 20},
+        {width: 20}
+      ];
+      let timestamp = (new Date()).getTime();
+      //sheet写入book
+      XLSX.utils.book_append_sheet(wb, ws, '错误列表');
+      //输出
+      XLSX.writeFile(wb, '错误列表' + timestamp + '.xlsx');
     }
 
   },
