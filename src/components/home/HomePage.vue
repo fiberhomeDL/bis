@@ -56,8 +56,6 @@
     </div>
   </div>
 </template>
-<!--<script src="https://cdn.bootcdn.net/ajax/libs/html2canvas/0.5.0-beta4/html2canvas.js"></script>-->
-<!--<script src="https://cdn.bootcdn.net/ajax/libs/jspdf/2.2.0/jspdf.es.js"></script>-->
 <script>
 import DownloadButton from "@c/common/DownloadButton";
 import ViewCard from "@/components/home/ViewCard";
@@ -76,7 +74,7 @@ export default {
   },
   data(){
     return {
-      loading: true,
+      loading: false,
       //应用名称搜索文本
       searchInput: '',
       //满意度选择项 及 默认值
@@ -101,31 +99,7 @@ export default {
         }
       ],
       //应用详情
-      appInfo: [
-        // {
-        //   id: '1',
-        //   //应用名
-        //   name: 'testPG1',
-        //   //满意度 '1'满意 '2'一般 '3'不满意
-        //   satisfaction: '1',
-        //   //数据面板
-        //   infoData: {
-        //     viewCount: "21239",
-        //     subscribersCount: '59',
-        //     errorCount: '5',
-        //     warningCount: '14',
-        //     performanceCount: '99',
-        //   },
-        //   //柱状图数据
-        //   chartsData: {
-        //     //x轴坐标名
-        //     xData: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24"],
-        //     //y轴数据
-        //     uvData: [100,200,300,400,500,600,700,800,300,100,200,100,100,200,300,400,500,600,700,800,300,100,200,100],
-        //     pvData: [100,200,100,300,800,700,600,500,400,300,200,100,100,200,100,300,800,700,600,500,400,300,200,100],
-        //   }
-        // },
-      ]
+      appInfo: []
     }
   },
   methods: {
@@ -196,6 +170,7 @@ export default {
   created() {
     //获取应用信息
     this.$nextTick(()=>{
+      this.loading = true;
       httpReq.init().then(data => {
         this.appInfo = data;
         this.loading = false;

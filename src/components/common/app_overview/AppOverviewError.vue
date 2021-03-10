@@ -74,14 +74,14 @@ export default {
           },
           pieces: [{
             gt: 0,
-            lte: 100,
+            lte: 20,
             color: '#fcd57c'
           }, {
-            gt: 100,
-            lte: 200,
+            gt: 20,
+            lte: 30,
             color: '#fd933e'
           }, {
-            gt: 200,
+            gt: 30,
             color: '#e24c3a'
           }],
           outOfRange: {

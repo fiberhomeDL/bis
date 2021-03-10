@@ -62,9 +62,8 @@ let httpReq = {
             })
         })
     },
-    /*获取错误统计和各类速度指标*/
+    /*获取指定浏览器或者指定操作系统下的错误统计和各类速度指标*/
     getErrorCountAndSpeed(reqObj,serviceId,time){
-        debugger;
         let duration = util.formatStartAndEndTime(time);
         return new Promise(function (resolve){
             axios.post('/graphql', {
@@ -111,7 +110,7 @@ let httpReq = {
                     {
                         name: "页面完全加载时间",
                         value: data.speed[3]
-                    },
+                    }
                 ];
                 resolve(data);
 
@@ -173,7 +172,38 @@ let httpReq = {
                 resolve(data);
             })
         });
+    },
+    /*获取所有浏览器及操作系统的错误列表*/
+    getAllError(category,serviceId, time){
+
+        let duration = util.formatStartAndEndTime(time);
+        return new Promise(function(resolve){
+            axios.post('/graphql', {
+                query: `
+                    query($condition: AggregateErrorNumCategoryCondition!, $duration: Duration!){
+                        error: queryErrorNumByCategory(condition: $condition, duration: $duration){
+                            category
+                            version
+                            value
+                        }
+                    }
+                `,
+                variables: {
+                    condition: {
+                        serviceId,
+                        category,
+                        "errorType": ""
+                    },
+                    duration
+                }
+
+            }).then(data => {
+                resolve(data);
+            })
+        })
+
     }
+
 
 };
 
