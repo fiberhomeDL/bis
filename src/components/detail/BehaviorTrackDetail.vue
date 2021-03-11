@@ -261,7 +261,11 @@
                 // 页面加载数据
                 pageLoadData: [],
                 // 页面性能数据
-                pagePerformance: {},
+                pagePerformance: {
+                    mainColor: '',
+                    unit: '',
+                    pbData: []
+                },
                 // 页面加载资源
                 pageLoadRes: [],
                 // 错误记录详细信息

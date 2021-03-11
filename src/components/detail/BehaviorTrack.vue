@@ -73,11 +73,10 @@
                             </el-tooltip>
                         </div>
                     </div>
-                    <div class="trace-container-item_col item-page">
-                        <img class="item-icon" :src="require('@img/common_icon/page.svg')"/>
-                        <span class="item-title">页面:</span>
-                        <span v-if="item.pageName.length>40" class="normal-text">...{{item.pageName.substring(item.pageName.length-40)}}</span>
-                        <span v-else class="normal-text">{{item.pageName}}</span>
+                    <div style="display: flex;align-items: center" class="trace-container-item_col item-page">
+                        <img style="top: 0" class="item-icon" :src="require('@img/common_icon/page.svg')"/>
+                        <span style="min-width: 36px" class="item-title">页面:</span>
+                        <span class="normal-text rtl-text">{{item.pageName}}</span>
                     </div>
                     <div class="trace-container-item_col item-time">
                         <img class="item-icon" :src="require('@img/common_icon/time.svg')"/>
@@ -273,183 +272,190 @@
 </script>
 
 <style lang="scss" scoped>
-    @import '@css/style.scss';
+@import '@css/style.scss';
 
-    .content-behavior-track {
+.content-behavior-track {
+    width: 100%;
+    height: 100%;
+
+    .select-area {
         width: 100%;
-        height: 100%;
+        height: 52px;
+        padding: 10px 22px;
+        background-color: #fff;
+        box-shadow: 0 4px 8px 0 #b7c4e0;
 
-        .select-area {
-            width: 100%;
-            height: 52px;
-            padding: 10px 22px;
-            background-color: #fff;
-            box-shadow: 0 4px 8px 0 #b7c4e0;
+        .right {
+            float: right;
+        }
 
-            .right {
-                float: right;
+        .select-area_item {
+            display: inline-block;
+            margin-left: 10px;
+
+            .el-icon-search {
+                margin-right: 8px;
             }
 
-            .select-area_item {
-                display: inline-block;
-                margin-left: 10px;
-
-                .el-icon-search {
-                    margin-right: 8px;
-                }
-
-                ::v-deep .el-input__inner {
-                    height: 32px;
-                }
-
-                .download-icon {
-                    vertical-align: middle;
-                }
+            ::v-deep .el-input__inner {
+                height: 32px;
             }
 
-            .select-area_item:first-child {
-                margin-left: 0;
+            .download-icon {
+                vertical-align: middle;
             }
         }
 
-        .trace-information {
-            width: calc(100% - 44px);
-            height: calc(100% - 96px);
-            margin: 22px;
-            padding: 32px;
-            background-color: #fff;
-            box-shadow: 0 4px 8px 0 #b7c4e0;
-            border-radius: 5px;
-
-            .trace-container {
-                width: 100%;
-                height: calc(100% - 44px);
-                overflow: auto;
-
-                .trace-container-item:hover {
-                    border: solid 1px #00baff;
-                }
-
-                .trace-container-item {
-                    width: 100%;
-                    padding: 10px 40px;
-                    margin-bottom: 24px;
-                    background-color: #f3f9ff;
-                    border-radius: 3px;
-                    border: solid 1px #dae6f1;
-                    cursor: pointer;
-                    display: flex;
-                    min-height: 52px;
-                    flex-wrap: wrap;
-
-                    .trace-container-item_col {
-                        display: inline-block;
-                        margin-right: 60px;
-                        text-align: left;
-                        line-height: 30px;
-
-                        .item-title {
-                            color: #919dbd;
-                            margin-right: 8px;
-                        }
-
-                        .item-titile_detail {
-                            color: #00baff;
-                            float: right;
-                        }
-
-                        .item-content_error {
-                            color: #ea4335;
-                        }
-
-                        .item-icon_terminal {
-                            height: 22px;
-                            width: 22px;
-                            margin-right: 28px;
-                            position: relative;
-                            top: 4px;
-                        }
-
-                        .item-icon {
-                            height: 18px;
-                            width: 18px;
-                            margin-right: 8px;
-                            position: relative;
-                            top: 4px;
-                        }
-
-                        .item-col-detail {
-                            color: #00baff;
-                            float: right;
-                            cursor: pointer;
-                        }
-
-                        .red-circle {
-                            width: 12px;
-                            height: 12px;
-                            margin-left: 10px;
-                            position: relative;
-                            top: 2px;
-                            background-color: #fe9289;
-                            border-radius: 50%;
-                            display: inline-block;
-                            box-shadow: 0 3px 6px 0 #ffe0dc;
-                        }
-                    }
-
-                    .trace-container-item_col:last-child {
-                        margin-right: 0;
-                    }
-
-                    .item-user-info {
-                        width: 530px;
-                        display: flex;
-
-                        .item-user-info_col {
-                            width: 160px;
-                            margin-right: 28px;
-                            font-size: 16px;
-                            color: #505b73;
-
-                            span {
-                                margin-right: 8px;
-                            }
-
-                            span:nth-child(2) {
-                                font-weight: bold;
-                            }
-                        }
-
-                        .item-user-info_terminal {
-                            width: 150px;
-                            color: #626f8c;
-                        }
-                    }
-
-                    .item-page {
-                        width: 410px;
-                    }
-
-                    .item-time {
-                        width: 250px;
-                    }
-
-                    .item-exist-error {
-                        width: 160px;
-                    }
-                }
-
-                .trace-container-item:last-child {
-                    margin-bottom: 0;
-                }
-            }
-
-            .page-area {
-                width: 100%;
-                height: 28px;
-                margin-top: 14px;
-            }
+        .select-area_item:first-child {
+            margin-left: 0;
         }
     }
 
+    .trace-information {
+        width: calc(100% - 44px);
+        height: calc(100% - 96px);
+        margin: 22px;
+        padding: 32px;
+        background-color: #fff;
+        box-shadow: 0 4px 8px 0 #b7c4e0;
+        border-radius: 5px;
+
+        .trace-container {
+            width: 100%;
+            height: calc(100% - 44px);
+            overflow: auto;
+
+            .trace-container-item:hover {
+                border: solid 1px #00baff;
+            }
+
+            .trace-container-item {
+                width: 100%;
+                padding: 10px 40px;
+                margin-bottom: 24px;
+                background-color: #f3f9ff;
+                border-radius: 3px;
+                border: solid 1px #dae6f1;
+                cursor: pointer;
+                display: flex;
+                min-height: 52px;
+                flex-wrap: wrap;
+
+                .trace-container-item_col {
+                    display: inline-block;
+                    margin-right: 60px;
+                    text-align: left;
+                    line-height: 30px;
+
+                    .item-title {
+                        color: #919dbd;
+                        margin-right: 8px;
+                    }
+
+                    .item-titile_detail {
+                        color: #00baff;
+                        float: right;
+                    }
+
+                    .item-content_error {
+                        color: #ea4335;
+                    }
+
+                    .item-icon_terminal {
+                        height: 22px;
+                        width: 22px;
+                        margin-right: 28px;
+                        position: relative;
+                        top: 4px;
+                    }
+
+                    .item-icon {
+                        height: 18px;
+                        width: 18px;
+                        margin-right: 8px;
+                        position: relative;
+                        top: 4px;
+                    }
+
+                    .item-col-detail {
+                        color: #00baff;
+                        float: right;
+                        cursor: pointer;
+                    }
+
+                    .red-circle {
+                        width: 12px;
+                        height: 12px;
+                        margin-left: 10px;
+                        position: relative;
+                        top: 2px;
+                        background-color: #fe9289;
+                        border-radius: 50%;
+                        display: inline-block;
+                        box-shadow: 0 3px 6px 0 #ffe0dc;
+                    }
+                }
+
+                .trace-container-item_col:last-child {
+                    margin-right: 0;
+                }
+
+                .item-user-info {
+                    width: 530px;
+                    display: flex;
+
+                    .item-user-info_col {
+                        width: 160px;
+                        margin-right: 28px;
+                        font-size: 16px;
+                        color: #505b73;
+
+                        span {
+                            margin-right: 8px;
+                        }
+
+                        span:nth-child(2) {
+                            font-weight: bold;
+                        }
+                    }
+
+                    .item-user-info_terminal {
+                        width: 150px;
+                        color: #626f8c;
+                    }
+                }
+
+                .item-page {
+                    width: 410px;
+                }
+
+                .item-time {
+                    width: 250px;
+                }
+
+                .item-exist-error {
+                    width: 160px;
+                }
+            }
+
+            .trace-container-item:last-child {
+                margin-bottom: 0;
+            }
+        }
+
+        .page-area {
+            width: 100%;
+            height: 28px;
+            margin-top: 14px;
+        }
+    }
+}
+
+
+.rtl-text{
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    direction: rtl;
+}
 </style>

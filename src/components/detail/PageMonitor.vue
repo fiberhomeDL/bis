@@ -16,8 +16,8 @@
                 </div>
             </div>
         </div>
-        <div class="page-information hw100-oh" v-if="!loading">
-            <div class="page-information-container">
+        <div class="page-information hw100-oh">
+            <div class="page-information-container" v-if="!loading">
                 <!--页面列表-->
                 <div class="page-information-container-left">
                     <div class="page-select-area_item">
@@ -263,7 +263,6 @@
                 } else if (0 !== that.pageNameList.length) {
                     that.selectedPage = that.pageNameList[0];
                 }
-                // that.selectedPage = undefined === toPageParam.name ? that.pageNameList[0] : toPageParam;
                 if (undefined !== that.selectedPage) {
                     // 查询页面详情数据
                     that.getPageDetail();
@@ -277,7 +276,7 @@
                 // 查询页面详情数据、 页面名称、浏览量、各类错误率、页面加载瀑布图、关键性能指标、加载延时P50、错误量
                 // 应用名称
                 let serviceName = that.$store.getters.getSelectServiceName;
-                // 页面名称  修改
+                // 页面名称
                 let pageName = that.selectedPage.name;
                 // 时间
                 let duration = util.formatStartAndEndTime(that.$store.state.time);
@@ -493,7 +492,7 @@
 
                     .page-select-area_item {
                         margin-bottom: 22px;
-                        margin-right:32px;
+                        margin-right: 32px;
 
                         span {
                             @extend .sub-normal-text;
