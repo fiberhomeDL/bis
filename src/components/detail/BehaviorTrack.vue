@@ -267,7 +267,7 @@
             // 搜索警员ID关键词改变时发送请求
             keywordPoliceId() {
                 this.debounceGetData();
-            },
+            }
         }
     }
 </script>
