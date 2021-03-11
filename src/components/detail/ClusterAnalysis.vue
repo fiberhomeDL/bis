@@ -77,8 +77,8 @@
               </div>
             </div>
 <!--            展示的错误列表为空-->
-            <div style="height: 300px" v-show="(errorListForJsError.length + errorListForResource.length) == 0">
-              <no-data></no-data>
+            <div style="height: 350px" v-show="(errorListForJsError.length + errorListForResource.length) == 0">
+              <no-data :img-width="200" :font-size="18"></no-data>
             </div>
 
 
@@ -175,15 +175,11 @@ export default {
   },
   computed: {
     errorListForJsError(){
-      return [];
-
       return this.errorList.filter(item => item.errorFlag == "1").sort(function(x,y){
         return y.errorTotalNum - x.errorTotalNum
       })
     },
     errorListForResource(){
-      return [];
-
       return this.errorList.filter(item => item.errorFlag == "2").sort(function(x,y){
         return y.errorTotalNum - x.errorTotalNum
       })

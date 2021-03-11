@@ -212,14 +212,23 @@ export default {
       })
 
     },
-    /*获取二次渲染时的数据*/
+    /*获取二次渲染时的数据
+    * 点击左侧列表项目时下发的请求
+    * */
     renderItemData(item){
-      if(!item){
-        return;
-      }
       this.chartsLoading = true;
       let serviceId = this.$store.state.selectedServiceId;
       let time = this.$store.state.time;
+
+      if(!item){
+        this.errorBarData.xData = util.initXAxisData(time);
+        this.errorBarData.barValue = [];
+        this.speedData.pbData = [];
+        this.chartsLoading = false;
+        return;
+      }
+
+
       httpReq.getErrorCountAndSpeed(item,serviceId,time).then(data => {
         this.errorBarData.xData = util.initXAxisData(time);
         this.errorBarData.barValue = data.errorData;

@@ -68,7 +68,7 @@ export default {
 .ao-bar{
   &-header{
     //color: #575777;
-    margin: 18px 0 12px 0;
+    margin: 12px 0 12px 0;
     justify-content: space-between;
   }
 
