@@ -75,8 +75,13 @@
                 <img class="js-error-item-img" :src="require('@img/common_icon/subscribers.svg')" alt="">
                 <span style="color: #505b73">（98）</span>
               </div>
-
             </div>
+<!--            展示的错误列表为空-->
+            <div style="height: 350px" v-show="(errorListForJsError.length + errorListForResource.length) == 0">
+              <no-data :img-width="200" :font-size="18"></no-data>
+            </div>
+
+
           </el-row>
         </div>
       </div>
@@ -92,9 +97,10 @@ import ClusterAnalysisBar from "@/components/common/cluster_analysis/ClusterAnal
 import httpReq from "@js/clusterAnalysis.js";
 import DownloadButton from "@/components/common/DownloadButton";
 import XLSX from 'xlsx';
+import NoData from "@/components/common/NoData";
 export default {
   name: "ClusterAnalysis",
-  components: {ServiceSelect, TimePicker, SubHeaderTitle, ViewItem, ClusterAnalysisBar,DownloadButton},
+  components: {ServiceSelect, TimePicker, SubHeaderTitle, ViewItem, ClusterAnalysisBar,DownloadButton,NoData},
   data(){
     return {
       //是否加载
@@ -169,10 +175,14 @@ export default {
   },
   computed: {
     errorListForJsError(){
-      return this.errorList.filter(item => item.errorFlag == "1")
+      return this.errorList.filter(item => item.errorFlag == "1").sort(function(x,y){
+        return y.errorTotalNum - x.errorTotalNum
+      })
     },
     errorListForResource(){
-      return this.errorList.filter(item => item.errorFlag == "2")
+      return this.errorList.filter(item => item.errorFlag == "2").sort(function(x,y){
+        return y.errorTotalNum - x.errorTotalNum
+      })
     },
   },
   methods:{

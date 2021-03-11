@@ -1,5 +1,6 @@
 <template>
   <div class="pb hw100-oh flex-column">
+    <no-data v-show="pbObj.pbData.length == 0"></no-data>
     <div class="pb-item flex-row" v-for="(value, index) in pbObj.pbData" :key="index">
 <!--      数据条名称-->
       <span class="pb-item-name" :style="{width: nameWidth + 'px'}">{{ value.name }}</span>
@@ -12,8 +13,10 @@
 </template>
 
 <script>
+import NoData from "@/components/common/NoData";
 export default {
   name: "ProcessBar",
+  components: {NoData},
   props: {
     'pbObj': Object,
     'nameWidth': {

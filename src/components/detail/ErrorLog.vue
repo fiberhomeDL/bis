@@ -157,6 +157,7 @@
                 let that = this;
                 // 应用ID
                 let serviceId = this.$store.state.selectedServiceId;
+                // 发送请求
                 return httpReq.getAllPageData(serviceId).then(data => {
                     that.pageOptions = data.getEndpoints;
                     // 添加全部选项

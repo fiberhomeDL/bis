@@ -5,7 +5,7 @@
          element-loading-spinner="el-icon-loading"
          element-loading-background="rgba(0, 0, 0, 0.8)"
     >
-        <!--        选择区域-->
+        <!--选择区域-->
         <div class="select-area flex-row">
             <div class="select-area_item">
                 <service-select @onSelectChange="getAllPage"></service-select>
@@ -16,8 +16,8 @@
                 </div>
             </div>
         </div>
-        <div class="page-information hw100-oh" v-if="!loading">
-            <div class="page-information-container">
+        <div class="page-information hw100-oh">
+            <div class="page-information-container" v-if="!loading">
                 <!--页面列表-->
                 <div class="page-information-container-left">
                     <div class="page-select-area_item">
@@ -196,6 +196,10 @@
                 errorDurationData: {xData: [], barValue: []},
             }
         },
+        created() {
+            // 防抖，延时执行方法
+            this.debounceGetData = this._.debounce(this.handleData, 1000);
+        },
         mounted() {
             // 查询应用下所有页面
             this.getAllPage();
@@ -218,6 +222,8 @@
             // 查询应用下页面所有白屏时间/首屏时间/html加载时间/load时间
             getPageTime() {
                 let that = this;
+                // 设置加载中遮罩
+                that.loading = true;
                 //  查询条件
                 let condition = {
                     name: that.orderData,
@@ -257,7 +263,6 @@
                 } else if (0 !== that.pageNameList.length) {
                     that.selectedPage = that.pageNameList[0];
                 }
-                // that.selectedPage = undefined === toPageParam.name ? that.pageNameList[0] : toPageParam;
                 if (undefined !== that.selectedPage) {
                     // 查询页面详情数据
                     that.getPageDetail();
@@ -271,7 +276,7 @@
                 // 查询页面详情数据、 页面名称、浏览量、各类错误率、页面加载瀑布图、关键性能指标、加载延时P50、错误量
                 // 应用名称
                 let serviceName = that.$store.getters.getSelectServiceName;
-                // 页面名称  修改
+                // 页面名称
                 let pageName = that.selectedPage.name;
                 // 时间
                 let duration = util.formatStartAndEndTime(that.$store.state.time);
@@ -428,7 +433,7 @@
         watch: {
             // 关键词搜索，过滤数据
             keywords: function () {
-                this.handleData();
+                this.debounceGetData();
             }
         }
     }
@@ -487,7 +492,7 @@
 
                     .page-select-area_item {
                         margin-bottom: 22px;
-                        margin-right:32px;
+                        margin-right: 32px;
 
                         span {
                             @extend .sub-normal-text;

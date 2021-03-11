@@ -5,10 +5,17 @@
                 <div class="content-inner_code">
                     <div class="select-item_1">
                         <div class="select-input">
+                            <span>Nginx部署IP：</span>
+                            <el-input v-model.trim="nginxIp" placeholder="请输入Nginx部署IP" size="small"
+                                      clearable></el-input>
+                        </div>
+                    </div>
+                    <div class="select-item_1">
+                        <div class="select-input">
                             <span>应用名称：</span>
                             <el-input v-model.trim="serviceName" placeholder="请输入应用英文名称" size="small"
-                                      clearable></el-input>
-                            <p class="select-input_error" v-show="isServiceNameError">请输入英文名称</p>
+                                      style="margin-left: 40px;" clearable></el-input>
+                            <span class="select-vue-input_error" v-show="isServiceNameError">请输入英文名称</span>
                         </div>
                     </div>
                     <div class="select-item_2">
@@ -60,11 +67,11 @@
                             <div class="example-type-content">
                                 <p v-text="spaExplain"></p>
                                 <div class="spa-code_1">
-                                    <pre><code v-text="codeFrag1"></code></pre>
+                                    <pre><code v-text="spaCodeFrag1"></code></pre>
                                 </div>
                                 <p>在编译后项目入口js文件中的vue对象，添加以下代码：</p>
                                 <div class="spa-code_2">
-                                    <pre><code v-text="spaProbeCodeFrag"></code></pre>
+                                    <pre><code v-text="spaCodeFrag2"></code></pre>
                                 </div>
                             </div>
                         </el-tab-pane>
@@ -76,32 +83,28 @@
 </template>
 
 <script>
-    // 探针部署代码片段1
-    const codeFrag1 = '<script type="text/javascript" src="http://localhost:13800/index.js"></' + 'script>\n';
     // 探针部署代码片段2
-    const codeFrag2 = '<script>\n' +
-        '    ClientMonitor.register({\n' +
-        '        collector: \'http://localhost:13800\',\n' +
+    const codeFrag2 = ':13800\',\n' +
         '        useFmp: true,\n' +
         '        serviceVersion: \'default\',\n' +
         '        service: ';
-    // 探针部署代码片段3
-    const codeFrag3 = '    });\n</' + 'script>';
     // 多页面应用探针部署代码片段
     const mpaCodeFrag = '<script>\n' +
         '    ClientMonitor.register({\n' +
-        '        collector: \'http://localhost:13800\',\n' +
+        '        collector: \'http://127.0.0.1:13800\',\n' +
         '        service: \'serviceName\',\n' +
         '        serviceVersion: \'default\',\n' +
         '        pagePath: location.href,\n' +
         '        useFmp: true\n' +
         '    });\n</' +
         'script>';
+    // 单页面应用探针部署代码片段1
+    const spaCodeFrag1 = '<script type="text/javascript" src="http://127.0.0.1:13800/index.js"></' + 'script>\n';
     // 单页面应用探针部署代码片段
-    const spaCodeFrag = 'watch: {\n' +
+    const spaCodeFrag2 = 'watch: {\n' +
         '  \'$route.path\': function (newVal) {\n' +
         '      ClientMonitor.register({\n' +
-        '        collector: \'http:/localhost:13800\',\n' +
+        '        collector: \'http://127.0.0.1:13800\',\n' +
         '        service: \'serviceName\',\n' +
         '        serviceVersion: \'default\',\n' +
         '        pagePath:newVal,\n' +
@@ -120,6 +123,8 @@
         name: "Probe",
         data() {
             return {
+                // nginx IP
+                nginxIp:'',
                 // 应用名称
                 serviceName: '',
                 // 应用名称是否输入错误
@@ -132,8 +137,6 @@
                 vueObject: '',
                 // vue对象是否输入错误
                 isVueObjectError: false,
-                // 探针部署代码片段1
-                codeFrag1: codeFrag1,
                 // 动态代码部分
                 dynamicProbeCode: '',
                 // 代码_应用名称
@@ -151,9 +154,11 @@
                 // 单页面应用示例解释
                 spaExplain: spaExplain,
                 // 多页面应用示例代码
-                mpaProbeCode: codeFrag1 + mpaCodeFrag,
+                mpaProbeCode: spaCodeFrag1 + mpaCodeFrag,
+                // 单页面应用示例第一段代码
+                spaCodeFrag1:spaCodeFrag1,
                 // 单页面应用示例第二段代码
-                spaProbeCodeFrag: spaCodeFrag
+                spaCodeFrag2: spaCodeFrag2
             }
         },
         methods: {
@@ -185,8 +190,12 @@
         computed: {
             // 动态生成部署探针代码
             probeCode: function () {
-                return codeFrag1 + codeFrag2 + this.dynamicProbeCode +
-                    this.probeCodeServiceName + this.probeCodePagePath + this.probeCodeSPA + this.probeCodeVue + codeFrag3;
+                return '<script type="text/javascript" src="http://'+this.nginxIp+':13800/index.js"></' + 'script>\n' +
+                   '<script>\n ClientMonitor.register({\n        collector: \'http://'+this.nginxIp+ ':13800\',\n' +
+                    '        useFmp: true,\n' +
+                    '        serviceVersion: \'default\',\n' +
+                    '        service: '+ this.dynamicProbeCode +
+                    this.probeCodeServiceName + this.probeCodePagePath + this.probeCodeSPA + this.probeCodeVue +  '    });\n</' + 'script>';
             }
         },
         watch: {
@@ -224,7 +233,7 @@
                 let reg = new RegExp("^[0-9a-zA-Z]+$");
                 this.isVueObjectError = !reg.test(val) ? true : false;
                 // 探针部署代码更换
-                this.probeCodeVue = '        vue:\' ' + val + '\',\n';
+                this.probeCodeVue = '        vue: ' + val + '\n';
             }
         }
     }
@@ -281,6 +290,7 @@
 
     .select-item_1 {
         width: 100%;
+        margin-bottom: 28px;
     }
 
     .select-input {
@@ -307,7 +317,7 @@
     }
 
     .select-item_2 {
-        margin: 28px 0;
+        margin-bottom: 28px;
 
         span {
             margin-left: 110px;

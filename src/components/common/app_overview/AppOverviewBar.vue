@@ -1,14 +1,14 @@
 <template>
   <div class="ao-bar">
     <sub-header-title :sub-title="subTitle" :remark="remark"></sub-header-title>
-    <div class="ao-bar-item" v-for="(value,i) in barDataByCom.slice(0,5)" :key="i" @click="toPageMonitor(value)">
+    <div class="ao-bar-item" v-for="(value,i) in barDataByCom.slice(0,4)" :key="i" @click="toPageMonitor(value)">
       <div class="ao-bar-header flex-row">
-        <span class="normal-text">{{value.name}}</span>
-        <span class="normal-text">{{value.value}}ms</span>
+        <span class="normal-text rtl-text ip-name">{{value.name}}&#x200E;</span>
+        <span class="normal-text time-name">{{value.value}}ms</span>
       </div>
       <el-progress :percentage="value.percentage" :stroke-width="8" :show-text="false" :color="value.color"></el-progress>
     </div>
-    <div style="height: 300px;" class="empty" v-if="barDataByCom.length == 0" >
+    <div style="height: 200px;" class="empty" v-if="barDataByCom.length == 0" >
       <no-data></no-data>
     </div>
   </div>
@@ -24,28 +24,6 @@ export default {
   data(){
     return {
       color: ['#ffc7b9','#fee5ac','#86ebdc'],
-      // barData: [
-      //   {
-      //     name: 'index.html',
-      //     value: 850,
-      //   },
-      //   {
-      //     name: 'action.jsp',
-      //     value: 1100,
-      //   },
-      //   {
-      //     name: 'detail.html',
-      //     value: 460,
-      //   },
-      //   {
-      //     name: 'view.html',
-      //     value: 230,
-      //   },
-      //   {
-      //     name: 'home.html',
-      //     value: 120,
-      //   },
-      // ]
     }
   },
   computed: {
@@ -60,9 +38,9 @@ export default {
       sortArr.forEach(item=>{
         let percentage = Math.floor(item.value / max * 100);
         item.percentage = percentage;
-        if(item.value > 500){
+        if(item.value > 600){
           item.color = this.color[0]
-        }else if(item.value > 200 && item.value <= 500){
+        }else if(item.value > 300 && item.value <= 600){
           item.color = this.color[1]
         }else{
           item.color = this.color[2]
@@ -90,7 +68,7 @@ export default {
 .ao-bar{
   &-header{
     //color: #575777;
-    margin: 18px 0 12px 0;
+    margin: 12px 0 12px 0;
     justify-content: space-between;
   }
 
@@ -101,6 +79,21 @@ export default {
   &-item:hover span{
     color: #00baff;
   }
+}
+.rtl-text{
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  direction: rtl;
+}
+
+.ip-name{
+  line-height: 18px;
+  max-width: calc(100% - 56px);
+}
+
+.time-name{
+  line-height: 18px;
 }
 
 </style>

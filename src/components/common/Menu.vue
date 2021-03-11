@@ -16,16 +16,15 @@
         name: "Menu",
         //传入展示应用名称
         props: ['activeComponentName'],
-        data(){
-            return {
-                activeName: this.activeComponentName,
-            }
-        },
         computed: {
           //展示应用
-          // activeName(){
-          //   return this.activeComponentName;
-          // },
+          activeName: {
+            get () {
+              return this.activeComponentName;
+            },
+            set () {
+            }
+          },
           //应用列表数据 isActive根据activeName为判断依据
           tabData(){
             return [

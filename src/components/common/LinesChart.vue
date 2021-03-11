@@ -1,7 +1,5 @@
 <template>
-    <!--    <div class="chart-container">-->
     <div class="lines-chart" ref="linesChart"></div>
-    <!--    </div>-->
 </template>
 
 <script>
@@ -10,7 +8,7 @@
         props: ['lengend', 'xAxisData', 'data'],
         mounted() {
             this.$nextTick(() => {
-                this.initChart()
+                this.initChart();
             })
         },
         methods:{
@@ -86,7 +84,7 @@
                     // 创建之前先销毁
                     this.$echarts.init(this.$refs.linesChart).dispose();
                     // 初始化
-                    this.initChart()
+                    this.initChart();
                 }
             }
         }
