@@ -51,7 +51,7 @@
                             <span> 用户IP:</span>
                             <span>{{item.userIp===''?'未知':item.userIp}}</span>
                         </div>
-                        <div class="item-user-info_col">
+                        <div class="item-user-info_col pol-id">
                             <span> 警员ID:</span>
                             <span>{{item.policeId===''?'未知':item.policeId}}</span>
                         </div>
@@ -405,7 +405,7 @@
                     display: flex;
 
                     .item-user-info_col {
-                        width: 160px;
+                        width: 180px;
                         margin-right: 28px;
                         font-size: 16px;
                         color: #505b73;
@@ -417,6 +417,9 @@
                         span:nth-child(2) {
                             font-weight: bold;
                         }
+                    }
+                    .pol-id{
+                        width: 140px;
                     }
 
                     .item-user-info_terminal {

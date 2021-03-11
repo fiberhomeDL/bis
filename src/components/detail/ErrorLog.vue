@@ -56,12 +56,12 @@
                         <el-table-column
                                 prop="service"
                                 label="应用"
-                                min-width="10%">
+                                min-width="15%">
                         </el-table-column>
                         <el-table-column
                                 prop="pagePath"
                                 label="错误页面"
-                                min-width="20%">
+                                min-width="25%">
                         </el-table-column>
                         <el-table-column
                                 prop="message"
@@ -76,12 +76,12 @@
                         <el-table-column
                                 prop="category"
                                 label="错误类别"
-                                min-width="20%">
+                                min-width="15%">
                         </el-table-column>
                         <el-table-column
                                 prop="grade"
                                 label="错误等级"
-                                min-width="20%">
+                                min-width="15%">
                         </el-table-column>
                     </el-table>
                 </div>
@@ -90,7 +90,7 @@
                     <el-pagination
                             @current-change="handleCurrentChange"
                             layout="total,prev,pager,next"
-                            :page-size="13"
+                            :page-size="10"
                             :total="totalErrorData">
                     </el-pagination>
                 </div>
@@ -108,7 +108,7 @@
     import XLSX from 'xlsx';
 
     // 一页数量
-    const pageSize = 13;
+    const pageSize = 10;
 
     export default {
         name: "ErrorLog",

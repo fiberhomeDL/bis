@@ -94,7 +94,7 @@
         '        collector: \'http://127.0.0.1:13800\',\n' +
         '        service: \'serviceName\',\n' +
         '        serviceVersion: \'default\',\n' +
-        '        pagePath: location.href,\n' +
+        '        pagePath: location.pathname,\n' +
         '        useFmp: true\n' +
         '    });\n</' +
         'script>';
@@ -137,8 +137,6 @@
                 vueObject: '',
                 // vue对象是否输入错误
                 isVueObjectError: false,
-                // 动态代码部分
-                dynamicProbeCode: '',
                 // 代码_应用名称
                 probeCodeServiceName: '\'\',\n',
                 // 代码_spa部分
@@ -146,7 +144,7 @@
                 // 代码_vue部分
                 probeCodeVue: '',
                 // 代码_页面路径
-                probeCodePagePath: '        pagePath: location.href,\n',
+                probeCodePagePath: '        pagePath: location.pathname,\n',
                 // 示例类型
                 activeType: 'mpa',
                 // 多页面应用示例解释
@@ -194,7 +192,7 @@
                    '<script>\n ClientMonitor.register({\n        collector: \'http://'+this.nginxIp+ ':13800\',\n' +
                     '        useFmp: true,\n' +
                     '        serviceVersion: \'default\',\n' +
-                    '        service: '+ this.dynamicProbeCode +
+                    '        service: '+
                     this.probeCodeServiceName + this.probeCodePagePath + this.probeCodeSPA + this.probeCodeVue +  '    });\n</' + 'script>';
             }
         },
@@ -215,7 +213,7 @@
                     this.probeCodePagePath = '        pagePath: newVal,\n';
                 } else {
                     this.probeCodeSPA = '';
-                    this.probeCodePagePath = '        pagePath: location.href,\n';
+                    this.probeCodePagePath = '        pagePath: location.pathname,\n';
                 }
             },
             // 修改代码vue部分

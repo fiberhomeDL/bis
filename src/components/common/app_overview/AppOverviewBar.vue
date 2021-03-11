@@ -3,7 +3,7 @@
     <sub-header-title :sub-title="subTitle" :remark="remark"></sub-header-title>
     <div class="ao-bar-item" v-for="(value,i) in barDataByCom.slice(0,4)" :key="i" @click="toPageMonitor(value)">
       <div class="ao-bar-header flex-row">
-        <span class="normal-text rtl-text ip-name">{{value.name}}&#x200E;</span>
+        <span class="normal-text rtl-text ip-name">&#x200E;{{value.name}}&#x200E;</span>
         <span class="normal-text time-name">{{value.value}}ms</span>
       </div>
       <el-progress :percentage="value.percentage" :stroke-width="8" :show-text="false" :color="value.color"></el-progress>
