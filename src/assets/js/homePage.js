@@ -25,7 +25,9 @@ let httpReq = {
         //获取所有应用 -- 近2月（数据只存近两个月）
         return new Promise(function(resolve){
             that.getAllService().then(data=>{
-                that.appInfo.push(...data.services);
+                if(data){
+                    that.appInfo.push(...data.services);
+                }
                 Promise.all(that.appInfo.map(function (item){
                     return new Promise((resolve) => {
                         item.infoData = {};

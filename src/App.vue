@@ -17,6 +17,14 @@ export default {
       //提交vuex
       this.$store.commit('setServices', data.services);
       this.loading = false;
+    }).catch(error => {
+      this.loading = false;
+      this.$message({
+        type: 'error',
+        message: '后台服务异常!',
+        duration: 0,
+        showClose: true
+      })
     });
   },
   data(){
