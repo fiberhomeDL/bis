@@ -28,26 +28,25 @@ export default {
         left: 8,
         icon: 'circle',
         textStyle: {
-          color: '#919dbd',
+          color: '#919dbd'
         }
       },
       tooltip: {
         trigger: 'axis',
         axisPointer: {
-          type: 'shadow',
+          type: 'shadow'
         }
       },
       xAxis: [
         {
           type: 'category',
-          //data: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24"],
           data: that.appInfo.xData,
           offset: 10,
           axisTick: {
             lineStyle: {
               color: '#c1c5ca41',
             },
-            alignWithLabel: true,
+            alignWithLabel: true
           },
           axisLabel: {
             color: '#919dbd',
@@ -58,7 +57,6 @@ export default {
               color: 'rgba(0,0,0,0)'
             }
           },
-
         }
       ],
       yAxis: [
@@ -72,9 +70,8 @@ export default {
           },
           axisLabel: {
             color: "#919dbd",
-            fontSize: 12,
+            fontSize: 12
           }
-
         },
       ],
       series: [
@@ -122,7 +119,6 @@ export default {
   &-charts{
     width: 100%;
     height: 200px;
-    //margin-top: 14px;
   }
 }
 

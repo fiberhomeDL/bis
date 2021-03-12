@@ -111,9 +111,6 @@ export default {
     border-bottom: 3px solid #00baff;
     color: white;
   }
-
-
-
 }
 
 </style>

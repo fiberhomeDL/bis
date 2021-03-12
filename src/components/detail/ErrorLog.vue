@@ -5,7 +5,7 @@
          element-loading-spinner="el-icon-loading"
          element-loading-background="rgba(0, 0, 0, 0.8)"
     >
-        <!--        选择区域-->
+        <!--选择区域-->
         <div class="select-area">
             <div class="select-area_item">
                 <service-select></service-select>
@@ -44,7 +44,7 @@
                 <download-button class="download-icon" @click="download"></download-button>
             </div>
         </div>
-        <!--        错误信息-->
+        <!--错误信息-->
         <div class="hw100-oh" style="padding: 22px;">
             <div class="hw100-oh error-information">
                 <div class="table-container">
@@ -85,7 +85,7 @@
                         </el-table-column>
                     </el-table>
                 </div>
-                <!--            分页-->
+                <!--分页-->
                 <div class="page-area">
                     <el-pagination
                             @current-change="handleCurrentChange"
@@ -135,14 +135,14 @@
                 errorTypeOptions: [
                     {value: 'ALL', label: '全部'},
                     {value: 'JS', label: 'Js错误'},
-                    {value: 'AJAX', label: 'Ajax'},
+                    {value: 'AJAX', label: 'Ajax错误'},
                     {value: 'RESOURCE', label: '静态资源加载异常'},
                     {value: 'PROMISE', label: 'Promise错误'},
                     {value: 'VUE', label: 'Vue错误'},
                     {value: 'UNKNOWN', label: '未知错误'},
                 ],
                 // 当前页数
-                currentPage: 1,
+                currentPage: 1
             }
         },
         mounted() {

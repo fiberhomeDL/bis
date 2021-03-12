@@ -45,7 +45,6 @@ export default {
         }else{
           item.color = this.color[2]
         }
-
       })
       return sortArr;
     }

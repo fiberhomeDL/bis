@@ -1,10 +1,10 @@
 <template>
     <div class="progress-bar">
-        <div v-for="(item,index) in data" class="bar-outer" :class="isActive == index ? 'active' : '' "
+        <div v-for="(item,index) in data" class="bar-outer"
+             :class="(isActiveIndex === index) ? 'active' : '' "
              @click="selectItem(index,item)">
             <div class="top-bar" v-show="index<5" :style="{background:color[index]}"></div>
-            <div v-if="item.name.length>18" class="title">...{{item.name.substring(item.name.length-18)}}</div>
-            <div v-else class="title">{{item.name}}</div>
+            <div class="title rtl-text">&lrm;{{item.name}}&lrm;</div>
             <div class="number">{{item.value}}</div>
             <div class="bar-inner" :style="{width:item.value/max*100+'%'}"></div>
         </div>
@@ -14,17 +14,26 @@
 <script>
     export default {
         name: "ProgressBar",
-        props: ['data'],
+        props: {
+            // 传入数据
+            'data': Array,
+            // 选中数据项序号
+            'selectedItemIndex': {
+                default: 0
+            }
+        },
         data() {
             return {
+                // Top5左侧边颜色
                 color: ['#ed5145', '#ffaf67', '#ffd943', '#86ebdc', '#7fd3fc'],
-                isActive: 0,
+                // 活跃条目序号
+                isActiveIndex: this.selectedItemIndex
             }
         },
         methods: {
             // 选中该项
             selectItem(index, item) {
-                this.isActive = index;
+                this.isActiveIndex = index;
                 this.$emit('selectItem', item);
             }
         },
@@ -44,10 +53,10 @@
 
     .progress-bar {
         width: 100%;
-        /*height: 100%;*/
+
         .bar-outer {
             width: 100%;
-            height: 32px;
+            height: 34px;
             margin-bottom: 12px;
             background-color: #f3f5f8;
             border-radius: 3px;
@@ -67,20 +76,23 @@
 
             .bar-inner {
                 height: 100%;
-                width: 100px;
                 background-color: #d6f6f2;
                 border-radius: 3px 0 0 3px;
                 box-shadow: 0 2px 6px 0 rgba(222, 246, 253, 0.5);
             }
 
             .title {
-                margin: 8px 0 8px 8px;
+                max-width: calc(100% - 64px);
+                margin: 8px;
                 float: left;
+                line-height: 18px;
             }
 
             .number {
-                margin: 8px;
+                max-width: 36px;
+                margin: 8px 8px 8px 0;
                 float: right;
+                line-height: 18px;
             }
         }
 
@@ -125,6 +137,13 @@
         .bar-outer:nth-child(n+6).active {
             border-left: solid 1px #00baff;
         }
+    }
+
+    .rtl-text {
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        direction: rtl;
     }
 
 </style>

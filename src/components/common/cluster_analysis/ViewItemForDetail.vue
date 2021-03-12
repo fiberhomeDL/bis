@@ -18,6 +18,7 @@ export default {
   name: "ViewItem",
   props: ['viewItemData'],
   filters: {
+    // 格式化时间
     numLocalString(value){
       if(!value){
         return 0

@@ -136,7 +136,7 @@
                 // 选中追踪条目
                 traceDataSelected: '',
                 // 当前页数
-                currentPage: 1,
+                currentPage: 1
             }
         },
         created() {

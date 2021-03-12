@@ -24,7 +24,7 @@
         data() {
             return {
                 // 颜色
-                barColor: ['#ffc7b9', '#fee5ac', '#fbd1ab', '#86ebdc', '#a1d9f5', '#c2d0fc', '#e1c9f7'],
+                barColor: ['#ffc7b9', '#fee5ac', '#fbd1ab', '#86ebdc', '#a1d9f5', '#c2d0fc', '#e1c9f7']
             }
         },
         computed: {

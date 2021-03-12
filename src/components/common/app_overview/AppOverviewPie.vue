@@ -61,14 +61,6 @@ export default {
             }
           },
           data: this.pieData,
-          // data: [
-          //   {value: 40, name: '谷歌87.0'},
-          //   {value: 20, name: 'safari1.0'},
-          //   {value: 10, name: '百度4.0'},
-          //   {value: 15, name: 'IE12'},
-          //   {value: 5, name: '火狐5.1'},
-          //   {value: 10, name: 'U2'}
-          // ],
           emphasis: {
             label: {
               show: true,

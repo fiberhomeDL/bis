@@ -142,7 +142,7 @@
             reducePage() {
                 if (1 !== this.pageInputNumber) {
                     this.pageInputNumber--;
-                    // 更新数据
+                    // 查询数据
                     this.getAlarmData();
                 }
             },
@@ -150,7 +150,7 @@
             addPage() {
                 if (this.totalPage !== this.pageInputNumber) {
                     this.pageInputNumber++;
-                    // 更新数据
+                    // 查询数据
                     this.getAlarmData();
                 }
             },

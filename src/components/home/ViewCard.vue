@@ -25,31 +25,25 @@ export default {
           title: '访问量',
           icon: require('@img/common_icon/views.svg'),
           unit: '',
-          value: this.serviceInfo.viewCount || '--',
+          value: this.serviceInfo.viewCount || '--'
         },
         {
           title: '用户量',
           icon: require('@img/common_icon/subscribers.svg'),
           unit: '',
-          value: this.serviceInfo.uvCount || '--',
+          value: this.serviceInfo.uvCount || '--'
         },
         {
           title: '错误数',
           icon: require('@img/common_icon/error.svg'),
           unit: '个',
-          value: this.serviceInfo.errorCount || '--',
+          value: this.serviceInfo.errorCount || '--'
         },
-        // {
-        //   title: '警告数',
-        //   icon: require('@img/common_icon/warning.svg'),
-        //   unit: '个',
-        //   value: this.serviceInfo.warningCount || '--',
-        // },
         {
           title: '性能指数',
           icon: require('@img/common_icon/performance.svg'),
           unit: '%',
-          value: this.serviceInfo.performanceCount || '--',
+          value: this.serviceInfo.performanceCount || '--'
         }
       ]
 
@@ -63,7 +57,7 @@ export default {
         top: 40,
         bottom: 20,
         right: 10,
-        left: 10,
+        left: 10
       },
       legend: {
         itemHeight: 8,
@@ -72,13 +66,13 @@ export default {
         left: 8,
         icon: 'circle',
         textStyle: {
-          color: '#919dbd',
+          color: '#919dbd'
         }
       },
       tooltip: {
         trigger: 'axis',
         axisPointer: {
-          type: 'shadow',
+          type: 'shadow'
         }
       },
       xAxis: [
@@ -88,9 +82,9 @@ export default {
           offset: 10,
           axisTick: {
             lineStyle: {
-              color: '#c1c5ca41',
+              color: '#c1c5ca41'
             },
-            alignWithLabel: true,
+            alignWithLabel: true
           },
           axisLabel: {
             color: '#919dbd',
@@ -115,9 +109,8 @@ export default {
           },
           axisLabel: {
             color: "#919dbd",
-            fontSize: 12,
+            fontSize: 12
           }
-
         },
       ],
       series: [
@@ -163,12 +156,10 @@ export default {
   justify-items: center;
 
   &-chart{
-    //width: 100%;
     background: #fff;
     flex: 1;
     overflow: hidden;
     padding-top: 10px;
-    //padding: 26px 0 26px 26px;
    }
 
   &-info{
@@ -208,7 +199,5 @@ export default {
       margin: 0;
     }
    }
-
-
 }
 </style>

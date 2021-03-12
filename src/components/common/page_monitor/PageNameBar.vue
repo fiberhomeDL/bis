@@ -24,10 +24,8 @@
             return {
                 // 选中页面
                 pageSelected: '',
-                barColor: ['#ed5145', '#ffaf67', '#ffd943', '#86ebdc', '#7fd3fc'],
+                barColor: ['#ed5145', '#ffaf67', '#ffd943', '#86ebdc', '#7fd3fc']
             }
-        },
-        methods: {
         },
         computed: {
             // 最大时间
@@ -44,7 +42,6 @@
     .bar-out {
         width: 258px;
         height: 32px;
-        /*display: flex;*/
         background-color: #f3f5f8;
         border-radius: 3px;
         color: #667085;
@@ -62,7 +59,6 @@
             width:calc(100% - 4px);
             height: 100%;
             .bar-inner {
-                /*margin-left:4px;*/
                 height: 100%;
                 background-color: #d6f6f2;
                 box-shadow: 0 2px 6px 0 rgba(222, 246, 253, 0.5);
@@ -78,8 +74,6 @@
         }
 
         .font-page-data {
-            /*text-align: right;*/
-            /*flex: 1;*/
             margin: 8px;
             float:right;
             z-index: 999;

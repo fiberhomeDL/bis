@@ -24,16 +24,15 @@ export default {
       return this.tabData.map(item=>{
         item.isActive = (item.id == this.titleActiveId)
         return item;
-      })
+      });
     }
   },
   methods: {
     onTitleClick(id){
       if(!(this.titleActiveId == id)){
         this.titleActiveId = id;
-        this.$emit('onChange',id)
+        this.$emit('onChange',id);
       }
-
     }
   }
 

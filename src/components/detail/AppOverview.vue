@@ -13,7 +13,6 @@
       </div>
       <div class="app-overview-wrapper" v-if="!loading">
         <div class="app-overview-body">
-<!--          <div class="app-overview-body-content">-->
             <el-row :gutter="20">
               <el-col :span="12">
                 <!--    应用访问量      -->
@@ -56,9 +55,7 @@
               <el-col :span="6">
                 <app-overview-bar @to-page-monitor="toPageMonitor" :sub-title="'页面完全加载时间'" :remark="'LOAD'" :bar-data="LoadData"></app-overview-bar>
               </el-col>
-
             </el-row>
-<!--          </div>-->
         </div>
       </div>
     </div>
@@ -84,33 +81,19 @@ export default {
       appInfo: {
         xData: [],
         pvValue: [],
-        uvValue: [],
+        uvValue: []
       },
       errorInfo: {
         xData: [],
-        errorValue: [],
+        errorValue: []
       },
-
       FPTData: [],
       FMPData: [],
       DomData: [],
       LoadData: [],
-
-
-
-      //暂无数据
-      browserUseData: [
-        // {value: 40, name: '谷歌87.0'},
-        // {value: 20, name: 'safari1.0'}
-      ],
-      osData: [
-        // {value: 1000, name: 'Windows10'},
-        // {value: 100, name: 'Windows8'}
-      ],
-      screenData: [
-        // {value: 740, name: '1920x1080'},
-        // {value: 260, name: '1768x992'},
-      ],
+      browserUseData: [],
+      osData: [],
+      screenData: []
     }
   },
 
@@ -144,7 +127,6 @@ export default {
         that.osData = data.osData;
         that.screenData = data.screenData;
         that.loading =  false;
-
       })
     },
   },
@@ -152,8 +134,6 @@ export default {
     this.$nextTick(()=>{
       this.changeCondition();
     })
-  },
-  mounted() {
   }
 }
 </script>
@@ -184,7 +164,6 @@ export default {
     width: 100%;
     padding: 20px;
     overflow: hidden;
-    //flex: 1;
   }
 
   &-body{
@@ -196,12 +175,6 @@ export default {
     box-shadow: 0px 4px 8px 0px #b7c4e0;
     border-radius: 4px;
     padding: 34px 32px;
-    //padding: 24px 20px;
-
-    //&-content{
-    //  padding: 24px;
-    //  //margin: 24px 20px;
-    //}
   }
 
 

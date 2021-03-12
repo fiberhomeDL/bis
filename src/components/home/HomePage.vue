@@ -104,17 +104,13 @@ export default {
   },
   methods: {
     doDownLoad(){
-      // let element  = this.$refs.pdfContent;
-
       window.pageXOffset = 0;
       document.documentElement.scrollTop = 0;
       document.body.scrollTop = 0;
       let target = this.$refs.pdfContent;;
-
       html2canvas(target, { dpi: 172 }).then(function(canvas) {
         let contentWidth = canvas.width;
         let contentHeight = canvas.height;
-
         //一页pdf显示html页面生成的canvas高度;
         let pageHeight = contentWidth / 592.28 * 841.89;
         //未生成pdf的html页面高度
@@ -143,8 +139,6 @@ export default {
         }
         pdf.save('仪表盘.pdf');
       });
-
-
     },
     doServiceClick(value){
       this.$store.commit('changeSelectedServiceId',value.id);
@@ -174,9 +168,7 @@ export default {
       httpReq.init().then(data => {
         this.appInfo = data;
         this.loading = false;
-      })
-
-      // this.appInfo = result
+      });
     })
   }
 }

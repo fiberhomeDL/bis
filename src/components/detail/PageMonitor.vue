@@ -43,7 +43,9 @@
                         </el-input>
                     </div>
                     <div class="page-name-bar">
-                        <progress-bar v-if="pageNameList.length!==0" :data="pageNameList"
+                        <progress-bar v-if="pageNameList.length!==0"
+                                      :data="pageNameList"
+                                      :selectedItemIndex="selectedPageIndex"
                                       @selectItem="changePage"></progress-bar>
                         <no-data v-else></no-data>
                     </div>
@@ -162,7 +164,7 @@
                     {value: 'browser_app_page_fpt_avg', label: '白屏时间(ms)'},
                     {value: 'browser_app_page_fmp_avg', label: '首屏时间(ms)'},
                     {value: 'browser_app_page_dom_ready_avg', label: 'Html加载时间(ms)'},
-                    {value: 'browser_app_page_load_page_avg', label: '页面完全加载时间(ms)'},
+                    {value: 'browser_app_page_load_page_avg', label: '页面完全加载时间(ms)'}
                 ],
                 // 应用下全部页面
                 pageData: [],
@@ -172,6 +174,8 @@
                 pageNameList: [],
                 // 选择的页面
                 selectedPage: {},
+                // 选择页面序号
+                selectedPageIndex: 0,
                 // 搜索关键词
                 keywords: '',
                 // 页面浏览量
@@ -193,7 +197,7 @@
                 // 页面加载数据
                 pageLoadData: [],
                 // 错误数量（时间段）
-                errorDurationData: {xData: [], barValue: []},
+                errorDurationData: {xData: [], barValue: []}
             }
         },
         created() {
@@ -253,15 +257,21 @@
                         return item.name.includes(that.keywords);
                     }
                 );
-                // 跳转页面参数
+                // 获取跳转页面参数
                 let toPageParam = that.$store.state.toPageMonitorParam;
                 // 清空跳转页面参数
                 that.$store.commit('clearMonitorParam');
                 // 默认显示第一个页面的详情数据，否则显示跳转的页面详情
-                if (undefined !== toPageParam.name) {
+                if (undefined !== toPageParam.id) {
+                    // 设置选中页面为跳转页面
                     that.selectedPage = toPageParam;
+                    // 查找跳转页面在页面列表中的位置
+                    that.selectedPageIndex = that.pageNameList.findIndex(item => item.id == toPageParam.id);
                 } else if (0 !== that.pageNameList.length) {
+                    // 设置选中页面为列表中第一个页面
                     that.selectedPage = that.pageNameList[0];
+                    // 设置选中页面为第一个页面
+                    that.selectedPageIndex = 0;
                 }
                 if (undefined !== that.selectedPage) {
                     // 查询页面详情数据
@@ -286,14 +296,12 @@
                     that.loading = false;
                     // 赋值给各项数据
                     that.pagePv = data.pv;
-                    // 错误数据
-                    const totalErrorSum = data.totalErrorSum;
-                    if (totalErrorSum !== 0) {
-                        that.jsErrorRate = (data.jsErrorSum / totalErrorSum).toFixed(2) * 100;
-                        that.resErrorRate = (data.resErrorSum / totalErrorSum).toFixed(2) * 100;
-                        that.ajaxErrorRate = (data.ajaxErrorSum / totalErrorSum).toFixed(2) * 100;
-                        that.unKnowErrorRate = (data.unknowErrorSum / totalErrorSum).toFixed(2) * 100;
-                    }
+                    // 赋值并计算错误率
+                    const totalErrorSum = data.totalErrorSum < 1 ? 1 : data.totalErrorSum;
+                    that.jsErrorRate = (data.jsErrorSum / totalErrorSum).toFixed(2) * 100;
+                    that.resErrorRate = (data.resErrorSum / totalErrorSum).toFixed(2) * 100;
+                    that.ajaxErrorRate = (data.ajaxErrorSum / totalErrorSum).toFixed(2) * 100;
+                    that.unKnowErrorRate = (data.unknowErrorSum / totalErrorSum).toFixed(2) * 100;
                     // 页面瀑布图
                     that.pageLoadData = that.handlePageLoadData([data.dnsTime, data.tcpTime, data.sslTime, data.ttfbTime, data.transTime, data.domReadyTime, data.resTime]);
                     // 页面性能指数
@@ -422,13 +430,13 @@
                 that.getPageDetail();
             },
             // 跳转错误日志，根据页面、错误类型
-            goToErrorLog(category) {
+            goToErrorLog() {
                 let that = this;
-                // 保存跳转参数、选中页面和错误类型
-                this.$store.commit('setMonitorToLogParam', {page: that.selectedPage, category: category});
+                // 保存跳转参数、选中页面和错误类型（展示全部）
+                this.$store.commit('setMonitorToLogParam', {page: that.selectedPage, category: 'ALL'});
                 // 跳转至错误日志
                 this.$emit('change-component', 'ErrorLog');
-            },
+            }
         },
         watch: {
             // 关键词搜索，过滤数据

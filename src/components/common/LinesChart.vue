@@ -12,6 +12,7 @@
             })
         },
         methods:{
+            // 初始化图
             initChart(){
                 let myChart = this.$echarts.init(this.$refs.linesChart);
                 let option = {
@@ -93,15 +94,8 @@
 
 <style lang="scss" scoped>
     @import '@css/style.scss';
-    /*.chart-container{*/
-    /*    width: 100%;*/
-    /*    height: 100%;*/
     .lines-chart {
         width: 100%;
         height: 100%;
-        /*margin: 16px 0;*/
     }
-
-    /*}*/
-
 </style>

@@ -18,7 +18,6 @@ export default {
   background-image: url("~@img/common_icon/download.svg");
   background-size: cover;
   cursor: pointer;
-
 }
 
 </style>

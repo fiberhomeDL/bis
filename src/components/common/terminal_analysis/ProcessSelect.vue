@@ -22,11 +22,11 @@ export default {
       tabName: [
         {
           id: 'bw',
-          name: '浏览器',
+          name: '浏览器'
         },
         {
           id: 'os',
-          name: '操作系统',
+          name: '操作系统'
         }
       ],
       pageNameData: [
@@ -46,10 +46,8 @@ export default {
     showListData(){
       if(!this.tabData){
         return [];
-      };
+      }
       return this.tabData[this.activeTabId];
-
-
     }
   }
 }
@@ -57,24 +55,5 @@ export default {
 
 <style lang="scss" scoped>
 @import '@css/style.scss';
-//.ps{
-//  &-header{
-//    border-bottom: 1px solid #dfe8f7;;
-//    margin-bottom: 16px;
-//    &-title{
-//      display: inline-block;
-//      color: #919dbd;
-//      font-size: 16px;
-//      line-height: 32px;
-//      margin-right: 40px;
-//      border-bottom: 3px solid transparent;
-//      cursor: pointer;
-//    }
-//    &-title:hover, &-title.active{
-//      color: #00baff;
-//      border-bottom: 3px solid #00baff;
-//    }
-//  }
-//}
 
 </style>

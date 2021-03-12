@@ -432,7 +432,7 @@
                 that.selectedRecord = JSON.parse(JSON.stringify(item));
                 // 显示记录详情
                 that.showRecordDetail();
-            },
+            }
         },
         watch: {
             // 关键词搜索，过滤数据

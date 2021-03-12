@@ -24,32 +24,7 @@ export default {
     }
   },
   data(){
-    return {
-      // mainColor: '#86ebdc',
-      // unit: '%',
-      // pbData: [
-      //   {
-      //     name: '谷歌 87.0',
-      //     value: 100
-      //   },
-      //   {
-      //     name: '谷歌 83.0',
-      //     value: 80
-      //   },
-      //   {
-      //     name: '百度 1.0',
-      //     value: 60
-      //   },
-      //   {
-      //     name: 'U2 4.0',
-      //     value: 40
-      //   },
-      //   {
-      //     name: 'IE 3.0',
-      //     value: 20
-      //   }
-      // ],
-    }
+    return {}
   },
   computed: {
     maxValue(){

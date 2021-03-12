@@ -16,7 +16,6 @@ export default new Vuex.Store({
         clusterAnalysisId: '',
         // 用户行为追踪-行为列表-跳转ID
         behaviorTraceId: '',
-
         //应用总览 跳转到 页面监控 页面 所带的页面信息
         toPageMonitorParam: {
             id: undefined,
@@ -27,7 +26,7 @@ export default new Vuex.Store({
             page: undefined,
             category: undefined
         },
-
+        // 错误类型点击项
         errorItemClickType: ''
     },
     getters: {
@@ -40,7 +39,7 @@ export default new Vuex.Store({
         //获取echarts图x轴数据
         getXAxisData: state => {
             return util.initXAxisData(state.time);
-        },
+        }
     },
     mutations: {
         //clear toPageMonitorParam
@@ -51,8 +50,7 @@ export default new Vuex.Store({
                 name: undefined,
             }
         },
-
-        //set toPageMonitorParam
+        //设置toPageMonitorParam
         setMonitorParam(state, payload) {
             state.toPageMonitorParam = payload;
         },

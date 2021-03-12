@@ -47,7 +47,6 @@ export default {
     color: #C2D4E4;
     font-size: 14px;
   }
-
 }
 
 </style>

@@ -19,9 +19,9 @@ export default {
     //将数字转化成 100,000,000格式 如果为特殊值 则输入 --
     numLocalString(value){
       if(!value){
-        return 0
+        return 0;
       }else if(Number.isNaN(Number(value))){
-        return '--'
+        return '--';
       }else{
         return Number(value).toLocaleString();
       }
