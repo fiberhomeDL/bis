@@ -69,7 +69,7 @@
                                 <div class="spa-code_1">
                                     <pre><code v-text="spaCodeFrag1"></code></pre>
                                 </div>
-                                <p>在编译后项目入口js文件中的vue对象，添加以下代码：</p>
+                                <p>在程序入口js文件中的vue实例下，添加以下代码：</p>
                                 <div class="spa-code_2">
                                     <pre><code v-text="spaCodeFrag2"></code></pre>
                                 </div>
@@ -115,9 +115,9 @@
         '  }\n' +
         '}';
     // 多页面应用示例解释
-    const mpaExplain = '在监控页面的<head></head>第一行,添加以下代码：';
+    const mpaExplain = '在每个监控页面的<head></head>第一行,添加以下代码：';
     //  单页面应用示例解释
-    const spaExplain = '在编译后index.html 文件的<head></head>第一行,添加以下代码：';
+    const spaExplain = '在项目入口html文件的<head></head>第一行,添加以下代码：';
 
     export default {
         name: "Probe",
