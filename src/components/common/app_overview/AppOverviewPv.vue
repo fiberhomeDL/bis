@@ -19,7 +19,7 @@ export default {
         top: 40,
         bottom: 20,
         right: 10,
-        left: 10,
+        left: 10
       },
       legend: {
         itemHeight: 8,
@@ -44,7 +44,7 @@ export default {
           offset: 10,
           axisTick: {
             lineStyle: {
-              color: '#c1c5ca41',
+              color: '#c1c5ca41'
             },
             alignWithLabel: true
           },
@@ -56,7 +56,7 @@ export default {
             lineStyle: {
               color: 'rgba(0,0,0,0)'
             }
-          },
+          }
         }
       ],
       yAxis: [
@@ -89,14 +89,13 @@ export default {
               barBorderRadius: [12,12,2,2],
               color: '#ffc7b9'
             }
-          },
+          }
         },
         {
           name: '用户量',
           type: 'bar',
           barMinWidth: 1,
           barMaxWidth: 6,
-          //data: [100, 200, 100, 300, 800, 700, 600, 500, 400, 300, 200, 100,100, 200, 100, 300, 800, 700, 600, 500, 400, 300, 200, 100],
           data: that.appInfo.uvValue,
           itemStyle: {
             //柱形图圆角，鼠标移上去效果，如果只是一个数字则说明四个参数全部设置为那么多
@@ -105,7 +104,7 @@ export default {
               barBorderRadius: [12,12,2,2],
               color: '#8ee0ff'
             }
-          },
+          }
         },
       ]
     })

@@ -158,7 +158,7 @@ export default {
       let satisfactionSelectFlag = this.satisfactionSelect == 0;
       return this.appInfo.filter(item=>{
         return item.name.includes(this.searchInput) && (satisfactionSelectFlag || item.satisfaction == this.satisfactionSelect)
-      })
+      });
     }
   },
   created() {
@@ -169,7 +169,7 @@ export default {
         this.appInfo = data;
         this.loading = false;
       });
-    })
+    });
   }
 }
 </script>

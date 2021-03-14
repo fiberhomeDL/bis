@@ -46,7 +46,6 @@ export default {
           value: this.serviceInfo.performanceCount || '--'
         }
       ]
-
     }
   },
   mounted() {
@@ -95,7 +94,6 @@ export default {
               color: 'rgba(0,0,0,0)'
             }
           },
-
         }
       ],
       yAxis: [

@@ -109,7 +109,6 @@ export default {
       this.loading = true
       let serviceName = this.$store.getters.getSelectServiceName;
       let serviceId = this.$store.state.selectedServiceId;
-      // let serviceName = 'test-ui';
       let duration = this.$store.state.time;
       let xData = this.$store.getters.getXAxisData;
       httpReq.getPageData(serviceName,serviceId,duration).then(data=>{

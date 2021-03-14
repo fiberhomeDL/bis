@@ -21,8 +21,8 @@ export default {
     // 格式化时间
     numLocalString(value){
       if(!value){
-        return 0
-      };
+        return 0;
+      }
       return Number(value).toLocaleString();
     }
   }

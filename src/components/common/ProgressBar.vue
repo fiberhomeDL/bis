@@ -41,7 +41,7 @@
             // 最大时间
             max: function () {
                 return Math.max.apply(Math, this.data.map(item => {
-                    return item.value
+                    return item.value;
                 }));
             }
         }

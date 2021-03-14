@@ -81,7 +81,7 @@
                     <div class="trace-container-item_col item-time">
                         <img class="item-icon" :src="require('@img/common_icon/time.svg')"/>
                         <span class="item-title">访问时间:</span>
-                        <span class="normal-text">{{new Date(item.startTime).toLocaleString()}}</span>
+                        <span class="normal-text">{{item.startTime | formatDate}}</span>
                     </div>
                     <div class="trace-container-item_col item-exist-error">
                         <img class="item-icon" :src="require('@img/common_icon/error.svg')"/>
@@ -137,6 +137,12 @@
                 traceDataSelected: '',
                 // 当前页数
                 currentPage: 1
+            }
+        },
+        filters:{
+            // 格式化时间 时间戳转化为yyyy-MM-DD HH:mm:ss
+            formatDate(value) {
+                return new Date(value).toLocaleString;
             }
         },
         created() {

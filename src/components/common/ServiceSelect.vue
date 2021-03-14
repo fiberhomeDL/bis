@@ -17,14 +17,14 @@ export default {
 name: "ServiceSelect",
   computed: {
     services(){
-      return this.$store.state.services
+      return this.$store.state.services;
     },
     changeValue: {
       get(){
         return this.$store.state.selectedServiceId;
       },
       set(v){
-        this.$store.commit('changeSelectedServiceId', v)
+        this.$store.commit('changeSelectedServiceId', v);
       }
     }
   }

@@ -20,7 +20,7 @@ export default {
           bottom: 10,
           right: 10,
           left: 10,
-          containLabel: true,
+          containLabel: true
         },
         tooltip: {
           trigger: 'axis'
@@ -31,7 +31,7 @@ export default {
             lineStyle: {
               color: '#c1c5ca41',
             },
-            alignWithLabel: true,
+            alignWithLabel: true
           },
           axisLabel: {
             color: '#919dbd',
@@ -62,7 +62,7 @@ export default {
           itemHeight: 8,
           textStyle: {
             fontSize: 12,
-            color: '#919dbd',
+            color: '#919dbd'
           },
           top: 'top',
           orient:'horizontal',
@@ -109,6 +109,4 @@ export default {
     margin-top: 14px;
   }
 }
-
-
 </style>

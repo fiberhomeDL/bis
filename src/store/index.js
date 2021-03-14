@@ -33,7 +33,7 @@ export default new Vuex.Store({
         //获取选中的服务名称
         getSelectServiceName: state => {
             return state.services.find(item => {
-                return item.id == state.selectedServiceId
+                return item.id == state.selectedServiceId;
             }).name
         },
         //获取echarts图x轴数据
@@ -42,17 +42,17 @@ export default new Vuex.Store({
         }
     },
     mutations: {
-        //clear toPageMonitorParam
+        //设置应用总览跳转至页面监控参数
+        setMonitorParam(state, payload) {
+            state.toPageMonitorParam = payload;
+        },
+        // 清除应用总览跳转至页面监控参数
         clearMonitorParam(state) {
             /*获取值后调用*/
             state.toPageMonitorParam = {
                 id: undefined,
-                name: undefined,
+                name: undefined
             }
-        },
-        //设置toPageMonitorParam
-        setMonitorParam(state, payload) {
-            state.toPageMonitorParam = payload;
         },
         // 清除页面监控跳转至错误日志参数
         clearMonitorToLogParam(state) {

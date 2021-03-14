@@ -47,7 +47,7 @@ export default {
             lineStyle: {
               color: 'rgba(0,0,0,0)'
             }
-          },
+          }
         },
         yAxis: {
           type: 'value',
@@ -75,7 +75,7 @@ export default {
             },
             shadowColor: '#fff4f1',
             shadowBlur: 10
-          },
+          }
         }]
       })
     }

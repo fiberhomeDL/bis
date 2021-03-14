@@ -55,7 +55,7 @@
     import TimePicker from "@/components/common/TimePicker";
     import SubHeaderTitle from "@/components/common/SubHeaderTitle";
     import ViewItemForDetail from "@/components/common/cluster_analysis/ViewItemForDetail";
-    import util from '@js/common'
+    import util from '@js/common';
 
     export default {
         name: "ClusterAnalysisDetail.vue",
@@ -118,7 +118,7 @@
                 this.$emit('change-content', {
                     from: 'ClusterAnalysisDetail',
                     to: 'ClusterAnalysis'
-                })
+                });
             }
         },
         computed: {
@@ -281,7 +281,6 @@
                     width: 4px;
                     height: 13px;
                     background-color: #00baff;
-                    //margin-right: 8px;
                     margin: 0 8px 0 0;
                 }
 

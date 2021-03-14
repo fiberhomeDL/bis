@@ -46,7 +46,7 @@
                         <div class="item">
                             <img class="icon-title" :src="require('@img/common_icon/time.svg')"/>
                             <span class="item-service-title"> 访问时间:</span>
-                            <span>{{new Date(behaviorDetailData.startTime).toLocaleString()}}</span>
+                            <span>{{behaviorDetailData.startTime | formatDate}}</span>
                         </div>
                     </div>
                     <div class="trace-info-page">
@@ -88,7 +88,7 @@
                                         <span v-else>发生错误</span>
                                     </div>
                                     <div>{{item.message}}</div>
-                                    <div class="record-item_time">{{new Date(item.startTime).toLocaleString()}}</div>
+                                    <div class="record-item_time">{{item.startTime | formatDate}}</div>
                                 </div>
                             </div>
                             <no-data v-else></no-data>
@@ -109,7 +109,7 @@
                                         <div class="event-detail-item">
                                             <img :src="require('@img/common_icon/time.svg')"/>
                                             <span class="event-detail-item_title sub-normal-text">发生时间:</span>
-                                            <span>{{ new Date(selectedRecord.startTime).toLocaleString() }}</span>
+                                            <span>{{selectedRecord.startTime | formatDate}}</span>
                                         </div>
                                         <div class="event-detail-item">
                                             <img :src="require('@img/track/event.svg')"/>
@@ -180,7 +180,7 @@
                                         <div class="event-detail-item">
                                             <img :src="require('@img/common_icon/time.svg')"/>
                                             <span class="event-detail-item_title sub-normal-text">发生时间:</span>
-                                            <span>{{new Date(errorRecordDetail.startTime).toLocaleString()}}</span>
+                                            <span>{{errorRecordDetail.startTime | formatDate}}</span>
                                         </div>
                                         <div class="event-detail-item">
                                             <img :src="require('@img/track/event.svg')"/>
@@ -270,6 +270,12 @@
                 pageLoadRes: [],
                 // 错误记录详细信息
                 errorRecordDetail: []
+            }
+        },
+        filters:{
+            // 格式化时间 时间戳转化为yyyy-MM-DD HH:mm:ss
+            formatDate(value) {
+                return new Date(value).toLocaleString;
             }
         },
         created() {
@@ -439,7 +445,7 @@
             keywords: function () {
                 this.debounceGetData();
             }
-        },
+        }
     }
 </script>
 

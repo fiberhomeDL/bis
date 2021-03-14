@@ -50,7 +50,7 @@
                         <div class="time-group">
                             <div class="time-item-area">
                                 <span class="circle-style"></span>
-                                <span class="time-text">{{new Date(item.startTime).toLocaleString()}}</span>
+                                <span class="time-text">{{item.startTime| formatDate}}</span>
                             </div>
                             <div class="time-item-content">{{item.message}}</div>
                         </div>
@@ -102,6 +102,12 @@
                 totalPage: 0,
                 // 输入的页码
                 pageInputNumber: 1,
+            }
+        },
+        filters:{
+            // 格式化时间 时间戳转化为yyyy-MM-DD HH:mm:ss
+            formatDate(value) {
+                 return new Date(value).toLocaleString;
             }
         },
         created() {
@@ -167,7 +173,7 @@
             keyword() {
                 this.debounceGetData();
             },
-        },
+        }
     }
 </script>
 

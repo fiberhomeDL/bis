@@ -1,14 +1,14 @@
-import Vue from 'vue'
-import App from './App.vue'
-import router from './router'
-import store from './store'
+import Vue from 'vue';
+import App from './App.vue';
+import router from './router';
+import store from './store';
 import _ from 'lodash';
 import '@js/axios.config';
 import ElementUI from 'element-ui';
 import '@css/index.css';
 import '@css/common.css';
 import '@js/common.js'
-import * as echarts from 'echarts'
+import * as echarts from 'echarts';
 
 Vue.prototype.$echarts = echarts
 Vue.prototype._ = _;

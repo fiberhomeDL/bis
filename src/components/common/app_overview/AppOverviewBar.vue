@@ -39,11 +39,11 @@ export default {
         let percentage = Math.floor(item.value / max * 100);
         item.percentage = percentage;
         if(item.value > 600){
-          item.color = this.color[0]
+          item.color = this.color[0];
         }else if(item.value > 300 && item.value <= 600){
-          item.color = this.color[1]
+          item.color = this.color[1];
         }else{
-          item.color = this.color[2]
+          item.color = this.color[2];
         }
       })
       return sortArr;
@@ -54,7 +54,7 @@ export default {
     toPageMonitor(value){
       let id = value.id;
       let name = value.name;
-      this.$emit('to-page-monitor', {id,name})
+      this.$emit('to-page-monitor', {id,name});
     },
   }
 

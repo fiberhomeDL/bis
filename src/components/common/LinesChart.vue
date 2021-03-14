@@ -72,7 +72,7 @@
                         splitLine: {lineStyle: {color: '#c1c5ca41', type: 'dashed'}},
                         axisLabel: {color: '#919dbd', fontSize: '11'}
                     },
-                    series: this.data,
+                    series: this.data
                 };
                 myChart.setOption(option);
             }

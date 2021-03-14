@@ -328,7 +328,6 @@
             background: #fff;
             box-shadow: 0px 4px 8px 0px #b7c4e0;
             border-radius: 4px;
-
         }
     }
 

@@ -30,7 +30,6 @@ export default {
           color: '#919dbd',
           fontSize: 12
         }
-
       },
       series: [
         {
@@ -55,8 +54,7 @@ export default {
               h2:{
                 color: '#919dbd',
                 fontSize: 14,
-                align: 'left',
-
+                align: 'left'
               }
             }
           },
@@ -67,7 +65,7 @@ export default {
               fontSize: '40',
               fontWeight: 'bold'
             }
-          },
+          }
         }
       ]
     })

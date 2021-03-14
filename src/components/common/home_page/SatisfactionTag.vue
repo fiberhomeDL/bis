@@ -17,16 +17,16 @@ export default {
     name(){
       switch (this.level){
         case "1":
-          return '满意'
+          return '满意';
           break;
         case "2":
-          return '一般'
+          return '一般';
           break;
         case "3":
-          return '不满意'
+          return '不满意';
           break;
         default:
-          return ''
+          return '';
           break;
 
       }

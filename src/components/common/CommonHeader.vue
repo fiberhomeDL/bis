@@ -26,11 +26,11 @@ export default {
       tabData: [
           {
             title: '首页',
-            componentName: 'HomePage',
+            componentName: 'HomePage'
           },
           {
             title: '探针部署',
-            componentName: 'Probe',
+            componentName: 'Probe'
           },
       ]
     }
