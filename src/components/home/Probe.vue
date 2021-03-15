@@ -124,7 +124,7 @@
         data() {
             return {
                 // nginx IP
-                nginxIp:'',
+                nginxIp: '',
                 // 应用名称
                 serviceName: '',
                 // 应用名称是否输入错误
@@ -154,7 +154,7 @@
                 // 多页面应用示例代码
                 mpaProbeCode: spaCodeFrag1 + mpaCodeFrag,
                 // 单页面应用示例第一段代码
-                spaCodeFrag1:spaCodeFrag1,
+                spaCodeFrag1: spaCodeFrag1,
                 // 单页面应用示例第二段代码
                 spaCodeFrag2: spaCodeFrag2
             }
@@ -188,12 +188,13 @@
         computed: {
             // 动态生成部署探针代码
             probeCode: function () {
-                return '<script type="text/javascript" src="http://'+this.nginxIp+':13800/index.js"></' + 'script>\n' +
-                   '<script>\n ClientMonitor.register({\n        collector: \'http://'+this.nginxIp+ ':13800\',\n' +
+                return '<script type="text/javascript" src="http://' + this.nginxIp + ':13800/index.js"></' + 'script>\n' +
+                    '<script>\n ClientMonitor.register({\n        collector: \'http://' + this.nginxIp + ':13800\',\n' +
                     '        useFmp: true,\n' +
                     '        serviceVersion: \'default\',\n' +
-                    '        service: '+
-                    this.probeCodeServiceName + this.probeCodePagePath + this.probeCodeSPA + this.probeCodeVue +  '    });\n</' + 'script>';
+                    '        service: ' +
+                    this.probeCodeServiceName + this.probeCodePagePath + this.probeCodeSPA + this.probeCodeVue +
+                    '    });\n</' + 'script>';
             }
         },
         watch: {
@@ -308,9 +309,10 @@
             color: #f8897c;
             margin: 6px 0 6px 88px;
         }
-        .select-vue-input_error{
+
+        .select-vue-input_error {
             color: #f8897c;
-            margin-left:20px;
+            margin-left: 20px;
         }
     }
 
