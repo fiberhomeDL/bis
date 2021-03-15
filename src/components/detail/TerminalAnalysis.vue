@@ -256,7 +256,7 @@
                 this.userPerformance.pbData = data.perf.map(item => {
                     return {
                         name: (item.category + (item.version ? item.version : "")).split(".").slice(0, 2).join("."),
-                        value: item.value
+                        value: (item.value/10000).toFixed(2)
                     }
                 });
             },

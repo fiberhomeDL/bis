@@ -107,7 +107,7 @@
         filters:{
             // 格式化时间 时间戳转化为yyyy-MM-DD HH:mm:ss
             formatDate(value) {
-                 return new Date(value).toLocaleString;
+                 return new Date(value).toLocaleString();
             }
         },
         created() {

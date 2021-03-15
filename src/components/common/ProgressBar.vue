@@ -4,7 +4,7 @@
              :class="(isActiveIndex === index) ? 'active' : '' "
              @click="selectItem(index,item)">
             <div class="top-bar" v-show="index<5" :style="{background:color[index]}"></div>
-            <div class="title rtl-text">&lrm;{{item.name}}&lrm;</div>
+            <div class="title rtl-text">&#x200E;{{item.name}}&#x200E;</div>
             <div class="number">{{item.value}}</div>
             <div class="bar-inner" :style="{width:item.value/max*100+'%'}"></div>
         </div>

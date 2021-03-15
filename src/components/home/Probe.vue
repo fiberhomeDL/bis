@@ -21,7 +21,7 @@
                     <div class="select-item_2">
                         <div class="select-radio">
                             <el-tooltip effect="light" :visible-arrow=false
-                                        content="单页面应用:加载单个页面并在用户与应用程序交互时动态更新该页面的Web应用程序" placement="top">
+                                        content="加载单个页面并在用户与应用程序交互时动态更新该页面的Web应用程序" placement="top">
                                 <i class="el-icon-question"></i>
                             </el-tooltip>
                             <span class="select-radio-span_first">单页面应用：</span>
@@ -44,8 +44,9 @@
                     </div>
                     <h1>探针代码：</h1>
                     <div class="dynamic-code">
-                        <pre><i class="el-icon-document-copy" @click="copyProbeCode"></i><code
-                                v-text="probeCode"></code></pre>
+                        <pre><el-tooltip effect="light" :visible-arrow=false placement="top"><div
+                                slot="content">复制</div><i class="el-icon-document-copy" @click="copyProbeCode"></i>
+                        </el-tooltip><code v-text="probeCode"></code></pre>
                     </div>
                     <div class="attention" v-show="isSPA==='false'">
                         <i class="el-icon-warning"></i>

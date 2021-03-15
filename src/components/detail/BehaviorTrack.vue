@@ -76,7 +76,10 @@
                     <div style="display: flex;align-items: center" class="trace-container-item_col item-page">
                         <img style="top: 0" class="item-icon" :src="require('@img/common_icon/page.svg')"/>
                         <span style="min-width: 36px" class="item-title">页面:</span>
-                        <span class="normal-text rtl-text">{{item.pageName}}</span>
+                        <el-tooltip effect="light" :visible-arrow=false placement="top">
+                            <div slot="content">{{item.pageName}}</div>
+                            <span class="normal-text rtl-text">&#x200E;{{item.pageName}}&#x200E;</span>
+                        </el-tooltip>
                     </div>
                     <div class="trace-container-item_col item-time">
                         <img class="item-icon" :src="require('@img/common_icon/time.svg')"/>
@@ -142,7 +145,7 @@
         filters:{
             // 格式化时间 时间戳转化为yyyy-MM-DD HH:mm:ss
             formatDate(value) {
-                return new Date(value).toLocaleString;
+                return new Date(value).toLocaleString();
             }
         },
         created() {

@@ -30,16 +30,16 @@
             </el-row>
             <el-row :gutter="20">
               <el-col :span="8">
-                <!--    浏览器统计      -->
-                <app-overview-pie :pie-title="'浏览器统计'" :pie-data="browserUseData"></app-overview-pie>
+                <!--    浏览器使用统计      -->
+                <app-overview-pie :pie-title="'浏览器使用统计'" :pie-data="browserUseData"></app-overview-pie>
               </el-col>
               <el-col :span="8">
-                <!--    操作系统统计      -->
-                <app-overview-pie :pie-title="'操作系统统计'" :pie-data="osData"></app-overview-pie>
+                <!--    操作系统使用统计      -->
+                <app-overview-pie :pie-title="'操作系统使用统计'" :pie-data="osData"></app-overview-pie>
               </el-col>
               <el-col :span="8">
-                <!--    屏幕分辨率使用分析      -->
-                <app-overview-pie :pie-title="'屏幕分辨率使用分析'" :pie-data="screenData"></app-overview-pie>
+                <!--    屏幕分辨率      -->
+                <app-overview-pie :pie-title="'屏幕分辨率使用统计'" :pie-data="screenData"></app-overview-pie>
               </el-col>
             </el-row>
             <el-row :gutter="20" style="margin-top: 16px">

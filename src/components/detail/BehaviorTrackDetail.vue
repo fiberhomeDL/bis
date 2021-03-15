@@ -80,6 +80,7 @@
                             <!--列表项-->
                             <div v-if="recordList.length!==0" class="records-item-area">
                                 <div v-for="(item,index) in recordList"
+                                     :key="index"
                                      :class="[{'active':(item.id===selectedRecord.id)}, 'record-item']"
                                      @click="selectRecord(item)">
                                     <img class="item-icon" :src="require('@img/track/'+item.type+'.svg')"/>
@@ -275,7 +276,7 @@
         filters:{
             // 格式化时间 时间戳转化为yyyy-MM-DD HH:mm:ss
             formatDate(value) {
-                return new Date(value).toLocaleString;
+                return  new Date(value).toLocaleString();
             }
         },
         created() {
@@ -298,13 +299,14 @@
                 return httpReq.getBehaviorDetailData(behaviorTraceId).then(data => {
                     // 赋值
                     that.behaviorDetailData = data.queryUserBehaviorDetail;
-                    // 赋值、页面浏览数据
+                    // 赋值、构造页面浏览数据
                     that.recordData.push(data.queryUserBehaviorDetail);
                     that.recordData[0].type = 'pageView';
                     that.recordData[0].message = data.queryUserBehaviorDetail.pagePath;
-                    // 赋值、页面错误数据
+                    // 赋值、构造页面错误数据
                     let errorData = data.queryUserBehaviorErrorLog.logs;
                     for (let i = 0; i < errorData.length; i++) {
+                        errorData[i].id = 'error'+ i;
                         errorData[i].type = 'error';
                         errorData[i].errorContent=errorData[i].message;
                         errorData[i].message = errorData[i].errorType;

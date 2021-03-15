@@ -40,7 +40,7 @@ let httpReq = {
                             //uv总量
                             item.infoData.uvCount = eval(data.uvData.values.values.map(item => item.value).join("+"));
 
-                            item.infoData.performanceCount = ((10000 - data.errorRate) * data.lp) / 100;
+                            item.infoData.performanceCount = ((10000 - data.errorRate) * (data.lp/10000)) / 100;
 
 
                             //echarts pv
@@ -130,9 +130,7 @@ let httpReq = {
                         serviceId: $serviceId, 
                         valueColumnName: $valueColumnName, 
                         duration: $d)
-                    
-                    
-                
+            
                 }
             `,
             variables: {
