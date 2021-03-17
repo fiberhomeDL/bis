@@ -26,7 +26,7 @@ export default {
       return Number(value).toLocaleString();
     }
   }
-}
+};
 </script>
 
 <style lang="scss" scoped>

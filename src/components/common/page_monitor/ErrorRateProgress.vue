@@ -17,8 +17,8 @@
             selectItem(category) {
                 this.$emit('show-detail', category);
             }
-        },
-    }
+        }
+    };
 </script>
 
 <style lang="scss" scoped>

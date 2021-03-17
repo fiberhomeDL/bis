@@ -37,21 +37,20 @@ const queryBehaviorErrorData = {
     }`
 };
 
-
 const queryBehaviorDetail = `query queryData(${queryBehaviorDetailData.variable}){${queryBehaviorDetailData.fragment},${queryBehaviorErrorData.fragment}}`;
 
 // graphql
 let graphqlBehaviorDetailData = {
     query: queryBehaviorDetail,
-    variables: {id: {}}
-}
+    variables: {id: ''}
+};
 
 let httpReq = {
     // 获取用户行为记录列表
-    getBehaviorDetailData: function (id) {
-        graphqlBehaviorDetailData.variables = {id}
+    getBehaviorDetailData: function (beId) {
+        graphqlBehaviorDetailData.variables = {id: beId};
         return axios.post('/graphql', graphqlBehaviorDetailData);
     }
-}
+};
 
 export default httpReq;

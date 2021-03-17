@@ -148,7 +148,7 @@ export default {
           id: value.id,
           name: value.name
         }
-      })
+      });
     }
   },
   computed:{
@@ -157,7 +157,7 @@ export default {
       //是否启用满意度筛选
       let satisfactionSelectFlag = this.satisfactionSelect == 0;
       return this.appInfo.filter(item=>{
-        return item.name.includes(this.searchInput) && (satisfactionSelectFlag || item.satisfaction == this.satisfactionSelect)
+        return item.name.includes(this.searchInput) && (satisfactionSelectFlag || item.satisfaction == this.satisfactionSelect);
       });
     }
   },
@@ -171,7 +171,7 @@ export default {
       });
     });
   }
-}
+};
 </script>
 
 <style lang="scss" scoped>

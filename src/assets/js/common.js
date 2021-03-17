@@ -4,6 +4,45 @@ Date.prototype.toLocaleString = function() {
     return this.getFullYear() + "-" + (this.getMonth() + 1 + "").padStart(2,"0") + "-" + (this.getDate()+"" ).padStart(2,"0")+ " " + (this.getHours()+"").padStart(2,"0") + ":" + (this.getMinutes()+"").padStart(2,"0") + ":" + (this.getSeconds()+"").padStart(2,"0");
 };
 
+/**
+ * @param fmt 时间格式
+ * @param timestamp 时间戳
+ * @returns {*}
+ */
+const timestamp2Date = function (fmt, timestamp) {
+    if (timestamp) {
+        var date = new Date(parseInt(timestamp, 10));
+    } else {
+        return '';
+    }
+    var o = {
+        "M+": date.getMonth() + 1,//月份
+
+        "d+": date.getDate(),//日
+
+        "H+": date.getHours(), //小时
+
+        "h+": date.getHours(),
+
+        "m+": date.getMinutes(),//分
+
+        "s+": date.getSeconds(),//秒
+
+        "q+": Math.floor((date.getMonth() + 3) / 3),//季度
+
+        "S": date.getMilliseconds() //毫秒
+    };
+    if (/(y+)/.test(fmt)) {
+        fmt = fmt.replace(RegExp.$1, (date.getFullYear() + "").substr(4 - RegExp.$1.length));
+    }
+    for (var k in o) {
+        if (new RegExp("(" + k + ")").test(fmt)) {
+            fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
+        }
+    }
+    return fmt;
+};
+
 let util = {
     /**
      * @param modelValue [Tue Feb 23 2021 10:56:15 GMT+0800 (中国标准时间), Tue Feb 23 2021 11:11:15 GMT+0800 (中国标准时间)]
@@ -70,46 +109,8 @@ let util = {
             }
         }
         return xAxisData;
-    },
-
-}
-
-/**
- * @param fmt 时间格式
- * @param timestamp 时间戳
- * @returns {*}
- */
-const timestamp2Date = function (fmt, timestamp) {
-    if (timestamp) {
-        var date = new Date(parseInt(timestamp, 10));
-    } else {
-        return '';
     }
-    var o = {
-        "M+": date.getMonth() + 1,//月份
 
-        "d+": date.getDate(),//日
-
-        "H+": date.getHours(), //小时
-
-        "h+": date.getHours(),
-
-        "m+": date.getMinutes(),//分
-
-        "s+": date.getSeconds(),//秒
-
-        "q+": Math.floor((date.getMonth() + 3) / 3),//季度
-        "S": date.getMilliseconds() //毫秒
-    };
-    if (/(y+)/.test(fmt)) {
-        fmt = fmt.replace(RegExp.$1, (date.getFullYear() + "").substr(4 - RegExp.$1.length));
-    }
-    for (var k in o) {
-        if (new RegExp("(" + k + ")").test(fmt)) {
-            fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
-        }
-    }
-    return fmt;
 };
 
 export default util;

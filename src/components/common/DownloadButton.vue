@@ -5,7 +5,7 @@
 <script>
 export default {
   name: "DownloadButton"
-}
+};
 </script>
 
 <style lang="scss" scoped>

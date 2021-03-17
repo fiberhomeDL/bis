@@ -1,5 +1,5 @@
 import axios from 'axios';
-import util from '@js/common'
+import util from '@js/common';
 
 let httpReq = {
     /*获取浏览器和操作系统的使用量*/
@@ -41,29 +41,29 @@ let httpReq = {
             }).then(data => {
                 /*保留数据类型关键词 二次请求数据需要用*/
                 data.bw = data.bw.map(item => {
-                    return Object.assign({},item,{type: 'browser_type'})
+                    return Object.assign({},item,{type: 'browser_type'});
                 }).map(item => {
                     return Object.assign({},item,{
                         name: (item.category + item.version).split(".").slice(0,2).join(".")
-                    })
+                    });
                 }).sort(function(x, y){
                     return y.value - x.value;
                 });
                 data.os = data.os.map(item => {
-                    return Object.assign({},item,{type: 'browser_system'})
+                    return Object.assign({},item,{type: 'browser_system'});
                 }).map(item => {
                     return Object.assign({},item,{
                         name: (item.category + item.version).split(".").slice(0,2).join(".")
-                    })
+                    });
                 }).sort(function(x, y){
                     return y.value - x.value;
                 });
                 resolve(data);
-            })
-        })
+            });
+        });
     },
     /*获取指定浏览器或者指定操作系统下的错误统计和各类速度指标*/
-    getErrorCountAndSpeed(reqObj,serviceId,time){
+    getErrorCountAndSpeed(reqObj,sId,time){
         let duration = util.formatStartAndEndTime(time);
         return new Promise(function (resolve){
             axios.post('/graphql', {
@@ -86,7 +86,7 @@ let httpReq = {
                     }
                 `,
                 variables: {
-                    serviceId,
+                    serviceId:sId,
                     category: reqObj.type,
                     name: reqObj.category,
                     version: reqObj.version,
@@ -113,10 +113,8 @@ let httpReq = {
                     }
                 ];
                 resolve(data);
-
-            })
-        })
-
+            });
+        });
     },
     /*获取使用统计数据*/
     getUseCount(category,serviceName,serviceId,time){
@@ -146,8 +144,8 @@ let httpReq = {
 
             }).then(data => {
                 resolve(data);
-            })
-        })
+            });
+        });
     },
     /*获取使用性能数据*/
     getPerf(category,serviceId,time){
@@ -170,12 +168,11 @@ let httpReq = {
                 }
             }).then(data => {
                 resolve(data);
-            })
+            });
         });
     },
     /*获取所有浏览器及操作系统的错误列表*/
     getAllError(category,serviceId, time){
-
         let duration = util.formatStartAndEndTime(time);
         return new Promise(function(resolve){
             axios.post('/graphql', {
@@ -196,15 +193,11 @@ let httpReq = {
                     },
                     duration
                 }
-
             }).then(data => {
                 resolve(data);
-            })
-        })
-
+            });
+        });
     }
-
-
 };
 
-export default httpReq
+export default httpReq;

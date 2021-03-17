@@ -42,67 +42,67 @@ const queryPageTimeTopData = {
 const queryPagePvData = {
     variable: `${pvCondition},${duration}`,
     fragment: `pv: readMetricsValue(condition: $pvConditionVar, duration: $duration)`
-}
+};
 // 页面错误总量
 const queryPageErrorSum = {
     variable: `${errorSumCondition}`,
     fragment: `totalErrorSum: readMetricsValue(condition: $errorSumConditionVar, duration: $duration)`
-}
+};
 // 页面js错误数量
 const queryPageJsErrorSum = {
     variable: `${jsSumCondition}`,
     fragment: `jsErrorSum: readMetricsValue(condition: $jsSumConditionVar, duration: $duration)`
-}
+};
 // 页面静态资源错误数量
 const queryPageResErrorSum = {
     variable: `${resSumCondition}`,
     fragment: `resErrorSum: readMetricsValue(condition: $resSumConditionVar, duration: $duration)`
-}
+};
 // 页面ajax错误数量
 const queryPageAjaxErrorSum = {
     variable: `${ajaxSumCondition}`,
     fragment: `ajaxErrorSum: readMetricsValue(condition: $ajaxSumConditionVar, duration: $duration)`
-}
+};
 // 页面未知错误数量
 const queryPageUnknowErrorSum = {
     variable: `${unknowSumCondition}`,
     fragment: `unknowErrorSum: readMetricsValue(condition: $unknowSumConditionVar, duration: $duration)`
-}
+};
 // 页面dns时间
 const queryPageDnsTime = {
     variable: `${dnsTimeCondition}`,
     fragment: `dnsTime: readMetricsValue(condition: $dnsTimeConditionVar, duration: $duration)`
-}
+};
 // 页面tcp时间
 const queryPageTcpTime = {
     variable: `${tcpTimeCondition}`,
     fragment: `tcpTime: readMetricsValue(condition: $tcpTimeConditionVar, duration: $duration)`
-}
+};
 // 页面ssl时间
 const queryPageSslTime = {
     variable: `${sslTimeCondition}`,
     fragment: `sslTime: readMetricsValue(condition: $sslTimeConditionVar, duration: $duration)`
-}
+};
 // 页面TTFB时间
 const queryPageTTFBTime = {
     variable: `${ttfbTimeCondition}`,
     fragment: `ttfbTime: readMetricsValue(condition: $ttfbTimeConditionVar, duration: $duration)`
-}
+};
 // 页面Trans时间
 const queryPageTransTime = {
     variable: `${transTimeCondition}`,
     fragment: `transTime: readMetricsValue(condition: $transTimeConditionVar, duration: $duration)`
-}
+};
 // 页面Dom Ready时间
 const queryPageDomReadyTime = {
     variable: `${domReadyTimeCondition}`,
     fragment: `domReadyTime: readMetricsValue(condition: $domReadyTimeConditionVar, duration: $duration)`
-}
+};
 // 页面Resource时间
 const queryPageResTime = {
     variable: `${resTimeCondition}`,
     fragment: `resTime: readMetricsValue(condition: $resTimeConditionVar, duration: $duration)`
-}
+};
 // 页面fpt时间
 const queryPageFptTime = {
     variable: `${fptTimeCondition}`,
@@ -113,7 +113,7 @@ values {
     }↵
    }↵
 }`
-}
+};
 // 页面fmp时间
 const queryPageFmpTime = {
     variable: `${fmpTimeCondition}`,
@@ -124,7 +124,7 @@ values {
     }↵
    }↵
 }`
-}
+};
 // 页面domReady时间（时间段）
 const queryPageFmpTimeDuration = {
     variable: `${domReadyTimeCondition}`,
@@ -135,7 +135,7 @@ values {
     }↵
    }↵
 }`
-}
+};
 // 页面load时间
 const queryPageLoadTime = {
     variable: `${loadTimeCondition},${labels}`,
@@ -146,7 +146,7 @@ values {
     }↵
    }↵
 }`
-}
+};
 // 页面加载延时时间百分比
 const queryPageLoadPerTime = {
     variable: `${loadPerCondition}`,
@@ -158,7 +158,7 @@ value
 }↵
 }↵
 }`
-}
+};
 // 页面错误总量（时间段）
 const queryPageErrorSumDuration = {
     fragment: `totalErrorSumDuration: readMetricsValues(condition: $errorSumConditionVar, duration: $duration){↵
@@ -166,8 +166,7 @@ const queryPageErrorSumDuration = {
         values {↵      
         values {
         value}↵    }↵  }`
-}
-
+};
 
 const queryPage = `query queryEndpoints(${queryPageData.variable}){${queryPageData.fragment}}`;
 const queryPageTimeTop = `query queryData(${queryPageTimeTopData.variable}){${queryPageTimeTopData.fragment}}`;
@@ -216,39 +215,39 @@ const queryPageDetail = `query queryData(
 let graphqlPageData = {
     query: queryPage,
     variables: {keyword: "", serviceId: ""}
-}
+};
 
 let httpReq = {
     // 获取应用下所有页面数据
-    getAllPageData: function (serviceId) {
-        graphqlPageData.variables.serviceId = serviceId;
+    getAllPageData: function (sId) {
+        graphqlPageData.variables.serviceId = sId;
         return axios.post('/graphql', graphqlPageData);
     },
     // 获取页面白屏时间、首屏时间等
-    getPageTimeAvgTop: function (condition, duration) {
+    getPageTimeAvgTop: function (con, dur) {
         // graphql
         let graphqlPageTimeAvgTop = {
             query: queryPageTimeTop,
             variables: {
                 condition: {
-                    name: condition.name,
+                    name: con.name,
                     normal: true,
                     order: "DES",
-                    parentService: condition.service,
+                    parentService: con.service,
                     scope: "Endpoint",
-                    topN: condition.topN
+                    topN: con.topN
                 },
-                duration: duration
+                duration: dur
             }
         }
         return axios.post('/graphql', graphqlPageTimeAvgTop);
     },
     // 获取页面详情数据
-    getPageDetail: function (serviceName, pageName, duration) {
+    getPageDetail: function (sName, pName, dur) {
         // 参数实体
         let entity = {
-            serviceName: serviceName,
-            endpointName: pageName,
+            serviceName: sName,
+            endpointName: pName,
             scope: "Endpoint",
             normal: true
         };
@@ -256,7 +255,7 @@ let httpReq = {
         let graphqlGetPageDetail = {
             query: queryPageDetail,
             variables: {
-                duration: duration,
+                duration: dur,
                 pvConditionVar: {entity: entity, name: 'browser_app_page_pv'},
                 errorSumConditionVar: {entity: entity, name: 'browser_app_page_error_sum'},
                 jsSumConditionVar: {entity: entity, name: 'browser_app_page_js_error_sum'},
@@ -279,6 +278,6 @@ let httpReq = {
         }
         return axios.post('/graphql', graphqlGetPageDetail);
     }
-}
+};
 
 export default httpReq;

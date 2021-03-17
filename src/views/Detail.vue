@@ -31,7 +31,7 @@ export default {
     data(){
         return {
           //显示的组件
-            activeContent: 'AppOverview',
+            activeContent: 'AppOverview'
         }
     },
     components: {
@@ -55,7 +55,7 @@ export default {
       //用户行为分析
         BehaviorTrackDetail: ()=>import('@c/detail/BehaviorTrackDetail.vue'),
       //告警
-        Alarm: ()=> import('@c/detail/Alarm.vue'),
+        Alarm: ()=> import('@c/detail/Alarm.vue')
     },
     methods:{
         //内部跳转方法
@@ -69,7 +69,7 @@ export default {
                 params: {
                     componentName: componentName
                 }
-            })
+            });
         },
         // 侧边导航跳转
         changeContent(componentName){
@@ -83,11 +83,10 @@ export default {
       }else{
         this.$router.push({
           name: 'Home'
-        })
+        });
       }
-
     }
-}
+};
 </script>
 
 <style lang="scss" scoped>

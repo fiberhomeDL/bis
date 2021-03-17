@@ -40,7 +40,7 @@
                 </div>
                 <div class="terminal-analysis-bottom">
                     <el-row :gutter="60" class="hw100-oh">
-                        <el-col class="flex-column" style="height: 100%" :span="8">
+                        <el-col class="flex-column" style="height: 100%;" :span="8">
                             <sub-header-title class="mar-bot-24" :sub-title="'使用统计'"></sub-header-title>
                             <tab-select :key="'useCount'"
                                         :tab-data="[
@@ -197,7 +197,7 @@
                     this.renderPerf(data[2]);
                     this.renderAllErrorData(data[3]);
                     this.loading = false;
-                })
+                });
             },
             /*获取二次渲染时的数据
             * 点击左侧列表项目时下发的请求
@@ -257,7 +257,7 @@
                     return {
                         name: (item.category + (item.version ? item.version : "")).split(".").slice(0, 2).join("."),
                         value: (item.value/10000).toFixed(2)
-                    }
+                    };
                 });
             },
             /*错误数量*/
@@ -275,16 +275,16 @@
                     return {
                         name: (item.category + (item.version ? item.version : "")).split(".").slice(0, 2).join("."),
                         value: item.value
-                    }
+                    };
                 });
             },
         },
         created() {
             this.$nextTick(() => {
                 this.renderData();
-            })
+            });
         }
-    }
+    };
 </script>
 
 <style lang="scss" scoped>
@@ -320,6 +320,7 @@
         }
 
         &-bottom {
+            min-height: 378px;
             padding: 30px;
         }
 

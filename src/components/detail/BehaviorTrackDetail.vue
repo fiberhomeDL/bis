@@ -88,7 +88,7 @@
                                         <span v-if="item.type==='pageView'">页面浏览</span>
                                         <span v-else>发生错误</span>
                                     </div>
-                                    <div>{{item.message}}</div>
+                                    <div class="rtl-text page-view-mess">&#x200E;{{item.message}}&#x200E;</div>
                                     <div class="record-item_time">{{item.startTime | formatDate}}</div>
                                 </div>
                             </div>
@@ -114,13 +114,13 @@
                                         </div>
                                         <div class="event-detail-item">
                                             <img :src="require('@img/track/event.svg')"/>
-                                            <span class="event-detail-item_title sub-normal-text">事件内容:</span>
-                                            <span>{{selectedRecord.message}}</span>
+                                            <span class="event-detail-item_title sub-normal-text line-break">事件内容:</span>
+                                            <span class="line-break">{{selectedRecord.message}}</span>
                                         </div>
                                         <div class="event-detail-item">
                                             <img :src="require('@img/common_icon/page.svg')"/>
-                                            <span class="event-detail-item_title sub-normal-text">发生页面:</span>
-                                            <span>{{selectedRecord.message}}</span>
+                                            <span class="event-detail-item_title sub-normal-text line-break">发生页面:</span>
+                                            <span class="line-break">{{selectedRecord.message}}</span>
                                         </div>
                                     </div>
                                     <!--页面浏览tab-->
@@ -185,12 +185,12 @@
                                         </div>
                                         <div class="event-detail-item">
                                             <img :src="require('@img/track/event.svg')"/>
-                                            <span class="event-detail-item_title sub-normal-text">事件内容:</span>
+                                            <span class="event-detail-item_title sub-normal-text line-break">事件内容:</span>
                                             <span>{{errorRecordDetail.pagePath}}</span>
                                         </div>
                                         <div class="event-detail-item">
                                             <img :src="require('@img/common_icon/page.svg')"/>
-                                            <span class="event-detail-item_title sub-normal-text">发生页面:</span>
+                                            <span class="event-detail-item_title sub-normal-text line-break">发生页面:</span>
                                             <span>{{errorRecordDetail.pagePath}}</span>
                                         </div>
                                         <div class="event-detail-item">
@@ -323,8 +323,7 @@
                 that.recordList = that.recordData.filter(function (item) {
                         return 'all' === that.recordsType ? item.message.includes(that.keywords) :
                             item.type === that.recordsType && (item.message.includes(that.keywords));
-                    }
-                );
+                    });
                 // 默认显示第一条数据详情
                 that.selectedRecord = JSON.parse(JSON.stringify(that.recordList[0]));
                 // 显示记录详情
@@ -427,7 +426,7 @@
                 this.$emit('change-content', {
                     from: 'BehaviorTrackDetail',
                     to: 'BehaviorTrack'
-                })
+                });
             },
             // 设置表格header样式
             tableHeaderCellStyle() {
@@ -448,7 +447,7 @@
                 this.debounceGetData();
             }
         }
-    }
+    };
 </script>
 
 <style lang="scss">
@@ -601,6 +600,9 @@
                                     font-size: 16px;
                                     font-weight: bold;
                                 }
+                                .page-view-mess{
+                                    line-height: 2.2em;
+                                }
 
                                 .record-item_time {
                                     flex: 1;
@@ -745,11 +747,24 @@
         }
     }
 
+    .line-break{
+        white-space:normal;
+        word-break:break-all;
+        word-wrap:break-word;
+    }
+
     .el-table {
         border-radius: 3px;
         border: solid 1px #dfe8f7;
         padding: 2px;
         color: #575777;
+    }
+
+    .rtl-text{
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        direction: rtl;
     }
 
 

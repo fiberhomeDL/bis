@@ -31,7 +31,7 @@ export default {
           {
             title: '探针部署',
             componentName: 'Probe'
-          },
+          }
       ]
     }
   },
@@ -42,7 +42,7 @@ export default {
         //设置active类名是否展示
         item.isActive = (item.componentName == this.activeComponentName);
         return item;
-      })
+      });
     }
   },
   methods: {
@@ -61,8 +61,8 @@ export default {
       this.activeComponentName = 'HomePage';
       this.$emit('change-component', 'HomePage');
     }
-  },
-}
+  }
+};
 </script>
 
 <style lang="scss" scoped>

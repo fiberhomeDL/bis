@@ -151,12 +151,12 @@
             errorListForJsError() {
                 return this.errorList.filter(item => item.errorFlag == "1").sort(function (x, y) {
                     return y.errorTotalNum - x.errorTotalNum;
-                })
+                });
             },
             errorListForResource() {
                 return this.errorList.filter(item => item.errorFlag == "2").sort(function (x, y) {
                     return y.errorTotalNum - x.errorTotalNum;
-                })
+                });
             },
         },
         methods: {
@@ -224,9 +224,9 @@
         created() {
             this.$nextTick(() => {
                 this.renderData();
-            })
+            });
         }
-    }
+    };
 </script>
 
 <style lang="scss">

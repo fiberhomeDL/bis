@@ -11,7 +11,8 @@
             </div>
             <div class="select-area_item">
                 <span>过滤范围：</span>
-                <el-select v-model="filterScope" placeholder="请选择过滤字段" :size="'small'" @change="getAlarmData">
+                <el-select v-model="filterScope" placeholder="请选择过滤字段" :size="'small'" class="input-width"
+                           @change="getAlarmData">
                     <el-option
                             v-for="item in filterScopeOptions"
                             :key="item.value"
@@ -25,6 +26,7 @@
                         placeholder="关键词搜索"
                         suffix-icon="el-icon-search"
                         size="small"
+                        class="input-width"
                         clearable
                         v-model="keyword"
                         @keydown.enter.native="getAlarmData">
@@ -101,13 +103,13 @@
                 // 告警总量页数
                 totalPage: 0,
                 // 输入的页码
-                pageInputNumber: 1,
+                pageInputNumber: 1
             }
         },
-        filters:{
+        filters: {
             // 格式化时间 时间戳转化为yyyy-MM-DD HH:mm:ss
             formatDate(value) {
-                 return new Date(value).toLocaleString();
+                return new Date(value).toLocaleString();
             }
         },
         created() {
@@ -159,7 +161,7 @@
                     // 查询数据
                     this.getAlarmData();
                 }
-            },
+            }
         },
         watch: {
             // 监听页码输入值
@@ -172,9 +174,9 @@
             // 搜索关键词改变时发送请求
             keyword() {
                 this.debounceGetData();
-            },
+            }
         }
-    }
+    };
 </script>
 
 <style lang="scss">
@@ -199,6 +201,10 @@
             .select-area_item {
                 display: inline-block;
                 margin-left: 10px;
+
+                .input-width {
+                    width:200px;
+                }
 
                 span {
                     @extend .sub-normal-text;
@@ -275,6 +281,12 @@
                     }
                 }
             }
+        }
+    }
+
+    @media screen and (max-width: 1440px) {
+        .content-alarm .select-area .select-area_item .input-width {
+            width: 160px;
         }
     }
 

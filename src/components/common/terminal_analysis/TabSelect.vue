@@ -16,20 +16,20 @@ export default {
   props: ['tabData','activeId'],
   data(){
     return {
-      titleActiveId: this.activeId,
-    }
+      titleActiveId: this.activeId
+    };
   },
   computed:{
     titleDataHaveActive(){
       return this.tabData.map(item=>{
-        item.isActive = (item.id == this.titleActiveId)
+        item.isActive = (item.id === this.titleActiveId)
         return item;
       });
     }
   },
   methods: {
     onTitleClick(id){
-      if(!(this.titleActiveId == id)){
+      if(!(this.titleActiveId === id)){
         this.titleActiveId = id;
         this.$emit('onChange',id);
       }
@@ -37,7 +37,7 @@ export default {
   }
 
 
-}
+};
 </script>
 
 <style lang="scss" scoped>

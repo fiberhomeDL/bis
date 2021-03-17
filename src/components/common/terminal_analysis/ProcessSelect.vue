@@ -29,8 +29,7 @@ export default {
           name: '操作系统'
         }
       ],
-      pageNameData: [
-      ],
+      pageNameData: []
     }
   },
   methods: {
@@ -38,7 +37,7 @@ export default {
       this.activeTabId = id;
       if(this.showListData.length != 0){
         this.$emit('onItemSelect',this.showListData[0]);
-      };
+      }
     },
   },
   computed:{
@@ -50,7 +49,7 @@ export default {
       return this.tabData[this.activeTabId];
     }
   }
-}
+};
 </script>
 
 <style lang="scss" scoped>

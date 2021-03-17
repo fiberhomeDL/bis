@@ -30,10 +30,10 @@ export default {
     //对数据进行排序 比例缩放 的操作
     barDataByCom(){
       let max = Math.max(...this.barData.map(item=>{
-        return item.value
+        return item.value;
       }));
       let sortArr = this.barData.sort(function(a,b){
-        return b.value - a.value
+        return b.value - a.value;
       });
       sortArr.forEach(item=>{
         let percentage = Math.floor(item.value / max * 100);
@@ -45,21 +45,18 @@ export default {
         }else{
           item.color = this.color[2];
         }
-      })
+      });
       return sortArr;
     }
   },
-
   methods: {
     toPageMonitor(value){
       let id = value.id;
       let name = value.name;
       this.$emit('to-page-monitor', {id,name});
-    },
+    }
   }
-
-
-}
+};
 </script>
 
 <style lang="scss" scoped>

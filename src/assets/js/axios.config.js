@@ -5,7 +5,6 @@ import axios from 'axios';
 // 设置 axios 请求 baseUrl
 axios.defaults.baseURL = '';
 
-
 /**
  * 设置拦截器，interceptors 响应处理，
  * 所有使用 axios 发送的请求，在请求发送出去之前，都会进入到方法中

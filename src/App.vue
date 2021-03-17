@@ -29,16 +29,16 @@ export default {
         duration: 0,
         // 显示关闭按钮
         showClose: true
-      })
+      });
     });
   },
   data(){
     return {
       // 加载标识
       loading: false
-    }
+    };
   }
-}
+};
 
 
 </script>

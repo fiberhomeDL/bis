@@ -14,6 +14,7 @@
                         placeholder="请输入用户IP"
                         suffix-icon="el-icon-search"
                         size="small"
+                        class="input-width"
                         clearable
                         v-model="keywordUserIP"
                         @keydown.enter.native="getUserTraceData">
@@ -24,6 +25,7 @@
                         placeholder="请输入警员ID"
                         suffix-icon="el-icon-search"
                         size="small"
+                        class="input-width"
                         clearable
                         v-model="keywordPoliceId"
                         @keydown.enter.native="getUserTraceData">
@@ -39,72 +41,74 @@
             </div>
         </div>
         <div class="trace-information">
-            <!--用户行为记录列表-->
-            <div v-if="traceData.length>0" class="trace-container">
-                <div v-for="(item,index) in traceData"
-                     class="trace-container-item"
-                     :key="index"
-                     v-model="traceDataSelected"
-                     @click="goToDetail(item.id)">
-                    <div class="trace-container-item_col item-user-info">
-                        <div class="item-user-info_col">
-                            <span> 用户IP:</span>
-                            <span>{{item.userIp===''?'未知':item.userIp}}</span>
+            <div v-if="traceData.length>0" class="trace-information-container">
+                <!--用户行为记录列表-->
+                <div class="trace-container">
+                    <div v-for="(item,index) in traceData"
+                         class="trace-container-item"
+                         :key="index"
+                         v-model="traceDataSelected"
+                         @click="goToDetail(item.id)">
+                        <div class="trace-container-item_col item-user-info">
+                            <div class="item-user-info_col">
+                                <span> 用户IP:</span>
+                                <span>{{item.userIp===''?'未知':item.userIp}}</span>
+                            </div>
+                            <div class="item-user-info_col pol-id">
+                                <span> 警员ID:</span>
+                                <span>{{item.policeId===''?'未知':item.policeId}}</span>
+                            </div>
+                            <div class="item-user-info_terminal">
+                                <el-tooltip effect="light" :visible-arrow=false placement="top">
+                                    <div slot="content">{{item.browserVersion}}</div>
+                                    <img class="item-icon_terminal"
+                                         :src="require('@img/terminal_icon/'+item.browserType+'.svg')"/>
+                                </el-tooltip>
+                                <el-tooltip effect="light" :visible-arrow=false placement="top">
+                                    <div slot="content">{{item.OperateVersion}}</div>
+                                    <img class="item-icon_terminal"
+                                         :src="require('@img/terminal_icon/'+item.OperateType+'.svg')"/>
+                                </el-tooltip>
+                                <el-tooltip effect="light" :visible-arrow=false placement="top">
+                                    <div slot="content">{{item.screenWidth}}&times{{item.screenHeight}}</div>
+                                    <img class="item-icon_terminal"
+                                         :src="require('@img/terminal_icon/pc.svg')"/>
+                                </el-tooltip>
+                            </div>
                         </div>
-                        <div class="item-user-info_col pol-id">
-                            <span> 警员ID:</span>
-                            <span>{{item.policeId===''?'未知':item.policeId}}</span>
-                        </div>
-                        <div class="item-user-info_terminal">
+                        <div style="display: flex;align-items: center" class="trace-container-item_col item-page">
+                            <img style="top: 0" class="item-icon" :src="require('@img/common_icon/page.svg')"/>
+                            <span style="min-width: 36px" class="item-title">页面:</span>
                             <el-tooltip effect="light" :visible-arrow=false placement="top">
-                                <div slot="content">{{item.browserVersion}}</div>
-                                <img class="item-icon_terminal"
-                                     :src="require('@img/terminal_icon/'+item.browserType+'.svg')"/>
-                            </el-tooltip>
-                            <el-tooltip effect="light" :visible-arrow=false placement="top">
-                                <div slot="content">{{item.OperateVersion}}</div>
-                                <img class="item-icon_terminal"
-                                     :src="require('@img/terminal_icon/'+item.OperateType+'.svg')"/>
-                            </el-tooltip>
-                            <el-tooltip effect="light" :visible-arrow=false placement="top">
-                                <div slot="content">{{item.screenWidth}}&times{{item.screenHeight}}</div>
-                                <img class="item-icon_terminal"
-                                     :src="require('@img/terminal_icon/pc.svg')"/>
+                                <div slot="content">{{item.pageName}}</div>
+                                <span class="normal-text rtl-text">&#x200E;{{item.pageName}}&#x200E;</span>
                             </el-tooltip>
                         </div>
+                        <div class="trace-container-item_col item-time">
+                            <img class="item-icon" :src="require('@img/common_icon/time.svg')"/>
+                            <span class="item-title">访问时间:</span>
+                            <span class="normal-text">{{item.startTime | formatDate}}</span>
+                        </div>
+                        <div class="trace-container-item_col item-exist-error">
+                            <img class="item-icon" :src="require('@img/common_icon/error.svg')"/>
+                            <span class="item-title">有无错误:</span>
+                            <span v-if="item.errorCount>0" class="item-content_error">有<span
+                                    class="red-circle"></span></span>
+                            <span v-else>无</span>
+                        </div>
                     </div>
-                    <div style="display: flex;align-items: center" class="trace-container-item_col item-page">
-                        <img style="top: 0" class="item-icon" :src="require('@img/common_icon/page.svg')"/>
-                        <span style="min-width: 36px" class="item-title">页面:</span>
-                        <el-tooltip effect="light" :visible-arrow=false placement="top">
-                            <div slot="content">{{item.pageName}}</div>
-                            <span class="normal-text rtl-text">&#x200E;{{item.pageName}}&#x200E;</span>
-                        </el-tooltip>
-                    </div>
-                    <div class="trace-container-item_col item-time">
-                        <img class="item-icon" :src="require('@img/common_icon/time.svg')"/>
-                        <span class="item-title">访问时间:</span>
-                        <span class="normal-text">{{item.startTime | formatDate}}</span>
-                    </div>
-                    <div class="trace-container-item_col item-exist-error">
-                        <img class="item-icon" :src="require('@img/common_icon/error.svg')"/>
-                        <span class="item-title">有无错误:</span>
-                        <span v-if="item.errorCount>0" class="item-content_error">有<span
-                                class="red-circle"></span></span>
-                        <span v-else>无</span>
-                    </div>
+                </div>
+                <!--分页-->
+                <div class="page-area">
+                    <el-pagination
+                            @current-change="handleCurrentChange"
+                            layout="total,prev,pager,next"
+                            :page-size="9"
+                            :total="traceData.length">
+                    </el-pagination>
                 </div>
             </div>
             <no-data v-else :imgWidth="200" :fontSize="16"></no-data>
-            <!--分页-->
-            <div class="page-area">
-                <el-pagination
-                        @current-change="handleCurrentChange"
-                        layout="total,prev,pager,next"
-                        :page-size="9"
-                        :total="traceData.length">
-                </el-pagination>
-            </div>
         </div>
     </div>
 </template>
@@ -277,7 +281,7 @@
                 this.debounceGetData();
             }
         }
-    }
+    };
 </script>
 
 <style lang="scss" scoped>
@@ -301,6 +305,9 @@
         .select-area_item {
             display: inline-block;
             margin-left: 10px;
+            .input-width{
+                width: 200px;
+            }
 
             .el-icon-search {
                 margin-right: 8px;
@@ -329,140 +336,150 @@
         box-shadow: 0 4px 8px 0 #b7c4e0;
         border-radius: 5px;
 
-        .trace-container {
+        .trace-information-container{
             width: 100%;
-            height: calc(100% - 44px);
-            overflow: auto;
+            height: 100%;
 
-            .trace-container-item:hover {
-                border: solid 1px #00baff;
-            }
-
-            .trace-container-item {
+            .trace-container {
                 width: 100%;
-                padding: 10px 40px;
-                margin-bottom: 24px;
-                background-color: #f3f9ff;
-                border-radius: 3px;
-                border: solid 1px #dae6f1;
-                cursor: pointer;
-                display: flex;
-                min-height: 52px;
-                flex-wrap: wrap;
+                height: calc(100% - 44px);
+                overflow: auto;
 
-                .trace-container-item_col {
-                    display: inline-block;
-                    margin-right: 60px;
-                    text-align: left;
-                    line-height: 30px;
-
-                    .item-title {
-                        color: #919dbd;
-                        margin-right: 8px;
-                    }
-
-                    .item-titile_detail {
-                        color: #00baff;
-                        float: right;
-                    }
-
-                    .item-content_error {
-                        color: #ea4335;
-                    }
-
-                    .item-icon_terminal {
-                        height: 22px;
-                        width: 22px;
-                        margin-right: 28px;
-                        position: relative;
-                        top: 4px;
-                    }
-
-                    .item-icon {
-                        height: 18px;
-                        width: 18px;
-                        margin-right: 8px;
-                        position: relative;
-                        top: 4px;
-                    }
-
-                    .item-col-detail {
-                        color: #00baff;
-                        float: right;
-                        cursor: pointer;
-                    }
-
-                    .red-circle {
-                        width: 12px;
-                        height: 12px;
-                        margin-left: 10px;
-                        position: relative;
-                        top: 2px;
-                        background-color: #fe9289;
-                        border-radius: 50%;
-                        display: inline-block;
-                        box-shadow: 0 3px 6px 0 #ffe0dc;
-                    }
+                .trace-container-item:hover {
+                    border: solid 1px #00baff;
                 }
 
-                .trace-container-item_col:last-child {
-                    margin-right: 0;
-                }
-
-                .item-user-info {
-                    width: 530px;
+                .trace-container-item {
+                    width: 100%;
+                    padding: 10px 40px;
+                    margin-bottom: 24px;
+                    background-color: #f3f9ff;
+                    border-radius: 3px;
+                    border: solid 1px #dae6f1;
+                    cursor: pointer;
                     display: flex;
+                    min-height: 52px;
+                    flex-wrap: wrap;
 
-                    .item-user-info_col {
-                        width: 180px;
-                        margin-right: 28px;
-                        font-size: 16px;
-                        color: #505b73;
+                    .trace-container-item_col {
+                        display: inline-block;
+                        margin-right: 60px;
+                        text-align: left;
+                        line-height: 30px;
 
-                        span {
+                        .item-title {
+                            color: #919dbd;
                             margin-right: 8px;
                         }
 
-                        span:nth-child(2) {
-                            font-weight: bold;
+                        .item-titile_detail {
+                            color: #00baff;
+                            float: right;
+                        }
+
+                        .item-content_error {
+                            color: #ea4335;
+                        }
+
+                        .item-icon_terminal {
+                            height: 22px;
+                            width: 22px;
+                            margin-right: 28px;
+                            position: relative;
+                            top: 4px;
+                        }
+
+                        .item-icon {
+                            height: 18px;
+                            width: 18px;
+                            margin-right: 8px;
+                            position: relative;
+                            top: 4px;
+                        }
+
+                        .item-col-detail {
+                            color: #00baff;
+                            float: right;
+                            cursor: pointer;
+                        }
+
+                        .red-circle {
+                            width: 12px;
+                            height: 12px;
+                            margin-left: 10px;
+                            position: relative;
+                            top: 2px;
+                            background-color: #fe9289;
+                            border-radius: 50%;
+                            display: inline-block;
+                            box-shadow: 0 3px 6px 0 #ffe0dc;
                         }
                     }
-                    .pol-id{
-                        width: 140px;
+
+                    .trace-container-item_col:last-child {
+                        margin-right: 0;
                     }
 
-                    .item-user-info_terminal {
-                        width: 150px;
-                        color: #626f8c;
+                    .item-user-info {
+                        width: 530px;
+                        display: flex;
+
+                        .item-user-info_col {
+                            width: 180px;
+                            margin-right: 28px;
+                            font-size: 16px;
+                            color: #505b73;
+
+                            span {
+                                margin-right: 8px;
+                            }
+
+                            span:nth-child(2) {
+                                font-weight: bold;
+                            }
+                        }
+                        .pol-id{
+                            width: 140px;
+                        }
+
+                        .item-user-info_terminal {
+                            width: 150px;
+                            color: #626f8c;
+                        }
+                    }
+
+                    .item-page {
+                        width: 410px;
+                    }
+
+                    .item-time {
+                        width: 250px;
+                    }
+
+                    .item-exist-error {
+                        width: 160px;
                     }
                 }
 
-                .item-page {
-                    width: 410px;
-                }
-
-                .item-time {
-                    width: 250px;
-                }
-
-                .item-exist-error {
-                    width: 160px;
+                .trace-container-item:last-child {
+                    margin-bottom: 0;
                 }
             }
 
-            .trace-container-item:last-child {
-                margin-bottom: 0;
+            .page-area {
+                width: 100%;
+                height: 28px;
+                margin-top: 14px;
             }
         }
 
-        .page-area {
-            width: 100%;
-            height: 28px;
-            margin-top: 14px;
-        }
     }
 }
-
+@media screen and (max-width: 1440px) {
+    .content-behavior-track .select-area .select-area_item .input-width {
+        width: 160px;
+    }
+}
 
 .rtl-text{
     overflow: hidden;

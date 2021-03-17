@@ -87,7 +87,6 @@ export default {
           outOfRange: {
             color: '#999'
           },
-
         },
         series: {
           smooth: true,
@@ -95,9 +94,9 @@ export default {
           type: 'line',
           data: that.errorInfo.errorValue
         }
-      })
+      });
   }
-}
+};
 </script>
 
 <style lang="scss" scoped>

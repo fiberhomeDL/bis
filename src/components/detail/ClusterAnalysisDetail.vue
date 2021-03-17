@@ -132,7 +132,7 @@
                 let userCount = new Set(this.errorList.map(item => item.userIp)).size;
                 /*内部方法用于获取name在arr中的数量*/
                 function getCount(name, arr) {
-                    return arr.filter(item => item == name).length
+                    return arr.filter(item => item == name).length;
                 }
                 /*['a','a','b'] => {key: 'a', count: 2}*/
                 function getCountObj(arr) {
@@ -141,7 +141,7 @@
                         return {
                             key: item,
                             count: getCount(item, arr)
-                        }
+                        };
                     }).sort(function (x, y) {
                         return y.count - x.count
                     })[0];
@@ -231,10 +231,10 @@
                         this.errorList = data.errorList.logs;
                         this.loading = false;
                     }
-                })
-            })
+                });
+            });
         }
-    }
+    };
 </script>
 
 <style lang="scss">

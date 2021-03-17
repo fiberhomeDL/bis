@@ -28,7 +28,7 @@ name: "ServiceSelect",
       }
     }
   }
-}
+};
 </script>
 
 <style scoped>

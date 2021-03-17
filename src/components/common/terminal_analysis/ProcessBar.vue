@@ -23,9 +23,6 @@ export default {
       default: 70
     }
   },
-  data(){
-    return {}
-  },
   computed: {
     maxValue(){
       return Math.max(...this.pbObj.pbData.map(item => item.value));

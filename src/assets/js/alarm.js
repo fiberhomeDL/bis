@@ -1,8 +1,8 @@
 import axios from 'axios';
 
 const keyword = '$keyword: String';
-const serviceId =  '$serviceId: String!';
-const metricsName =  '$metricsName: String';
+const serviceId = '$serviceId: String!';
+const metricsName = '$metricsName: String';
 const duration = '$duration: Duration!';
 const paging = '$paging: Pagination!';
 
@@ -26,21 +26,21 @@ const queryAlarm = `query queryAlarms(${queryAlarmData.variable}){${queryAlarmDa
 // graphql
 let graphqlAlarmData = {
     query: queryAlarm,
-    variables: {keyword: "",serviceId:"", metricsName:"",duration: {}, paging: {}}
-}
+    variables: {keyword: "", serviceId: "", metricsName: "", duration: {}, paging: {}}
+};
 
 let httpReq = {
     // 获取告警数据
-    getAlarmData: function (keyword,serviceId,metricsName,duration,paging) {
+    getAlarmData: function (key, sId, mName, dur, page) {
         graphqlAlarmData.variables = {
-            keyword,
-            serviceId,
-            metricsName,
-            duration,
-            paging
+            keyword: key,
+            serviceId: sId,
+            metricsName: mName,
+            duration: dur,
+            paging: page
         }
         return axios.post('/graphql', graphqlAlarmData);
     }
-}
+};
 
 export default httpReq;

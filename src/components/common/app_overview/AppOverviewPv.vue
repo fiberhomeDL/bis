@@ -105,11 +105,11 @@ export default {
               color: '#8ee0ff'
             }
           }
-        },
+        }
       ]
-    })
+    });
   }
-}
+};
 </script>
 
 <style lang="scss" scoped>

@@ -14,8 +14,8 @@
 <script>
 export default {
 name: "SubHeaderTitle",
-props: ['subTitle','remark'],
-}
+props: ['subTitle','remark']
+};
 </script>
 
 

@@ -16,7 +16,7 @@
                 return this.data.toString().split("");
             }
         }
-    }
+    };
 </script>
 
 <style lang="scss" scoped>

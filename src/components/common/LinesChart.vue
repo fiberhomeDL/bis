@@ -9,7 +9,7 @@
         mounted() {
             this.$nextTick(() => {
                 this.initChart();
-            })
+            });
         },
         methods:{
             // 初始化图
@@ -89,7 +89,7 @@
                 }
             }
         }
-    }
+    };
 </script>
 
 <style lang="scss" scoped>

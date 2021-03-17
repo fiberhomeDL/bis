@@ -1,8 +1,8 @@
-import Vue from 'vue'
-import Vuex from 'vuex'
-import util from "@js/common"
+import Vue from 'vue';
+import Vuex from 'vuex';
+import util from "@js/common";
 
-Vue.use(Vuex)
+Vue.use(Vuex);
 
 export default new Vuex.Store({
     state: {
@@ -34,7 +34,7 @@ export default new Vuex.Store({
         getSelectServiceName: state => {
             return state.services.find(item => {
                 return item.id == state.selectedServiceId;
-            }).name
+            }).name;
         },
         //获取echarts图x轴数据
         getXAxisData: state => {
@@ -86,4 +86,4 @@ export default new Vuex.Store({
     },
     actions: {},
     modules: {}
-})
+});

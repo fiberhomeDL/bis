@@ -9,7 +9,7 @@ export default {
   mounted() {
     this.$nextTick(() => {
       this.initChart();
-    })
+    });
   },
   methods:{
     // 初始化图
@@ -27,7 +27,7 @@ export default {
         tooltip: {
           trigger: 'axis',
           axisPointer: {
-            type: 'shadow',
+            type: 'shadow'
           }
         },
         xAxis: {
@@ -77,7 +77,7 @@ export default {
             shadowBlur: 10
           }
         }]
-      })
+      });
     }
   },
   watch:{
@@ -93,7 +93,7 @@ export default {
     }
   }
 
-}
+};
 </script>
 
 <style lang="scss" scoped>

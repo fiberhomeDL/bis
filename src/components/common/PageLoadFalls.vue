@@ -38,7 +38,7 @@
                 return result;
             }
         }
-    }
+    };
 </script>
 
 <style lang="scss" scoped>

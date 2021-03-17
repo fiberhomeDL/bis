@@ -40,34 +40,34 @@ const queryErrorLog = `query queryBrowserErrorLogs(${queryErrorLogData.variable}
 let graphqlPageData = {
     query: queryPage,
     variables: {keyword: "", serviceId: ""}
-}
+};
 
 let graphqlErrorLog = {
     query: queryErrorLog,
     variables: {
         condition: BrowserErrorLogQueryCondition
     }
-}
+};
 
 let httpReq = {
     // 获取应用下所有页面数据
-    getAllPageData: function (serviceId) {
-        graphqlPageData.variables.serviceId = serviceId;
+    getAllPageData: function (sId) {
+        graphqlPageData.variables.serviceId = sId;
         return axios.post('/graphql', graphqlPageData);
     },
     // 获取错误日志数据
-    getErrorLogData: function (serviceId,pagePathId,category,paging,duration) {
+    getErrorLogData: function (sId, pageId, cg, page, dur) {
         graphqlErrorLog.variables.condition = {
-            serviceId,
+            serviceId: sId,
             serviceVersionId: '',
-            pagePathId,
-            category,
-            queryDuration:duration,
-            paging,
+            pagePathId: pageId,
+            category: cg,
+            queryDuration: dur,
+            paging: page,
         }
         return axios.post('/graphql', graphqlErrorLog);
     }
-}
+};
 
 export default httpReq;
 

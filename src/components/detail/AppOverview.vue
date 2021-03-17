@@ -100,13 +100,13 @@ export default {
   methods: {
     /*跳转到页面监控*/
     toPageMonitor(param){
-      this.$store.commit('setMonitorParam', param)
-      this.$emit('change-component', 'PageMonitor')
+      this.$store.commit('setMonitorParam', param);
+      this.$emit('change-component', 'PageMonitor');
     },
     /*当查询条件改变时*/
     changeCondition(){
       let that = this;
-      this.loading = true
+      this.loading = true;
       let serviceName = this.$store.getters.getSelectServiceName;
       let serviceId = this.$store.state.selectedServiceId;
       let duration = this.$store.state.time;
@@ -132,9 +132,9 @@ export default {
   created() {
     this.$nextTick(()=>{
       this.changeCondition();
-    })
+    });
   }
-}
+};
 </script>
 
 <style lang="scss">

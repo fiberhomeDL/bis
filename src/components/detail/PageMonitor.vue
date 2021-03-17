@@ -233,7 +233,7 @@
                     name: that.orderData,
                     // 应用名称
                     service: that.$store.getters.getSelectServiceName,
-                    topN: that.pageData.length,
+                    topN: that.pageData.length
                 }
                 // 时间
                 let duration = util.formatStartAndEndTime(that.$store.state.time);
@@ -400,7 +400,7 @@
                         name: 'P99',
                         type: 'line',
                         data: []
-                    },
+                    }
                 ];
                 // 赋值
                 for (var i = 0; i < lantencyData.length; i++) {
@@ -444,7 +444,7 @@
                 this.debounceGetData();
             }
         }
-    }
+    };
 </script>
 
 <style lang="scss">

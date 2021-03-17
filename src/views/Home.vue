@@ -19,14 +19,14 @@ export default {
   data(){
     return {
       //取值从created函数中取
-      activeComponent: '',
-    }
+      activeComponent: ''
+    };
   },
   components: {
     CommonHeader,
     //异步引用组件 避免不必要开销
     HomePage: ()=> import('@/components/home/HomePage.vue'),
-    Probe: ()=> import('@/components/home/Probe.vue'),
+    Probe: ()=> import('@/components/home/Probe.vue')
   },
   methods:{
     //切换展示组件的方法
@@ -37,11 +37,11 @@ export default {
   //一开始就执行
   created() {
     //接受路由传递信息
-    let activeComponentName = this.$route.params.componentName
+    let activeComponentName = this.$route.params.componentName;
     //路由有无传递信息的两种赋值
     activeComponentName ? this.activeComponent = activeComponentName : this.activeComponent = 'HomePage';
   }
-}
+};
 </script>
 <style lang="scss" scoped>
 @import '@css/style.scss';

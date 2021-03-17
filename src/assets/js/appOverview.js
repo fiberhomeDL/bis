@@ -1,17 +1,15 @@
 import axios from 'axios';
-import util from '@js/common'
+import util from '@js/common';
 function getPieData(data){
     return data.map(item => {
-
         if(!item.version){
             item.version = "";
         }
-
         return {
             value:  item.value,
             name:  (item.category + item.version).split(".").slice(0,2).join(".")
-        }
-    })
+        };
+    });
 }
 
 //echarts x时间轴
@@ -30,7 +28,7 @@ let httpReq = {
     getPageData(serviceName,serviceId,time){
         let that = this;
         let duration = util.formatStartAndEndTime(time);
-        return new Promise(function (resolve, reject){
+        return new Promise(function (resolve){
             axios.post('/graphql',{
                 query: `
                     query 
@@ -104,9 +102,7 @@ let httpReq = {
                                     value
                                 }
                             }
-                        },
-                        
-                        
+                        }, 
                     }
 `,
                 variables: {
@@ -184,7 +180,7 @@ let httpReq = {
                 that.appInfo.error = data.error.values.values.map(item=>{return item.value});
                 that.appInfo.fpt = data.fpt;
                 that.appInfo.fmp = data.fmp;
-                that.appInfo.domReady = data.domReady
+                that.appInfo.domReady = data.domReady;
                 that.appInfo.load = data.load;
 
                 /*饼图数据*/
@@ -193,8 +189,8 @@ let httpReq = {
                 that.appInfo.screenData = getPieData(data.screenData);
 
                 resolve(that.appInfo);
-            })
-        })
-    },
-}
+            });
+        });
+    }
+};
 export default httpReq;

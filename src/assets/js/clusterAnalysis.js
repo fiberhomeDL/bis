@@ -1,14 +1,12 @@
 import axios from 'axios';
-import util from '@js/common'
+import util from '@js/common';
 
 let httpReq = {
-    appInfo: {
-
-    },
+    appInfo: {},
     getAllData(serviceName,serviceId,time){
         let that = this;
         let duration = util.formatStartAndEndTime(time);
-        return new Promise(function (resolve, reject){
+        return new Promise(function (resolve){
             axios.post('/graphql',{
                 query: `
                 query(
@@ -64,14 +62,13 @@ let httpReq = {
                     that.appInfo.errorTotalNum += item.errorTotalNum;
                     that.appInfo.appearPageNum += item.appearPageNum;
                     that.appInfo.affectUserNum += item.affectUserNum;
-                })
-
+                });
 
                 that.appInfo.errorList = data.total.logs.map(item => {
                     //AJAX(0), RESOURCE(1), VUE(2), PROMISE(3), JS(4), UNKNOWN(5);
-                    let errorFlag = "1"
-                    if(item.errorCategoryValue == 1){
-                        errorFlag = "2"
+                    let errorFlag = "1";
+                    if(item.errorCategoryValue === 1){
+                        errorFlag = "2";
                     }
                     return {
                         errorFlag: errorFlag, // 1 => js错误 2 => 静态资源加载错误
@@ -80,18 +77,11 @@ let httpReq = {
                         affectUserNum: item.affectUserNum, // 影响用户
                         errorType: item.errorType
                     }
-                })
-
-
-
-
-
+                });
                 resolve(that.appInfo);
-            })
-        })
+            });
+        });
     }
-}
-
-
+};
 
 export default httpReq;

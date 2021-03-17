@@ -93,7 +93,7 @@ export default {
             lineStyle: {
               color: 'rgba(0,0,0,0)'
             }
-          },
+          }
         }
       ],
       yAxis: [
@@ -109,7 +109,7 @@ export default {
             color: "#919dbd",
             fontSize: 12
           }
-        },
+        }
       ],
       series: [
         {
@@ -123,7 +123,7 @@ export default {
               barBorderRadius: [12,12,2,2],
               color: '#ffc7b9'
             }
-          },
+          }
         },
         {
           name: '用户量',
@@ -136,12 +136,12 @@ export default {
               barBorderRadius: [12,12,2,2],
               color: '#8ee0ff'
             }
-          },
-        },
+          }
+        }
       ]
-    })
+    });
   }
-}
+};
 </script>
 
 <style lang="scss" scoped>

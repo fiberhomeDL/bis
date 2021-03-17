@@ -12,7 +12,7 @@ let twoMonthAgo = moment(new Date().getTime() - 3600 * 24 * 1000 * 60).format('Y
 //echarts x时间轴
 let xData = [];
 for(let index = 24; index >= 0; index--){
-    xData.push(`${new Date(new Date().getTime() - 3600 *  index * 1000).getHours()}时`)
+    xData.push(`${new Date(new Date().getTime() - 3600 *  index * 1000).getHours()}时`);
 }
 
 let httpReq = {
@@ -24,9 +24,9 @@ let httpReq = {
         let that = this;
         //获取所有应用 -- 近2月（数据只存近两个月）
         return new Promise(function(resolve){
-            that.getAllService().then(data=>{
-                if(data){
-                    that.appInfo.push(...data.services);
+            that.getAllService().then(serviceData=>{
+                if(serviceData){
+                    that.appInfo.push(...serviceData.services);
                 }
                 Promise.all(that.appInfo.map(function (item){
                     return new Promise((resolve) => {
@@ -42,16 +42,13 @@ let httpReq = {
 
                             item.infoData.performanceCount = ((10000 - data.errorRate) * (data.lp/10000)) / 100;
 
-
                             //echarts pv
                             item.chartsData.pvData = data.pvData.values.values.map(item => item.value);
                             //echarts uv
                             item.chartsData.uvData = data.uvData.values.values.map(item => item.value);
 
-
                             //echarts x轴数据
                             item.chartsData.xData = xData;
-
 
                             //满意度
                             if(item.infoData.performanceCount < 30){
@@ -62,13 +59,13 @@ let httpReq = {
                                 item.satisfaction = '1';
                             }
                             resolve();
-                        })
-                    })
+                        });
+                    });
                 })).then(()=>{
                     resolve(that.appInfo);
-                })
+                });
             });
-        })
+        });
     },
     //获取应用列表
     getAllService(){
@@ -86,7 +83,7 @@ let httpReq = {
                     step: "DAY"
                 }
             }
-        })
+        });
     },
     //获取应用列表
     getAppInfo(serviceName,serviceId){
@@ -167,10 +164,8 @@ let httpReq = {
                     }
                 },
                 "valueColumnName": "value",
-
             }
-
-        })
+        });
     }
-}
+};
 export default httpReq;
