@@ -61,7 +61,6 @@ import DownloadButton from "@c/common/DownloadButton";
 import ViewCard from "@/components/home/ViewCard";
 import SatisfactionTag from "@/components/common/home_page/SatisfactionTag";
 import httpReq from '@js/homePage';
-
 import html2canvas from 'html2canvas';
 import jsPDF from 'jsPDF';
 
@@ -137,7 +136,7 @@ export default {
             }
           }
         }
-        pdf.save('仪表盘.pdf');
+        pdf.save('应用.pdf');
       });
     },
     doServiceClick(value){

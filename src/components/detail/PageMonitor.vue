@@ -246,6 +246,17 @@
                     } else {
                         // 停止loading
                         that.loading = false;
+                        // 清空数据
+                        that.pageNameList = [];
+                        that.pagePv = 0;
+                        that.jsErrorRate = 0;
+                        that.resErrorRate = 0;
+                        that.ajaxErrorRate = 0;
+                        that.unKnowErrorRate = 0;
+                        that.pageLoadData = [];
+                        that.performanceData = [];
+                        that.lantencyData = [];
+                        that.errorDurationData = {xData: [], barValue: []};
                     }
                 });
             },

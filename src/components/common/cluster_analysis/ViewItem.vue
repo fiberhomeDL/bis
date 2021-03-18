@@ -6,7 +6,8 @@
     <div class="view-item-middle">{{ viewItemData.name }}</div>
     <div class="view-item-bottom">
       <span class="view-item-bottom-num" :style="{color: viewItemData.mainColor}">{{ viewItemData.value | numLocalString }}</span>
-      <span class="view-item-bottom-unit">次</span>
+      <span v-if="viewItemData.name==='影响用户'" class="view-item-bottom-unit">位</span>
+      <span v-else class="view-item-bottom-unit">次</span>
     </div>
   </div>
 </template>

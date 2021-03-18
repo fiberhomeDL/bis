@@ -11,28 +11,28 @@ let twoMonthAgo = moment(new Date().getTime() - 3600 * 24 * 1000 * 60).format('Y
 
 //echarts x时间轴
 let xData = [];
-for(let index = 24; index >= 0; index--){
-    xData.push(`${new Date(new Date().getTime() - 3600 *  index * 1000).getHours()}时`);
+for (let index = 24; index >= 0; index--) {
+    xData.push(`${new Date(new Date().getTime() - 3600 * index * 1000).getHours()}时`);
 }
 
 let httpReq = {
     //存放应用信息
     appInfo: [],
     //初始化
-    init(){
+    init() {
         this.appInfo = [];
         let that = this;
         //获取所有应用 -- 近2月（数据只存近两个月）
-        return new Promise(function(resolve){
-            that.getAllService().then(serviceData=>{
-                if(serviceData){
+        return new Promise(function (resolve) {
+            that.getAllService().then(serviceData => {
+                if (serviceData) {
                     that.appInfo.push(...serviceData.services);
                 }
-                Promise.all(that.appInfo.map(function (item){
+                Promise.all(that.appInfo.map(function (item) {
                     return new Promise((resolve) => {
                         item.infoData = {};
                         item.chartsData = {};
-                        that.getAppInfo(item.name,item.id).then(data => {
+                        that.getAppInfo(item.name, item.id).then(data => {
                             //错误数量
                             item.infoData.errorCount = eval(data.errorCount.values.values.map(item => item.value).join("+"));
                             //pv总量
@@ -40,7 +40,7 @@ let httpReq = {
                             //uv总量
                             item.infoData.uvCount = eval(data.uvData.values.values.map(item => item.value).join("+"));
 
-                            item.infoData.performanceCount = ((10000 - data.errorRate) * (data.lp/10000)) / 100;
+                            item.infoData.performanceCount = data.lp < 0 ? 0 : (data.lp / 10000).toFixed(2);
 
                             //echarts pv
                             item.chartsData.pvData = data.pvData.values.values.map(item => item.value);
@@ -51,25 +51,25 @@ let httpReq = {
                             item.chartsData.xData = xData;
 
                             //满意度
-                            if(item.infoData.performanceCount < 30){
+                            if (item.infoData.performanceCount < 0.3) {
                                 item.satisfaction = '3';
-                            }else if(item.infoData.performanceCount >= 30 && item.infoData.performanceCount < 75){
+                            } else if (item.infoData.performanceCount >= 0.3 && item.infoData.performanceCount < 0.75) {
                                 item.satisfaction = '2';
-                            }else{
+                            } else {
                                 item.satisfaction = '1';
                             }
                             resolve();
                         });
                     });
-                })).then(()=>{
+                })).then(() => {
                     resolve(that.appInfo);
                 });
             });
         });
     },
     //获取应用列表
-    getAllService(){
-        return axios.post('/graphql',{
+    getAllService() {
+        return axios.post('/graphql', {
             query: `query queryBrowserServices($duration: Duration!) {
                 services: getAllBrowserServices(duration: $duration) {
                     id 
@@ -86,8 +86,8 @@ let httpReq = {
         });
     },
     //获取应用列表
-    getAppInfo(serviceName,serviceId){
-        return axios.post('/graphql',{
+    getAppInfo(serviceName, serviceId) {
+        return axios.post('/graphql', {
             query: `
                 query (
                         $d: Duration!,

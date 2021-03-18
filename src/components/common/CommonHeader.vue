@@ -3,7 +3,7 @@
 <!--    Logo-->
       <div class="common-header-img" @click="toHomePage()"></div>
 <!--    标题-->
-      <div class="common-header-title" @click="toHomePage()">THEMIS APM BIS</div>
+      <div class="common-header-title" @click="toHomePage()">THEMIS RUM</div>
 <!--    导航栏数据源在computed中定义-->
       <div v-for="(value,index) in tabDataIncludeActive"
            :key="index"

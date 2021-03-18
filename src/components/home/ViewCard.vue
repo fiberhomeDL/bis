@@ -42,7 +42,7 @@ export default {
         {
           title: '性能指数',
           icon: require('@img/common_icon/performance.svg'),
-          unit: '%',
+          unit: '',
           value: this.serviceInfo.performanceCount || '--'
         }
       ]
