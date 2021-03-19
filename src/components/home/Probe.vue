@@ -158,7 +158,7 @@
                 spaCodeFrag1: spaCodeFrag1,
                 // 单页面应用示例第二段代码
                 spaCodeFrag2: spaCodeFrag2
-            }
+            };
         },
         methods: {
             // 复制探针部署代码
@@ -236,7 +236,7 @@
                 this.probeCodeVue = '        vue: ' + val + '\n';
             }
         }
-    }
+    };
 </script>
 
 <style lang="scss" scoped>

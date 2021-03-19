@@ -96,7 +96,6 @@ export default {
       screenData: []
     }
   },
-
   methods: {
     /*跳转到页面监控*/
     toPageMonitor(param){
@@ -127,7 +126,7 @@ export default {
         that.screenData = data.screenData;
         that.loading =  false;
       })
-    },
+    }
   },
   created() {
     this.$nextTick(()=>{
@@ -146,11 +145,10 @@ export default {
   &-header{
     min-height: 52px;
     background-color: #ffffff;
-    box-shadow: 0px 4px 8px 0px #b7c4e0;
+    box-shadow: 0 4px 8px 0 #b7c4e0;
     align-items: center;
     padding: 0 24px;
     justify-content: space-between;
-
 
     &-title{
       color: #919dbd;
@@ -171,11 +169,10 @@ export default {
     background: #fff;
     overflow: hidden;
     overflow-y: auto;
-    box-shadow: 0px 4px 8px 0px #b7c4e0;
+    box-shadow: 0 4px 8px 0 #b7c4e0;
     border-radius: 4px;
     padding: 34px 32px;
   }
-
 
 }
 </style>

@@ -232,7 +232,7 @@
                 // 设置表头
                 errorData.push({A: '应用', B: '错误页面', C: '错误信息', D: '时间', E: '错误类别', F: '错误等级'});
                 // 写入每行数据
-                that.errorData.forEach(function (item, index) {
+                that.errorData.forEach(function (item) {
                     let row = {
                         A: item.service,
                         B: item.pagePath,

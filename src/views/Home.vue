@@ -13,7 +13,6 @@
 
 <script>
 import CommonHeader from "@/components/common/CommonHeader";
-// import httpRequest from '@js/home';
 export default {
   name: 'Home',
   data(){
@@ -53,6 +52,5 @@ export default {
     height: 100%;
     overflow: hidden;
   }
-
 }
 </style>

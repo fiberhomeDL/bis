@@ -214,7 +214,7 @@
                     J: '错误数量'
                 });
                 // 写入每行数据
-                that.traceData.forEach(function (item, index) {
+                that.traceData.forEach(function (item) {
                     let row = {
                         A: item.userIp,
                         B: item.policeId,

@@ -99,7 +99,7 @@ export default {
       ],
       //应用详情
       appInfo: []
-    }
+    };
   },
   methods: {
     doDownLoad(){
