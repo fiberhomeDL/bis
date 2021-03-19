@@ -23,7 +23,7 @@ export default {
   props: ['subTitle','remark','barData'],
   data(){
     return {
-      color: ['#ffc7b9','#fee5ac','#86ebdc'],
+      color: ['#ffc7b9','#fee5ac','#86ebdc']
     }
   },
   computed: {

@@ -29,7 +29,7 @@ export default {
           data: that.errorInfo.xData,
           axisTick: {
             lineStyle: {
-              color: '#c1c5ca41',
+              color: '#c1c5ca41'
             },
             alignWithLabel: true
           },
@@ -53,7 +53,7 @@ export default {
           },
           axisLabel: {
             color: "#919dbd",
-            fontSize: 12,
+            fontSize: 12
           }
         },
         visualMap: {
@@ -86,7 +86,7 @@ export default {
           }],
           outOfRange: {
             color: '#999'
-          },
+          }
         },
         series: {
           smooth: true,

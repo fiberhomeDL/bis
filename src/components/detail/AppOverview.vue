@@ -121,8 +121,8 @@ export default {
         that.FPTData = data.fpt;
         that.FMPData = data.fmp;
         that.DomData = data.domReady;
-        that.LoadData = data.load
-        that.browserUseData = data.browserUseData
+        that.LoadData = data.load;
+        that.browserUseData = data.browserUseData;
         that.osData = data.osData;
         that.screenData = data.screenData;
         that.loading =  false;

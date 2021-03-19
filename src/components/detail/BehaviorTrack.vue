@@ -125,7 +125,7 @@
     const pageSize = 9;
     export default {
         name: "BehaviorTrack",
-        components: {DownloadButton, ServiceSelect, TimePicker,NoData},
+        components: {DownloadButton, ServiceSelect, TimePicker, NoData},
         data() {
             return {
                 // 加载中标识
@@ -146,7 +146,7 @@
                 currentPage: 1
             }
         },
-        filters:{
+        filters: {
             // 格式化时间 时间戳转化为yyyy-MM-DD HH:mm:ss
             formatDate(value) {
                 return new Date(value).toLocaleString();
@@ -285,206 +285,209 @@
 </script>
 
 <style lang="scss" scoped>
-@import '@css/style.scss';
+    @import '@css/style.scss';
 
-.content-behavior-track {
-    width: 100%;
-    height: 100%;
-
-    .select-area {
+    .content-behavior-track {
         width: 100%;
-        height: 52px;
-        padding: 10px 22px;
-        background-color: #fff;
-        box-shadow: 0 4px 8px 0 #b7c4e0;
+        height: 100%;
 
-        .right {
-            float: right;
-        }
-
-        .select-area_item {
-            display: inline-block;
-            margin-left: 10px;
-            .input-width{
-                width: 200px;
-            }
-
-            .el-icon-search {
-                margin-right: 8px;
-            }
-
-            ::v-deep .el-input__inner {
-                height: 32px;
-            }
-
-            .download-icon {
-                vertical-align: middle;
-            }
-        }
-
-        .select-area_item:first-child {
-            margin-left: 0;
-        }
-    }
-
-    .trace-information {
-        width: calc(100% - 44px);
-        height: calc(100% - 96px);
-        margin: 22px;
-        padding: 32px;
-        background-color: #fff;
-        box-shadow: 0 4px 8px 0 #b7c4e0;
-        border-radius: 5px;
-
-        .trace-information-container{
+        .select-area {
             width: 100%;
-            height: 100%;
+            height: 52px;
+            padding: 10px 22px;
+            background-color: #fff;
+            box-shadow: 0 4px 8px 0 #b7c4e0;
 
-            .trace-container {
-                width: 100%;
-                height: calc(100% - 44px);
-                overflow: auto;
+            .right {
+                float: right;
+            }
 
-                .trace-container-item:hover {
-                    border: solid 1px #00baff;
+            .select-area_item {
+                display: inline-block;
+                margin-left: 10px;
+
+                .input-width {
+                    width: 200px;
                 }
 
-                .trace-container-item {
+                .el-icon-search {
+                    margin-right: 8px;
+                }
+
+                ::v-deep .el-input__inner {
+                    height: 32px;
+                }
+
+                .download-icon {
+                    vertical-align: middle;
+                }
+            }
+
+            .select-area_item:first-child {
+                margin-left: 0;
+            }
+        }
+
+        .trace-information {
+            width: calc(100% - 44px);
+            height: calc(100% - 96px);
+            margin: 22px;
+            padding: 32px;
+            background-color: #fff;
+            box-shadow: 0 4px 8px 0 #b7c4e0;
+            border-radius: 5px;
+
+            .trace-information-container {
+                width: 100%;
+                height: 100%;
+
+                .trace-container {
                     width: 100%;
-                    padding: 10px 40px;
-                    margin-bottom: 24px;
-                    background-color: #f3f9ff;
-                    border-radius: 3px;
-                    border: solid 1px #dae6f1;
-                    cursor: pointer;
-                    display: flex;
-                    min-height: 52px;
-                    flex-wrap: wrap;
+                    height: calc(100% - 44px);
+                    overflow: auto;
 
-                    .trace-container-item_col {
-                        display: inline-block;
-                        margin-right: 60px;
-                        text-align: left;
-                        line-height: 30px;
-
-                        .item-title {
-                            color: #919dbd;
-                            margin-right: 8px;
-                        }
-
-                        .item-titile_detail {
-                            color: #00baff;
-                            float: right;
-                        }
-
-                        .item-content_error {
-                            color: #ea4335;
-                        }
-
-                        .item-icon_terminal {
-                            height: 22px;
-                            width: 22px;
-                            margin-right: 28px;
-                            position: relative;
-                            top: 4px;
-                        }
-
-                        .item-icon {
-                            height: 18px;
-                            width: 18px;
-                            margin-right: 8px;
-                            position: relative;
-                            top: 4px;
-                        }
-
-                        .item-col-detail {
-                            color: #00baff;
-                            float: right;
-                            cursor: pointer;
-                        }
-
-                        .red-circle {
-                            width: 12px;
-                            height: 12px;
-                            margin-left: 10px;
-                            position: relative;
-                            top: 2px;
-                            background-color: #fe9289;
-                            border-radius: 50%;
-                            display: inline-block;
-                            box-shadow: 0 3px 6px 0 #ffe0dc;
-                        }
+                    .trace-container-item:hover {
+                        border: solid 1px #00baff;
                     }
 
-                    .trace-container-item_col:last-child {
-                        margin-right: 0;
-                    }
-
-                    .item-user-info {
-                        width: 530px;
+                    .trace-container-item {
+                        width: 100%;
+                        padding: 10px 40px;
+                        margin-bottom: 24px;
+                        background-color: #f3f9ff;
+                        border-radius: 3px;
+                        border: solid 1px #dae6f1;
+                        cursor: pointer;
                         display: flex;
+                        min-height: 52px;
+                        flex-wrap: wrap;
 
-                        .item-user-info_col {
-                            width: 180px;
-                            margin-right: 28px;
-                            font-size: 16px;
-                            color: #505b73;
+                        .trace-container-item_col {
+                            display: inline-block;
+                            margin-right: 60px;
+                            text-align: left;
+                            line-height: 30px;
 
-                            span {
+                            .item-title {
+                                color: #919dbd;
                                 margin-right: 8px;
                             }
 
-                            span:nth-child(2) {
-                                font-weight: bold;
+                            .item-titile_detail {
+                                color: #00baff;
+                                float: right;
+                            }
+
+                            .item-content_error {
+                                color: #ea4335;
+                            }
+
+                            .item-icon_terminal {
+                                height: 22px;
+                                width: 22px;
+                                margin-right: 28px;
+                                position: relative;
+                                top: 4px;
+                            }
+
+                            .item-icon {
+                                height: 18px;
+                                width: 18px;
+                                margin-right: 8px;
+                                position: relative;
+                                top: 4px;
+                            }
+
+                            .item-col-detail {
+                                color: #00baff;
+                                float: right;
+                                cursor: pointer;
+                            }
+
+                            .red-circle {
+                                width: 12px;
+                                height: 12px;
+                                margin-left: 10px;
+                                position: relative;
+                                top: 2px;
+                                background-color: #fe9289;
+                                border-radius: 50%;
+                                display: inline-block;
+                                box-shadow: 0 3px 6px 0 #ffe0dc;
                             }
                         }
-                        .pol-id{
-                            width: 140px;
+
+                        .trace-container-item_col:last-child {
+                            margin-right: 0;
                         }
 
-                        .item-user-info_terminal {
-                            width: 150px;
-                            color: #626f8c;
+                        .item-user-info {
+                            width: 530px;
+                            display: flex;
+
+                            .item-user-info_col {
+                                width: 180px;
+                                margin-right: 28px;
+                                font-size: 16px;
+                                color: #505b73;
+
+                                span {
+                                    margin-right: 8px;
+                                }
+
+                                span:nth-child(2) {
+                                    font-weight: bold;
+                                }
+                            }
+
+                            .pol-id {
+                                width: 140px;
+                            }
+
+                            .item-user-info_terminal {
+                                width: 150px;
+                                color: #626f8c;
+                            }
+                        }
+
+                        .item-page {
+                            width: 410px;
+                        }
+
+                        .item-time {
+                            width: 250px;
+                        }
+
+                        .item-exist-error {
+                            width: 160px;
                         }
                     }
 
-                    .item-page {
-                        width: 410px;
-                    }
-
-                    .item-time {
-                        width: 250px;
-                    }
-
-                    .item-exist-error {
-                        width: 160px;
+                    .trace-container-item:last-child {
+                        margin-bottom: 0;
                     }
                 }
 
-                .trace-container-item:last-child {
-                    margin-bottom: 0;
+                .page-area {
+                    width: 100%;
+                    height: 28px;
+                    margin-top: 14px;
                 }
             }
 
-            .page-area {
-                width: 100%;
-                height: 28px;
-                margin-top: 14px;
-            }
         }
-
     }
-}
-@media screen and (max-width: 1440px) {
-    .content-behavior-track .select-area .select-area_item .input-width {
-        width: 160px;
-    }
-}
 
-.rtl-text{
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    direction: rtl;
-}
+    @media screen and (max-width: 1440px) {
+        .content-behavior-track .select-area .select-area_item .input-width {
+            width: 160px;
+        }
+    }
+
+    .rtl-text {
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        direction: rtl;
+    }
 </style>

@@ -22,7 +22,7 @@ export default {
   computed:{
     titleDataHaveActive(){
       return this.tabData.map(item=>{
-        item.isActive = (item.id === this.titleActiveId)
+        item.isActive = (item.id === this.titleActiveId);
         return item;
       });
     }

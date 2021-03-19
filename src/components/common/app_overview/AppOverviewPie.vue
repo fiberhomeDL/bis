@@ -45,7 +45,6 @@ export default {
             formatter: '{h1|{d}%}\n{h2|{b}}',
             rich: {
               h1: {
-
                 color: '#5b4f7f',
                 lineHeight: 30,
                 fontSize: 18,
@@ -69,7 +68,6 @@ export default {
         }
       ]
     });
-
   }
 };
 </script>
