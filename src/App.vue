@@ -40,12 +40,9 @@ export default {
   }
 };
 
-
 </script>
 <style lang="scss">
 @import '@css/style.scss';
-
-
 #app {
   width: 100%;
   height: 100%;

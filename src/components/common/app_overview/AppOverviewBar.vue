@@ -8,7 +8,7 @@
       </div>
       <el-progress :percentage="value.percentage" :stroke-width="8" :show-text="false" :color="value.color"></el-progress>
     </div>
-    <div style="height: 200px;" class="empty" v-if="barDataByCom.length == 0" >
+    <div style="height: 200px;" class="empty" v-if="barDataByCom.length == 0">
       <no-data></no-data>
     </div>
   </div>
@@ -24,7 +24,7 @@ export default {
   data(){
     return {
       color: ['#ffc7b9','#fee5ac','#86ebdc']
-    }
+    };
   },
   computed: {
     //对数据进行排序 比例缩放 的操作

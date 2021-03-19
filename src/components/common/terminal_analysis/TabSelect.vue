@@ -2,7 +2,7 @@
   <div class="tab-header">
      <span class="tab-header-title"
            v-for="(v,i) in titleDataHaveActive"
-           :key="i"a
+           :key="i"
            :class="{'active': v.isActive}"
            @click="onTitleClick(v.id)">
        {{ v.name }}
@@ -35,8 +35,6 @@ export default {
       }
     }
   }
-
-
 };
 </script>
 

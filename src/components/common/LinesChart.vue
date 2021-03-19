@@ -74,7 +74,7 @@
                     },
                     series: this.data
                 };
-                myChart.setOption(option);
+                myChart.setOption(option)
             }
         },
         watch:{

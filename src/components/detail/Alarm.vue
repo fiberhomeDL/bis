@@ -48,7 +48,7 @@
                 </div>
                 <!--告警列表-->
                 <div class="list-area">
-                    <div v-for="(item,index) in alarmList">
+                    <div v-for="(item,index) in alarmList" :key="index">
                         <div class="time-group">
                             <div class="time-item-area">
                                 <span class="circle-style"></span>

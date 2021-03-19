@@ -24,6 +24,7 @@ export default {
     }
   },
   computed: {
+      // 计算最大值
     maxValue(){
       return Math.max(...this.pbObj.pbData.map(item => item.value));
     }

@@ -1,6 +1,8 @@
 <template>
     <div class="progress-bar">
-        <div v-for="(item,index) in data" class="bar-outer"
+        <div v-for="(item,index) in data"
+             :key="index"
+             class="bar-outer"
              :class="(isActiveIndex === index) ? 'active' : '' "
              @click="selectItem(index,item)">
             <div class="top-bar" v-show="index<5" :style="{background:color[index]}"></div>

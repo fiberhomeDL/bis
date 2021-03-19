@@ -23,7 +23,7 @@
                     <view-item-for-detail :view-item-data="v" :key="i"
                                           v-for="(v,i) in viewItemArr"></view-item-for-detail>
                 </div>
-                <div ca-detail-body-bottom>
+                <div>
                     <el-table
                             :data="errorList"
                             style="width: 100%">

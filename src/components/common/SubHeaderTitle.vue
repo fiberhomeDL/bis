@@ -18,7 +18,6 @@ props: ['subTitle','remark']
 };
 </script>
 
-
 <style lang="scss" scoped>
 @import '@css/style.scss';
 

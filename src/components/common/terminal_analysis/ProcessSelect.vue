@@ -35,7 +35,7 @@ export default {
   methods: {
     changeTab(id){
       this.activeTabId = id;
-      if(this.showListData.length != 0){
+      if(this.showListData.length !== 0){
         this.$emit('onItemSelect',this.showListData[0]);
       }
     },

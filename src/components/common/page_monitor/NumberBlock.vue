@@ -1,6 +1,6 @@
 <template>
     <div class="number-block">
-        <div v-for="(item,index) in dataArr" class="number-block-bk">
+        <div v-for="(item,index) in dataArr" :key="index" class="number-block-bk">
             <div class="number-block-data">{{item}}</div>
         </div>
     </div>

@@ -14,7 +14,6 @@ Vue.prototype.$echarts = echarts;
 Vue.prototype._ = _;
 
 Vue.use(ElementUI);
-
 Vue.config.productionTip = false;
 
 new Vue({

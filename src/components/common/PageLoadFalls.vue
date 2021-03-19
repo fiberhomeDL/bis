@@ -6,7 +6,10 @@
                 <div class="load-falls-item-title">{{item.title}}</div>
                 <div class="load-falls-item-bar">
                     <div class="load-falls-item-bar_inner"
-                         :style="{backgroundColor: barColor[index],width:data[index].consumeTime/totalTime*100+'%',left:data[index].startTime*100/totalTime+'%', background: item.consumeTime===0?'transparent':'default'}">
+                         :style="{backgroundColor: barColor[index],
+                         width:data[index].consumeTime/totalTime*100+'%',
+                         left:data[index].startTime*100/totalTime+'%',
+                         background: item.consumeTime===0?'transparent':'default'}">
                     </div>
                 </div>
                 <div class="load-falls-item-time">
