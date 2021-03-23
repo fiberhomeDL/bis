@@ -222,7 +222,7 @@
                         D: item.browserVersion,
                         E: item.OperateType,
                         F: item.OperateVersion,
-                        G: item.resolution,
+                        G: item.screenWidth+"*"+item.screenHeight,
                         H: item.pageName,
                         I: new Date(item.startTime).toLocaleString(),
                         J: item.errorCount

@@ -62,7 +62,7 @@ import ViewCard from "@/components/home/ViewCard";
 import SatisfactionTag from "@/components/common/home_page/SatisfactionTag";
 import httpReq from '@js/homePage';
 import html2canvas from 'html2canvas';
-import jsPDF from 'jsPDF';
+import {jsPDF} from 'jspdf';
 
 export default {
   name: "HomePage",
