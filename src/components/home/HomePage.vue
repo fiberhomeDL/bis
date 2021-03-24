@@ -32,14 +32,14 @@
       </div>
     </div>
     <div class="home-page-content">
-      <div class="home-page-content-body" :class="{'nodata': appInfoByFilter.length == 0}" ref="pdfContent">
+      <div class="home-page-content-body" :class="{'nodata': appInfoByFilter.length === 0}" ref="pdfContent">
 <!--        拼写满意度样式名称-->
         <div v-for="(value, index) in appInfoByFilter"
              :key="index"
              :class="[
                 'home-page-content-body-item',
                 'satisfaction-'+value.satisfaction,
-                appInfoByFilter.length == 0 ? 'nodata' : ''
+                appInfoByFilter.length === 0 ? 'nodata' : ''
              ]"
              @click="doServiceClick(value)" >
 <!--          满意度标识(右上角↗)-->
@@ -272,11 +272,5 @@ export default {
   background: rgb(253,245,245);
   border-color: rgb(248,137,124);
 }
-
-
-
-
-
-
 
 </style>

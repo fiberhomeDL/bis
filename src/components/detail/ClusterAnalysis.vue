@@ -67,9 +67,9 @@
                     <div v-show="errorSelect == 2 || errorSelect == 0">
                         <div class="js-error-item flex-row" :key="index" v-for="(item,index) in errorListForResource">
                             <span style="color: #505b73">{{ item.errorType }}</span>
-                            <span style="color: #919dbd">【总共：1230次 | 发生页面：168个】</span>
+                            <span style="color: #919dbd">【总共：{{item.errorTotalNum}}次 | 发生页面：{{item.appearPageNum}}个】</span>
                             <img class="js-error-item-img" :src="require('@img/common_icon/subscribers.svg')" alt="">
-                            <span style="color: #505b73">（98）</span>
+                            <span style="color: #505b73">（{{ item.affectUserNum }}）</span>
                         </div>
                     </div>
                     <!--            展示的错误列表为空-->
