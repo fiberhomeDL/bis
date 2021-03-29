@@ -137,7 +137,7 @@
                     },
                     {
                         value: '1',
-                        label: 'js错误',
+                        label: '错误',
                     },
                     {
                         value: '2',

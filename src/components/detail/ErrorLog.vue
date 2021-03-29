@@ -136,7 +136,7 @@
                     {value: 'ALL', label: '全部'},
                     {value: 'JS', label: 'Js错误'},
                     {value: 'AJAX', label: 'Ajax错误'},
-                    {value: 'RESOURCE', label: '静态资源加载异常'},
+                    {value: 'RESOURCE', label: 'Resource错误'},
                     {value: 'PROMISE', label: 'Promise错误'},
                     {value: 'UNKNOWN', label: '未知错误'}
                 ],
