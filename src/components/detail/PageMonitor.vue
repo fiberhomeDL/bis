@@ -84,7 +84,7 @@
                     <div class="page-detail-right">
                         <!--错误类别百分比-->
                         <div class="page-detail-error-rate">
-                            <error-rate-progress :error-type="'js错误'" :category="'JS'" :error-rate="jsErrorRate"
+                            <error-rate-progress :error-type="'js、Promise错误'" :category="'JS'" :error-rate="jsErrorRate"
                                                  @show-detail="goToErrorLog"></error-rate-progress>
                             <error-rate-progress :error-type="'静态资源异常'" :category="'RESOURCE'"
                                                  :error-rate="resErrorRate"

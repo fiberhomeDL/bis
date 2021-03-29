@@ -15,7 +15,7 @@
                       :is="activeContent"
                       @change-content="toDeepPage"
                       @change-component="changeContent"
-                  ></component>
+                  ></component>npm
 <!--               </keep-alive>-->
             </div>
         </div>

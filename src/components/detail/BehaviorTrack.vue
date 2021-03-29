@@ -104,7 +104,7 @@
                             @current-change="handleCurrentChange"
                             layout="total,prev,pager,next"
                             :page-size="9"
-                            :total="traceData.length">
+                            :total="totalTraceData">
                     </el-pagination>
                 </div>
             </div>

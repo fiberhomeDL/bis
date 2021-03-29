@@ -138,8 +138,7 @@
                     {value: 'AJAX', label: 'Ajax错误'},
                     {value: 'RESOURCE', label: '静态资源加载异常'},
                     {value: 'PROMISE', label: 'Promise错误'},
-                    {value: 'VUE', label: 'Vue错误'},
-                    {value: 'UNKNOWN', label: '未知错误'},
+                    {value: 'UNKNOWN', label: '未知错误'}
                 ],
                 // 当前页数
                 currentPage: 1

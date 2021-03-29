@@ -36,7 +36,7 @@
         transform: translate(-50%, -50%);
         &-type {
             margin-top:16px;
-            font-size: 16px;
+            font-size: 13px;
             color: #575777;
         }
         &-rate {
