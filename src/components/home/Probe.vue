@@ -5,8 +5,8 @@
                 <div class="content-inner_code">
                     <div class="select-item_1">
                         <div class="select-input">
-                            <span>Nginx部署IP：</span>
-                            <el-input v-model.trim="nginxIp" placeholder="请输入Nginx部署IP" size="small"
+                            <span>ThemisRUM服务部署IP：</span>
+                            <el-input v-model.trim="nginxIp" placeholder="请输入ThemisRUM服务部署IP" size="small"
                                       clearable></el-input>
                         </div>
                     </div>
@@ -14,41 +14,18 @@
                         <div class="select-input">
                             <span>应用名称：</span>
                             <el-input v-model.trim="serviceName" placeholder="请输入应用英文名称" size="small"
-                                      style="margin-left: 40px;" clearable></el-input>
+                                      style="margin-left: 110px;" clearable></el-input>
                             <span class="select-vue-input_error" v-show="isServiceNameError">请输入英文名称</span>
                         </div>
                     </div>
-                    <div class="select-item_2">
-                        <div class="select-radio">
-                            <el-tooltip effect="light" :visible-arrow=false
-                                        content="加载单个页面并在用户与应用程序交互时动态更新该页面的Web应用程序" placement="top">
-                                <i class="el-icon-question"></i>
-                            </el-tooltip>
-                            <span class="select-radio-span_first">单页面应用：</span>
-                            <el-radio v-model="isSPA" label="true">是</el-radio>
-                            <el-radio v-model="isSPA" label="false">否</el-radio>
-                        </div>
-                        <div class="select-radio">
-                            <span>Vue项目：</span>
-                            <el-radio v-model="isVue" label="true">是</el-radio>
-                            <el-radio v-model="isVue" label="false">否</el-radio>
-                        </div>
-                        <div class="select-input">
-                            <div v-show="isVue==='true'" class="select-item">
-                                <span>Vue对象：</span>
-                                <el-input v-model.trim="vueObject" placeholder="请输入vue对象" size="small"
-                                          clearable></el-input>
-                                <span class="select-vue-input_error" v-show="isVueObjectError">请输入英文名称</span>
-                            </div>
-                        </div>
-                    </div>
                     <h1>探针代码：</h1>
+                    <p v-text="agentExplain" class="agent-explain-label"></p>
                     <div class="dynamic-code">
                         <pre><el-tooltip effect="light" :visible-arrow=false placement="top"><div
                                 slot="content">复制</div><i class="el-icon-document-copy" @click="copyProbeCode"></i>
                         </el-tooltip><code v-text="probeCode"></code></pre>
                     </div>
-                    <div class="attention" v-show="isSPA==='false'">
+                    <div class="attention">
                         <i class="el-icon-warning"></i>
                         <span>注意：pagePath为页面名称，可自定义设置，类型为字符串</span>
                     </div>
@@ -64,16 +41,14 @@
                                 </div>
                             </div>
                         </el-tab-pane>
-                        <el-tab-pane label="单页面应用" name="spa">
+                        <el-tab-pane name="spa">
+                            <span slot="label">单页面应用
+                                <el-tooltip effect="light" :visible-arrow=false
+                                                                 content="由单个页面组成,在用户与应用程序交互时动态更新该页面的Web应用程序" placement="top">
+                                <i class="el-icon-question"></i>
+                            </el-tooltip></span>
                             <div class="example-type-content">
-                                <p v-text="spaExplain"></p>
-                                <div class="spa-code_1">
-                                    <pre><code v-text="spaCodeFrag1"></code></pre>
-                                </div>
-                                <p>在程序入口js文件中的vue实例下，添加以下代码：</p>
-                                <div class="spa-code_2">
-                                    <pre><code v-text="spaCodeFrag2"></code></pre>
-                                </div>
+                                <p>待后续支持......</p>
                             </div>
                         </el-tab-pane>
                     </el-tabs>
@@ -84,41 +59,22 @@
 </template>
 
 <script>
-    // 探针部署代码片段2
-    const codeFrag2 = ':13800\',\n' +
-        '        useFmp: true,\n' +
-        '        serviceVersion: \'default\',\n' +
-        '        service: ';
     // 多页面应用探针部署代码片段
     const mpaCodeFrag = '<script>\n' +
         '    ClientMonitor.register({\n' +
         '        collector: \'http://127.0.0.1:13800\',\n' +
-        '        service: \'serviceName\',\n' +
+        '        service: \'test\',\n' +
         '        serviceVersion: \'default\',\n' +
         '        pagePath: location.pathname,\n' +
         '        useFmp: true\n' +
         '    });\n</' +
         'script>';
-    // 单页面应用探针部署代码片段1
-    const spaCodeFrag1 = '<script type="text/javascript" src="http://127.0.0.1:13800/index.js"></' + 'script>\n';
-    // 单页面应用探针部署代码片段
-    const spaCodeFrag2 = 'watch: {\n' +
-        '  \'$route.path\': function (newVal) {\n' +
-        '      ClientMonitor.register({\n' +
-        '        collector: \'http://127.0.0.1:13800\',\n' +
-        '        service: \'serviceName\',\n' +
-        '        serviceVersion: \'default\',\n' +
-        '        pagePath:newVal,\n' +
-        '        useFmp: true,\n' +
-        '        enableSPA:true,\n' +
-        '        vue: Vue\n' +
-        '      });\n' +
-        '  }\n' +
-        '}';
+    // 探针部署代码片段1
+    const codeFirst = '<script type="text/javascript" src="http://127.0.0.1:13800/index.js"></' + 'script>\n';
     // 多页面应用示例解释
-    const mpaExplain = '在每个监控页面的<head></head>第一行,添加以下代码：';
-    //  单页面应用示例解释
-    const spaExplain = '在项目入口html文件的<head></head>第一行,添加以下代码：';
+    const agentExplain = '在每个监控页面的<head></head>第一行,添加如下代码：';
+    // 多页面应用示例解释
+    const mpaExplain = '在项目test的每个html或jsp的<head></head>第一行,添加探针代码（服务部署在127.0.0.1），如下所示：';
 
     export default {
         name: "Probe",
@@ -130,34 +86,18 @@
                 serviceName: '',
                 // 应用名称是否输入错误
                 isServiceNameError: false,
-                // 是否为单应用
-                isSPA: 'false',
-                // 是否为vue项目
-                isVue: 'false',
-                // vue对象
-                vueObject: '',
-                // vue对象是否输入错误
-                isVueObjectError: false,
                 // 代码_应用名称
                 probeCodeServiceName: '\'\',\n',
-                // 代码_spa部分
-                probeCodeSPA: '',
-                // 代码_vue部分
-                probeCodeVue: '',
                 // 代码_页面路径
                 probeCodePagePath: '        pagePath: location.pathname,\n',
                 // 示例类型
                 activeType: 'mpa',
+                // 探针部署解释
+                agentExplain:agentExplain,
                 // 多页面应用示例解释
                 mpaExplain: mpaExplain,
-                // 单页面应用示例解释
-                spaExplain: spaExplain,
                 // 多页面应用示例代码
-                mpaProbeCode: spaCodeFrag1 + mpaCodeFrag,
-                // 单页面应用示例第一段代码
-                spaCodeFrag1: spaCodeFrag1,
-                // 单页面应用示例第二段代码
-                spaCodeFrag2: spaCodeFrag2
+                mpaProbeCode: codeFirst + mpaCodeFrag
             };
         },
         methods: {
@@ -191,10 +131,10 @@
             probeCode: function () {
                 return '<script type="text/javascript" src="http://' + this.nginxIp + ':13800/index.js"></' + 'script>\n' +
                     '<script>\n ClientMonitor.register({\n        collector: \'http://' + this.nginxIp + ':13800\',\n' +
-                    '        useFmp: true,\n' +
+                    '        service: ' + this.probeCodeServiceName+
                     '        serviceVersion: \'default\',\n' +
-                    '        service: ' +
-                    this.probeCodeServiceName + this.probeCodePagePath + this.probeCodeSPA + this.probeCodeVue +
+                    this.probeCodePagePath +
+                    '        useFmp: true\n' +
                     '    });\n</' + 'script>';
             }
         },
@@ -207,33 +147,6 @@
                 this.isServiceNameError = !reg.test(val) ? true : false;
                 // 修改代码中应用名称
                 this.probeCodeServiceName = '\'' + val + '\',\n';
-            },
-            // 根据spa选项更改代码
-            isSPA: function (val) {
-                if ('true' === val) {
-                    this.probeCodeSPA = '        enableSPA: true,\n';
-                    this.probeCodePagePath = '        pagePath: newVal,\n';
-                } else {
-                    this.probeCodeSPA = '';
-                    this.probeCodePagePath = '        pagePath: location.pathname,\n';
-                }
-            },
-            // 修改代码vue部分
-            isVue: function (val) {
-                if ('false' === val) {
-                    // 清空部署代码中的vue代码
-                    this.probeCodeVue = '';
-                } else {
-                    this.vueObject = '';
-                }
-            },
-            // 修改代码vue对象名称
-            vueObject: function (val) {
-                // 校验是否为英文/数字
-                let reg = new RegExp("^[0-9a-zA-Z]+$");
-                this.isVueObjectError = !reg.test(val) ? true : false;
-                // 探针部署代码更换
-                this.probeCodeVue = '        vue: ' + val + '\n';
             }
         }
     };
@@ -327,14 +240,6 @@
 
         .select-radio {
             display: inline-block;
-
-            .el-icon-question {
-                cursor: pointer;
-            }
-
-            .el-icon-question:hover {
-                color: #00baff;
-            }
         }
 
         .select-radio-span_first {
@@ -393,18 +298,23 @@
         background-color: #f3f9ff;
     }
 
-    .spa-code_1, .spa-code_2 {
-        width: 100%;
-        margin: 20px 0;
-        background-color: #f3f9ff;
-    }
-
     .el-icon-question {
         color: #a7b4ce;
     }
 
     .el-icon-warning {
         color: #f8897c;
+    }
+    .agent-explain-label{
+        margin-top:20px;
+    }
+
+    .el-icon-question {
+        cursor: pointer;
+    }
+
+    .el-icon-question:hover {
+        color: #00baff;
     }
 
 </style>

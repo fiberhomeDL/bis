@@ -161,6 +161,7 @@
                                                         <el-table-column
                                                                 prop="time"
                                                                 label="请求时间(ms)"
+                                                                sortable
                                                                 min-width="15%">
                                                         </el-table-column>
                                                     </el-table>
