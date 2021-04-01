@@ -133,11 +133,11 @@
                 errorTypeData: [
                     {
                         value: '0',
-                        label: '全部',
+                        label: '全部'
                     },
                     {
                         value: '1',
-                        label: '错误',
+                        label: '错误'
                     },
                     {
                         value: '2',
@@ -188,7 +188,7 @@
                 // 表格数据
                 let errorData = [];
                 // 设置表头
-                errorData.push({A: '错误信息', B: '发生次数', C: '影响页面数', D: '影响用户数',});
+                errorData.push({A: '错误信息', B: '发生次数', C: '影响页面数', D: '影响用户数'});
                 // 写入每行数据
                 this.errorList.forEach(function (item, index) {
                     let row = {
