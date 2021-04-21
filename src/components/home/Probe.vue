@@ -12,10 +12,17 @@
                     </div>
                     <div class="select-item_1">
                         <div class="select-input">
-                            <span>应用名称：</span>
+                            <span style="margin-left: 94px;">应用名称：</span>
                             <el-input v-model.trim="serviceName" placeholder="请输入应用英文名称" size="small"
-                                      style="margin-left: 110px;" clearable></el-input>
+                                      clearable></el-input>
                             <span class="select-vue-input_error" v-show="isServiceNameError">请输入英文名称</span>
+                        </div>
+                    </div>
+                    <div class="select-item_1">
+                        <span style="margin-left: 96px;">ACE项目：</span>
+                        <div class="radio-group">
+                            <el-radio v-model="isAce" label="true">是</el-radio>
+                            <el-radio v-model="isAce" label="false">否</el-radio>
                         </div>
                     </div>
                     <h1>探针代码：</h1>
@@ -86,6 +93,8 @@
                 serviceName: '',
                 // 应用名称是否输入错误
                 isServiceNameError: false,
+                // 是否为ace项目
+                isAce:'false',
                 // 代码_应用名称
                 probeCodeServiceName: '\'\',\n',
                 // 代码_页面路径
@@ -147,6 +156,14 @@
                 this.isServiceNameError = !reg.test(val) ? true : false;
                 // 修改代码中应用名称
                 this.probeCodeServiceName = '\'' + val + '\',\n';
+            },
+            // ace项目的pathname只读取/最后内容
+            isAce:function (val) {
+                if ('false' === val) {
+                    this.probeCodePagePath =  '        pagePath: location.pathname,\n';
+                } else {
+                    this.probeCodePagePath =  '        pagePath: location.pathname.substring(location.pathname.lastIndexOf("/")+1),\n';
+                }
             }
         }
     };
@@ -204,6 +221,12 @@
     .select-item_1 {
         width: 100%;
         margin-bottom: 28px;
+        span{
+            @extend .sub-normal-text;
+        }
+        .radio-group{
+            display: inline-block;
+        }
     }
 
     .select-input {
